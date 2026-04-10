@@ -1,19 +1,21 @@
 package Wishlist.model;
 
+import java.util.List;
+
 public class WishlistModel {
     private int id;
-    //private List<Item> items;
+    private List<Item> items;
     private String name;
     private String description;
     private boolean isPublic;
 
-public WishlistModel(int id, List<Item> items String name, String description, boolean isPublic){
-    this.id = id;
-    this.name = name;
-    this.description = description;
-    this.isPublic = isPublic;
-    //this.Item = Item
-}
+    public WishlistModel(int id, List<Item> items, String name, String description, boolean isPublic) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.isPublic = isPublic;
+        this.items = items;
+    }
 
     public int getId() {
         return id;
@@ -45,5 +47,13 @@ public WishlistModel(int id, List<Item> items String name, String description, b
 
     public void setPublic(boolean aPublic) {
         isPublic = aPublic;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 }
