@@ -17,6 +17,7 @@ public class MemberRepository {
         Member m = new Member();
         m.setUsername(rs.getString("username"));
         m.setPassword(rs.getString("password"));
+        m.setName(rs.getString("name"));
         m.setEmail(rs.getString("email"));
         return m;
     };
@@ -24,5 +25,15 @@ public class MemberRepository {
     public Member findById(int id){
         String sql = "SELECT * FROM member WHERE id = ?";
         return jdbc.queryForObject(sql, memberRowMapper, id);
+    }
+
+    public Member findByUsername(String username) {
+        String sql = "SELECT * FROM member WHERE username = ?";
+        return jdbc.queryForObject(sql, memberRowMapper, username);
+    }
+
+    public Member findByEmail(String email) {
+        String sql = "SELECT * FROM member WHERE email = ?";
+        return jdbc.queryForObject(sql, memberRowMapper, email);
     }
 }
