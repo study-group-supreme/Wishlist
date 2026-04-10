@@ -31,4 +31,11 @@ public class MemberRepositoryTest {
 
         assertThat(member.getName()).isEqualTo("August Skipper");
     }
+
+    @Test
+    void findByEmail_returnsCorrectMember() {
+        Member member = memberRepository.findByEmail("goegl12@gmail.com");
+
+        assertThat(member.getName()).isEqualTo("Andreas Jensen");
+    }
 }
