@@ -21,4 +21,9 @@ public class ItemRepository {
     public ItemRepository(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
     }
+
+    public Item findItemById(int itemId){
+        String sql = "SELECT * FROM item WHERE id = ?";
+        return jdbc.queryForObject(sql, itemRowMapper, itemId);
+    }
 }
