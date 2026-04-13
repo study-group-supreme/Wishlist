@@ -47,12 +47,10 @@ public class WishlistRepositoryTest {
         assertThat(items.get(1).getName()).isEqualTo("Spider-Man figure");
     }
 
-    //    @Test
+//    @Test
 //    void deleteWishlist_shouldDeleteWishlistById() {
-//        wishlistRepository.deleteWishlist(1);
-//        wishlistRepository.deleteWishlist(2);
-//        assertThat(wishlistRepository.getAllWishlists()).hasSize(0);
 //    }
+
     @Test
     void getAllWishlists_shouldReturnAllWishlists() {
         List<WishlistModel> wishlists = wishlistRepository.getAllWishlists();

@@ -59,10 +59,11 @@ public class WishlistRepository {
         return jdbc.query(sql, itemRepository.getItemRowMapper(), id);
     }
 
-    //    public void deleteWishlist(int id){
+//        public void deleteWishlist(int id){
 //        String sql = "DELETE FROM wishlist WHERE id = ?";
 //        jdbc.update(sql, id);
 //    }
+
     public List<WishlistModel> getAllWishlists() {
         String sql = "SELECT * FROM wishlist ORDER BY id";
         return jdbc.query(sql, wishlistRowMapper);
