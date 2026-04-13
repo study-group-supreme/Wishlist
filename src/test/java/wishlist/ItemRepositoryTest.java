@@ -39,7 +39,7 @@ public class ItemRepositoryTest {
     @Test
     void getAllItems_retrievesAllItemsInDBAsAList(){
         List<Item> allItems = itemRepository.getAllItems();
-        assertThat(allItems.size()).isEqualTo(1);
+        assertThat(allItems.size()).isEqualTo(2);
         assertThat(allItems.get(0).getName()).isEqualTo("Life-size Darth Vader");
     }
 
