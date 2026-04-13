@@ -62,4 +62,8 @@ public class WishlistRepositoryTest {
         assertThat(wishlists.get(0).getId()).isEqualTo(1);
         assertThat(wishlists.get(1).getId()).isEqualTo(2);
     }
+    @Test
+    void CreateNewWishlist_returnsNewWishlist(){
+
+    }
 }
