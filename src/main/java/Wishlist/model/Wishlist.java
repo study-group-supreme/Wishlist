@@ -2,14 +2,14 @@ package Wishlist.model;
 
 import java.util.List;
 
-public class WishlistModel {
+public class Wishlist {
     private int id;
     private List<Item> items;
     private String name;
     private String description;
     private boolean isPublic;
 
-    public WishlistModel(int id, List<Item> items, String name, String description, boolean isPublic) {
+    public Wishlist(int id, List<Item> items, String name, String description, boolean isPublic) {
         this.id = id;
         this.name = name;
         this.description = description;
