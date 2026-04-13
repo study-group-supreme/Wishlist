@@ -11,4 +11,10 @@ public class WishlistRepository {
         this.jdbc = jdbc;
     }
 
+
+    public void deleteWishlist(int wishlistId) {
+        String sql = "DELETE FROM wishlist where wishlist_id = ?";
+        jdbc.update(sql, wishlistId);
+    }
+
 }
