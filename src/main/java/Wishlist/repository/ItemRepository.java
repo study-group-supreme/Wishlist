@@ -33,7 +33,7 @@ public class ItemRepository {
     }
 
     public List<Item> getAllItems(){
-        String sql = "SELECT * FROM item";
+        String sql = "SELECT * FROM item ORDER BY id";
         return jdbc.query(sql, itemRowMapper);
     }
 
@@ -63,7 +63,7 @@ public class ItemRepository {
     }
 
     public void deleteItemById(int id){
-        String sql = "DELETE * FROM item WHERE id = ?";
-        jdbc.update(sql, itemRowMapper, id);
+        String sql = "DELETE FROM item WHERE id = ?";
+        jdbc.update(sql, id);
     }
 }
