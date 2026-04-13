@@ -23,4 +23,10 @@ public class MemberService {
     public Member getByEmail(String email){
         return memberRepository.findByEmail(email);
     }
+
+    public Member delete(int id){
+        Member deletedMember = memberRepository.findById(id);
+        memberRepository.delete(id);
+        return deletedMember;
+    }
 }
