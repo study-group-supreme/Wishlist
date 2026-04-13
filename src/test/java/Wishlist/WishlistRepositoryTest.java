@@ -22,3 +22,8 @@ public class WishlistRepositoryTest {
     private WishlistRepository wishlistRepository;
 
     @Test
+void findById_returnsCorrectWishlist(){
+    WishlistModel model = wishlistRepository.findWishlistById(1);
+    assertThat(model.getTitle()).isEqualTo("August List of Hopes and Dreams");
+    }
+}
