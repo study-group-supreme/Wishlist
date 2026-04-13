@@ -33,5 +33,4 @@ public class ItemRepositoryTest {
         assertThat(foundItem.getName()).isEqualTo("Dark Souls Figurine");
     }
 
-
 }

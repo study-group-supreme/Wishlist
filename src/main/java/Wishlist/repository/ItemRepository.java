@@ -8,6 +8,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.util.List;
 
 @Repository
 public class ItemRepository {
@@ -31,6 +32,10 @@ public class ItemRepository {
         return jdbc.queryForObject(sql, itemRowMapper, itemId);
     }
 
+    public List<Item> getAllItems(){
+        String sql = "SELECT * FROM item";
+        return jdbc.query(sql, itemRowMapper);
+    }
 
     public Item createItem(Item item){
         String sql = """
@@ -57,7 +62,8 @@ public class ItemRepository {
         }
     }
 
-    public void deleteItem(int id){
-
+    public void deleteItemById(int id){
+        String sql = "DELETE * FROM item WHERE id = ?";
+        jdbc.update(sql, itemRowMapper, id);
     }
 }
