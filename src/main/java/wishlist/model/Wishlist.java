@@ -1,4 +1,4 @@
-package wishlist.model;
+package Wishlist.model;
 
 import java.util.List;
 
