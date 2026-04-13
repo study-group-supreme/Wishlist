@@ -38,4 +38,19 @@ public class MemberRepositoryTest {
 
         assertThat(member.getName()).isEqualTo("Andreas Jensen");
     }
+
+    @Test
+    void insert_addsNewMember() {
+        Member newMember = new Member();
+        newMember.setName("Gabriella");
+        newMember.setUsername("bella");
+        newMember.setPassword("pw");
+        newMember.setEmail("bella@example.com");
+
+        int rows = memberRepository.insert(newMember);
+        assertThat(rows).isEqualTo(1);
+
+        Member fetched = memberRepository.findByUsername("bella");
+        assertThat(fetched.getName()).isEqualTo("Gabriella");
+    }
 }
