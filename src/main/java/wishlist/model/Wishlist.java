@@ -1,4 +1,6 @@
-package Wishlist.model;
+package wishlist.model;
+
+import wishlist.model.Item;
 
 import java.util.List;
 

@@ -1,12 +1,13 @@
-package Wishlist.repository;
+package wishlist.repository;
 
-import Wishlist.model.Item;
-import Wishlist.model.Wishlist;
+import wishlist.model.Item;
+import wishlist.model.Wishlist;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import wishlist.repository.ItemRepository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;

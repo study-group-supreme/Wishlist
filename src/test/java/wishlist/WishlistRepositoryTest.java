@@ -1,8 +1,7 @@
-package Wishlist;
-
-import Wishlist.model.Wishlist;
-import Wishlist.model.Item;
-import Wishlist.repository.WishlistRepository;
+package wishlist;
+import wishlist.model.Wishlist;
+import wishlist.model.Item;
+import wishlist.repository.WishlistRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
