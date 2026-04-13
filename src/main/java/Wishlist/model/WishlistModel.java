@@ -19,6 +19,9 @@ public class WishlistModel {
         this.items = items;
         this.owner_id = owner_id;
     }
+    public WishlistModel(){
+
+    }
 
     public int getId() {
         return id;
