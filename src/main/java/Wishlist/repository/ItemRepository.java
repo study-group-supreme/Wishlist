@@ -28,4 +28,8 @@ public class ItemRepository {
         String sql = "SELECT * FROM item WHERE id = ?";
         return jdbc.queryForObject(sql, itemRowMapper, itemId);
     }
+
+    public RowMapper<Item> getItemRowMapper() {
+        return itemRowMapper;
+    }
 }
