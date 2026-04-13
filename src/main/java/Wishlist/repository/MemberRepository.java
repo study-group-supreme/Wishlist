@@ -13,8 +13,9 @@ public class MemberRepository {
         this.jdbc = jdbc;
     }
 
-    private final RowMapper<Member> memberRowMapper = (rs, rowMapper) -> {
+    private final RowMapper<Member> memberRowMapper = (rs, rowNum) -> {
         Member m = new Member();
+        m.setId(rs.getInt("id"));
         m.setUsername(rs.getString("username"));
         m.setPassword(rs.getString("password"));
         m.setName(rs.getString("name"));
@@ -35,5 +36,37 @@ public class MemberRepository {
     public Member findByEmail(String email) {
         String sql = "SELECT * FROM member WHERE email = ?";
         return jdbc.queryForObject(sql, memberRowMapper, email);
+    }
+
+
+    public int insert(Member member) {
+        String sql = "INSERT INTO member (username, password, name, email) VALUES (?, ?, ?, ?)";
+        return jdbc.update(
+                sql,
+                member.getUsername(),
+                member.getPassword(),
+                member.getName(),
+                member.getEmail());
+    }
+
+    public int update(Member member){
+        String sql = """
+                UPDATE member
+                SET username = ?, password = ?, name = ?, email = ?
+                WHERE id = ?
+                """;
+        return jdbc.update(
+                sql,
+                member.getUsername(),
+                member.getPassword(),
+                member.getName(),
+                member.getEmail(),
+                member.getId()
+        );
+    }
+
+    public int delete(int memberId){
+        String sql = "DELETE FROM member WHERE id = ?";
+        return jdbc.update(sql, memberId);
     }
 }

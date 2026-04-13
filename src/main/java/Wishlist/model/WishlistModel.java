@@ -5,16 +5,22 @@ import java.util.List;
 public class WishlistModel {
     private int id;
     private List<Item> items;
-    private String name;
+    private String title;
     private String description;
     private boolean isPublic;
+    private int owner_id;
 
-    public WishlistModel(int id, List<Item> items, String name, String description, boolean isPublic) {
+
+    public WishlistModel(int id, List<Item> items, String title, String description, boolean isPublic, int owner_id) {
         this.id = id;
-        this.name = name;
+        this.title = title;
         this.description = description;
         this.isPublic = isPublic;
         this.items = items;
+        this.owner_id = owner_id;
+    }
+    public WishlistModel(){
+
     }
 
     public int getId() {
@@ -25,12 +31,12 @@ public class WishlistModel {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
@@ -55,5 +61,12 @@ public class WishlistModel {
 
     public void setItems(List<Item> items) {
         this.items = items;
+    }
+    public int getOwner_id() {
+        return owner_id;
+    }
+
+    public void setOwner_id(int owner_id) {
+        this.owner_id = owner_id;
     }
 }

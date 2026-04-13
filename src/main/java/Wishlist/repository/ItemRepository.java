@@ -65,5 +65,7 @@ public class ItemRepository {
     public void deleteItemById(int id){
         String sql = "DELETE FROM item WHERE id = ?";
         jdbc.update(sql, id);
+    public RowMapper<Item> getItemRowMapper() {
+        return itemRowMapper;
     }
 }
