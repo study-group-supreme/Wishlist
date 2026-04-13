@@ -1,6 +1,6 @@
 package Wishlist;
 
-import Wishlist.model.WishlistModel;
+import Wishlist.model.Wishlist;
 import Wishlist.model.Item;
 import Wishlist.repository.WishlistRepository;
 import org.junit.jupiter.api.Test;
@@ -23,19 +23,19 @@ public class WishlistRepositoryTest {
 
     @Test
     void findById_returnsCorrectWishlist() {
-        WishlistModel model = wishlistRepository.findWishlistById(1);
+        Wishlist model = wishlistRepository.findWishlistById(1);
         assertThat(model.getTitle()).isEqualTo("August List of Hopes and Dreams");
     }
 
     @Test
     void findByTitle_returnsCorrectWishlistId() {
-        WishlistModel model = wishlistRepository.findWishlistByTitle("August List of Hopes and Dreams");
+        Wishlist model = wishlistRepository.findWishlistByTitle("August List of Hopes and Dreams");
         assertThat(model.getId()).isEqualTo(1);
     }
 
     @Test
     void findByOwnerId_returnsCorrectWishlist() {
-        WishlistModel model = wishlistRepository.findWishlistByOwnerId(2);
+        Wishlist model = wishlistRepository.findWishlistByOwnerId(2);
         assertThat(model.getTitle()).isEqualTo("Andreas Filthy Dirty Wishes");
     }
 
@@ -53,7 +53,7 @@ public class WishlistRepositoryTest {
 
     @Test
     void getAllWishlists_shouldReturnAllWishlists() {
-        List<WishlistModel> wishlists = wishlistRepository.getAllWishlists();
+        List<Wishlist> wishlists = wishlistRepository.getAllWishlists();
 
         assertThat(wishlists).isNotNull();
         assertThat(wishlists.size()).isEqualTo(2);
@@ -63,14 +63,14 @@ public class WishlistRepositoryTest {
 
     @Test
     void CreateNewWishlist_returnsNewWishlist() {
-        WishlistModel newWishlist = new WishlistModel();
+        Wishlist newWishlist = new Wishlist();
         newWishlist.setTitle("Mads ønskeliste");
         newWishlist.setDescription("Hej med dig");
         newWishlist.setPublic(true);
         newWishlist.setOwner_id(4);
 
         wishlistRepository.createWishlist(newWishlist);
-        WishlistModel created = wishlistRepository.findWishlistByTitle("Mads ønskeliste");
+        Wishlist created = wishlistRepository.findWishlistByTitle("Mads ønskeliste");
         assertThat(created).isNotNull();
         assertThat(created.getTitle()).isEqualTo("Mads ønskeliste");
         assertThat(created.getDescription()).isEqualTo("Hej med dig");
