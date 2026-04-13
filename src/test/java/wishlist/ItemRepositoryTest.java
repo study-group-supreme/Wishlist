@@ -32,7 +32,7 @@ public class ItemRepositoryTest {
                             , "www.coolstuff.com", 1300);
 
         itemRepository.createItem(item);
-        Item foundItem = itemRepository.findItemById(2);
+        Item foundItem = itemRepository.findItemById(3);
         assertThat(foundItem.getName()).isEqualTo("Dark Souls Figurine");
     }
 
