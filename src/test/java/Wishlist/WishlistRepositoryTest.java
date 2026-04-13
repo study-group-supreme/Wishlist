@@ -47,7 +47,7 @@ public class WishlistRepositoryTest {
         assertThat(items.get(1).getName()).isEqualTo("Spider-Man figure");
     }
 
-//    @Test
+    //    @Test
 //    void deleteWishlist_shouldDeleteWishlistById() {
 //        wishlistRepository.deleteWishlist(1);
 //        wishlistRepository.deleteWishlist(2);
@@ -62,8 +62,22 @@ public class WishlistRepositoryTest {
         assertThat(wishlists.get(0).getId()).isEqualTo(1);
         assertThat(wishlists.get(1).getId()).isEqualTo(2);
     }
-    @Test
-    void CreateNewWishlist_returnsNewWishlist(){
 
+    @Test
+    void CreateNewWishlist_returnsNewWishlist() {
+        WishlistModel newWishlist = new WishlistModel();
+        newWishlist.setTitle("Mads ønskeliste");
+        newWishlist.setDescription("Hej med dig");
+        newWishlist.setPublic(true);
+        newWishlist.setOwner_id(4);
+
+        wishlistRepository.createWishlist(newWishlist);
+        WishlistModel created = wishlistRepository.findWishlistByTitle("Mads ønskeliste");
+        assertThat(created).isNotNull();
+        assertThat(created.getTitle()).isEqualTo("Mads ønskeliste");
+        assertThat(created.getDescription()).isEqualTo("Hej med dig");
+        assertThat(created.isPublic()).isEqualTo(true);
+        assertThat(created.getOwner_id()).isEqualTo(4);
+        assertThat(created.getId()).isGreaterThan(0);
     }
 }
