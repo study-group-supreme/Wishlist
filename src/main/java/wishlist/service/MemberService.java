@@ -24,6 +24,16 @@ public class MemberService {
         return memberRepository.findByEmail(email);
     }
 
+    public Member create(Member member){
+        memberRepository.insert(member);
+        return memberRepository.findByUsername(member.getUsername());
+    }
+
+    public Member update(Member member){
+        memberRepository.update(member);
+        return memberRepository.findById(member.getId());
+    }
+
     public Member delete(int id){
         Member deletedMember = memberRepository.findById(id);
         memberRepository.delete(id);
