@@ -2,7 +2,7 @@ package Wishlist.model;
 
 import java.util.List;
 
-public class WishlistModel {
+public class Wishlist {
     private int id;
     private List<Item> items;
     private String title;
@@ -11,7 +11,7 @@ public class WishlistModel {
     private int owner_id;
 
 
-    public WishlistModel(int id, List<Item> items, String title, String description, boolean isPublic, int owner_id) {
+    public Wishlist(int id, List<Item> items, String title, String description, boolean isPublic, int owner_id) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -19,7 +19,7 @@ public class WishlistModel {
         this.items = items;
         this.owner_id = owner_id;
     }
-    public WishlistModel(){
+    public Wishlist(){
 
     }
 
