@@ -56,6 +56,19 @@ public class MemberRepositoryTest {
     }
 
     @Test
+    void update_updatesExistingMember() {
+        Member member = memberRepository.findById(1);
+        member.setName("Updated name");
+
+        int rows = memberRepository.update(member);
+        assertThat(rows).isEqualTo(1);
+
+        Member updated = memberRepository.findById(1);
+        assertThat(updated.getName()).isEqualTo("Updated name");
+
+    }
+
+    @Test
     void delete_removesMember() {
         int rows = memberRepository.delete(1);
         assertThat(rows).isEqualTo(1);

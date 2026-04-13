@@ -49,6 +49,22 @@ public class MemberRepository {
                 member.getEmail());
     }
 
+    public int update(Member member){
+        String sql = """
+                UPDATE member
+                SET username = ?, password = ?, name = ?, email = ?
+                WHERE id = ?
+                """;
+        return jdbc.update(
+                sql,
+                member.getUsername(),
+                member.getPassword(),
+                member.getName(),
+                member.getEmail(),
+                member.getId()
+        );
+    }
+
     public int delete(int memberId){
         String sql = "DELETE FROM member WHERE id = ?";
         return jdbc.update(sql, memberId);
