@@ -9,6 +9,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 
 @SpringBootTest
@@ -37,5 +38,42 @@ public class MemberRepositoryTest {
         Member member = memberRepository.findByEmail("goegl12@gmail.com");
 
         assertThat(member.getName()).isEqualTo("Andreas Jensen");
+    }
+
+    @Test
+    void insert_addsNewMember() {
+        Member newMember = new Member();
+        newMember.setName("Gabriella");
+        newMember.setUsername("bella");
+        newMember.setPassword("pw");
+        newMember.setEmail("bella@example.com");
+
+        int rows = memberRepository.insert(newMember);
+        assertThat(rows).isEqualTo(1);
+
+        Member fetched = memberRepository.findByUsername("bella");
+        assertThat(fetched.getName()).isEqualTo("Gabriella");
+    }
+
+    @Test
+    void update_updatesExistingMember() {
+        Member member = memberRepository.findById(1);
+        member.setName("Updated name");
+
+        int rows = memberRepository.update(member);
+        assertThat(rows).isEqualTo(1);
+
+        Member updated = memberRepository.findById(1);
+        assertThat(updated.getName()).isEqualTo("Updated name");
+
+    }
+
+    @Test
+    void delete_removesMember() {
+        int rows = memberRepository.delete(1);
+        assertThat(rows).isEqualTo(1);
+
+        assertThatThrownBy(() -> memberRepository.findById(1))
+                .isInstanceOf(Exception.class);
     }
 }
