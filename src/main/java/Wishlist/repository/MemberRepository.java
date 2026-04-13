@@ -48,4 +48,9 @@ public class MemberRepository {
                 member.getName(),
                 member.getEmail());
     }
+
+    public int delete(int memberId){
+        String sql = "DELETE FROM member WHERE id = ?";
+        return jdbc.update(sql, memberId);
+    }
 }
