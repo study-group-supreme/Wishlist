@@ -50,4 +50,8 @@ String sql = """
     """;
         return jdbc.query(sql, itemRepository.getItemRowMapper(), id);
     }
+    public void deleteWishlist(int id){
+        String sql = "DELETE FROM wishlist WHERE id = ?";
+        jdbc.update(sql, id);
+    }
 }
