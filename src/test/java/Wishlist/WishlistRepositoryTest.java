@@ -1,6 +1,6 @@
 package Wishlist;
 
-import Wishlist.model.WishlistModel;
+import Wishlist.model.Wishlist;
 import Wishlist.model.Item;
 import Wishlist.repository.WishlistRepository;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -24,17 +23,17 @@ public class WishlistRepositoryTest {
 
     @Test
 void findById_returnsCorrectWishlist(){
-    WishlistModel model = wishlistRepository.findWishlistById(1);
+    Wishlist model = wishlistRepository.findWishlistById(1);
     assertThat(model.getTitle()).isEqualTo("August List of Hopes and Dreams");
     }
     @Test
     void findByTitle_returnsCorrectWishlistId(){
-        WishlistModel model = wishlistRepository.findWishlistByTitle("August List of Hopes and Dreams");
+        Wishlist model = wishlistRepository.findWishlistByTitle("August List of Hopes and Dreams");
         assertThat(model.getId()).isEqualTo(1);
     }
     @Test
     void findByOwnerId_returnsCorrectWishlist(){
-        WishlistModel model = wishlistRepository.findWishlistByOwnerId(2);
+        Wishlist model = wishlistRepository.findWishlistByOwnerId(2);
         assertThat(model.getTitle()).isEqualTo("Andreas Filthy Dirty Wishes");
     }
     @Test

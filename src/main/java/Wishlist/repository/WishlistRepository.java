@@ -1,7 +1,7 @@
 package Wishlist.repository;
 
 import Wishlist.model.Item;
-import Wishlist.model.WishlistModel;
+import Wishlist.model.Wishlist;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -17,8 +17,8 @@ public class WishlistRepository {
         this.jdbc = jdbc;
         this.itemRepository = itemRepository;
     }
-    private final RowMapper<WishlistModel> wishlistRowMapper = (rs, rowNum) -> {
-        WishlistModel w = new WishlistModel();
+    private final RowMapper<Wishlist> wishlistRowMapper = (rs, rowNum) -> {
+        Wishlist w = new Wishlist();
         w.setId(rs.getInt("id"));
         w.setTitle(rs.getString("title"));
         w.setDescription(rs.getString("description"));
@@ -28,15 +28,15 @@ public class WishlistRepository {
         return w;
     };
 
-    public WishlistModel findWishlistById(int id){
+    public Wishlist findWishlistById(int id){
         String sql = "SELECT * FROM Wishlist WHERE id = ?";
         return jdbc.queryForObject(sql, wishlistRowMapper, id);
     }
-    public WishlistModel findWishlistByTitle(String title){
+    public Wishlist findWishlistByTitle(String title){
         String sql = "SELECT * FROM Wishlist WHERE title = ?";
         return jdbc.queryForObject(sql, wishlistRowMapper, title);
     }
-    public WishlistModel findWishlistByOwnerId(int Owner_id){
+    public Wishlist findWishlistByOwnerId(int Owner_id){
         String sql = "SELECT * FROM Wishlist WHERE member_id = ?";
         return jdbc.queryForObject(sql, wishlistRowMapper, Owner_id);
     }
