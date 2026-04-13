@@ -1,4 +1,4 @@
-package Wishlist.controller;
+package wishlist.controller;
 
 import org.springframework.stereotype.Controller;
 

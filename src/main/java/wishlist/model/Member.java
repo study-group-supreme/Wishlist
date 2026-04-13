@@ -1,4 +1,4 @@
-package Wishlist.model;
+package wishlist.model;
 
 public class Member {
     private int id;

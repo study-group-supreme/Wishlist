@@ -1,8 +1,7 @@
-package Wishlist;
+package wishlist;
 
-import Wishlist.model.Item;
-import Wishlist.repository.ItemRepository;
-import com.mysql.cj.exceptions.AssertionFailedException;
+import wishlist.model.Item;
+import wishlist.repository.ItemRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
