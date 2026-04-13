@@ -20,4 +20,7 @@ public class MemberService {
         return memberRepository.findByUsername(username);
     }
 
+    public Member getByEmail(String email){
+        return memberRepository.findByEmail(email);
+    }
 }
