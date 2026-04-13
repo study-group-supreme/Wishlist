@@ -26,4 +26,15 @@ void findById_returnsCorrectWishlist(){
     WishlistModel model = wishlistRepository.findWishlistById(1);
     assertThat(model.getTitle()).isEqualTo("August List of Hopes and Dreams");
     }
+    @Test
+    void findByTitle_returnsCorrectWishlistId(){
+        WishlistModel model = wishlistRepository.findWishlistByTitle("August List of Hopes and Dreams");
+        assertThat(model.getId()).isEqualTo(1);
+    }
+    @Test
+    void findByOwnerId_returnsCorrectWishlist(){
+        WishlistModel model = wishlistRepository.findWishlistByOwnerId(2);
+        assertThat(model.getTitle()).isEqualTo("Andreas Filthy Dirty Wishes");
+    }
+
 }
