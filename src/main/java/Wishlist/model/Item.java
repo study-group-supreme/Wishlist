@@ -10,8 +10,7 @@ public class Item {
     public Item() {
     }
 
-    public Item(int id, String name, String description, String url, long price) {
-        this.id = id;
+    public Item(String name, String description, String url, long price) {
         this.name = name;
         this.description = description;
         this.url = url;

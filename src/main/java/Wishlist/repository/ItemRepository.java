@@ -31,6 +31,7 @@ public class ItemRepository {
         return jdbc.queryForObject(sql, itemRowMapper, itemId);
     }
 
+
     public Item createItem(Item item){
         String sql = """
                 INSERT INTO item (title, description, url, price)
@@ -54,5 +55,9 @@ public class ItemRepository {
         } else {
             throw new RuntimeException("Item creation failed");
         }
+    }
+
+    public void deleteItem(int id){
+
     }
 }

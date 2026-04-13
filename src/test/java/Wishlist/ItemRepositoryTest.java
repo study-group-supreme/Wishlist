@@ -23,5 +23,14 @@ public class ItemRepositoryTest {
         assertThat(item.getName()).isEqualTo("Life-size Darth Vader");
     }
 
+    @Test
+    void createItem_createsItemAndInsertsItIntoDB(){
+        Item item = new Item("Dark Souls Figurine", "A cool figurine August has"
+                            , "www.coolstuff.com", 1300);
+
+        itemRepository.createItem(item);
+
+    }
+
 
 }
