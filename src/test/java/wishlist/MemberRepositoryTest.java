@@ -1,7 +1,7 @@
-package Wishlist;
+package wishlist;
 
-import Wishlist.model.Member;
-import Wishlist.repository.MemberRepository;
+import wishlist.model.Member;
+import wishlist.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,7 +10,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 
 @SpringBootTest
 @ActiveProfiles("test")

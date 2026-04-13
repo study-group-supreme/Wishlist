@@ -1,6 +1,6 @@
-package Wishlist.repository;
+package wishlist.repository;
 
-import Wishlist.model.Member;
+import wishlist.model.Member;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;

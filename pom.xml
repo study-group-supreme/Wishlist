@@ -11,8 +11,8 @@
     <groupId>com.example</groupId>
     <artifactId>Wishlist</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Wishlist</name>
-    <description>Wishlist</description>
+    <name>wishlist</name>
+    <description>wishlist</description>
     <url/>
     <licenses>
         <license/>
