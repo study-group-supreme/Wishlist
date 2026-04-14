@@ -12,6 +12,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -48,9 +49,15 @@ public class WishlistRepositoryTest {
         assertThat(items.get(1).getName()).isEqualTo("Spider-Man figure");
     }
 
-//    @Test
-//    void deleteWishlist_shouldDeleteWishlistById() {
-//    }
+   @Test
+    void deleteWishlist_shouldDeleteWishlistById() {
+        Wishlist model = wishlistRepository.findWishlistById(1);
+        wishlistRepository.delete(1);
+        assertThat(model.getTitle()).isEqualTo(null);
+        assertThat(model.getDescription()).isEqualTo(null);
+        assertThat(model.getId()).isEqualTo(null);
+
+    }
 
     @Test
     void getAllWishlists_shouldReturnAllWishlists() {

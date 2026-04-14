@@ -59,10 +59,10 @@ public class WishlistRepository {
         return jdbc.query(sql, itemRepository.getItemRowMapper(), id);
     }
 
-//        public void deleteWishlist(int id){
-//        String sql = "DELETE FROM wishlist WHERE id = ?";
-//        jdbc.update(sql, id);
-//    }
+       public void delete(int id){
+        String sql = "DELETE FROM wishlist WHERE id = ?";
+        jdbc.update(sql, id);
+    }
 
     public List<Wishlist> getAllWishlists() {
         String sql = "SELECT * FROM wishlist ORDER BY id";
@@ -77,12 +77,13 @@ public class WishlistRepository {
                 model.getOwner_id(),
                 model.isPublic());
     }
-    public int update(Wishlist model){
+
+    public int update(Wishlist model) {
         String sql = """
-                UPDATE wishlist
-    SET title = ?, description = ?, is_public = ?
-    WHERE id = ?
-    """;
+                            UPDATE wishlist
+                SET title = ?, description = ?, is_public = ?
+                WHERE id = ?
+                """;
         return jdbc.update(sql,
                 model.getTitle(),
                 model.getDescription(),
