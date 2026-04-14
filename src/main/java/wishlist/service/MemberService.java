@@ -25,12 +25,12 @@ public class MemberService {
     }
 
     public Member create(Member member){
-        memberRepository.insert(member);
+        memberRepository.insertMember(member);
         return memberRepository.findByUsername(member.getUsername());
     }
 
     public Member update(Member member){
-        memberRepository.update(member);
+        memberRepository.updateMember(member);
         return memberRepository.findById(member.getId());
     }
 

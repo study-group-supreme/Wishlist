@@ -39,7 +39,7 @@ public class MemberRepository {
     }
 
 
-    public int insert(Member member) {
+    public int insertMember(Member member) {
         String sql = "INSERT INTO member (username, password, name, email) VALUES (?, ?, ?, ?)";
         return jdbc.update(
                 sql,
@@ -49,7 +49,7 @@ public class MemberRepository {
                 member.getEmail());
     }
 
-    public int update(Member member){
+    public int updateMember(Member member){
         String sql = """
                 UPDATE member
                 SET username = ?, password = ?, name = ?, email = ?
@@ -65,7 +65,7 @@ public class MemberRepository {
         );
     }
 
-    public int delete(int memberId){
+    public int deleteById(int memberId){
         String sql = "DELETE FROM member WHERE id = ?";
         return jdbc.update(sql, memberId);
     }
