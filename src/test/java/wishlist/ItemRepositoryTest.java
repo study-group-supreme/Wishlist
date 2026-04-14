@@ -31,7 +31,9 @@ public class ItemRepositoryTest {
         Item item = new Item("Dark Souls Figurine", "A cool figurine August has"
                             , "www.coolstuff.com", 1300);
 
-        itemRepository.insertItem(item);
+        int rowsAffected = itemRepository.insertItem(item);
+        assertThat(rowsAffected).isEqualTo(1);
+
         Item foundItem = itemRepository.findItemById(3);
         assertThat(foundItem.getName()).isEqualTo("Dark Souls Figurine");
     }
@@ -42,5 +44,32 @@ public class ItemRepositoryTest {
         assertThat(allItems.size()).isEqualTo(2);
         assertThat(allItems.get(0).getName()).isEqualTo("Life-size Darth Vader");
     }
+
+    @Test
+    void updateItem_updatesExistingItem(){
+        Item itemToUpdate = itemRepository.findItemById(1);
+        itemToUpdate.setName("Anime Body Pillow");
+        itemToUpdate.setDescription("To get Augusts of course");
+        itemToUpdate.setUrl("crunchyroll.com");
+        itemToUpdate.setPrice((long) 479.99);
+
+        int rowsAffected = itemRepository.updateItem(itemToUpdate);
+        assertThat(rowsAffected).isEqualTo(1);
+
+        Item updatedItem = itemRepository.findItemById(1);
+        assertThat(updatedItem.getName()).isEqualTo("Anime Body Pillow");
+        assertThat(updatedItem.getDescription()).isEqualTo("To get Augusts of course");
+        assertThat(updatedItem.getUrl()).isEqualTo("crunchyroll.com");
+        assertThat(updatedItem.getPrice()).isEqualTo((long) 479.99);
+    }
+
+    @Test
+    void deleteItemById_deletesAnItem(){
+        int rowsAffected = itemRepository.deleteItemById(1);
+        assertThat(rowsAffected).isEqualTo(1);
+
+        assertThat(itemRepository.findItemById(1)).isNull();
+    }
+
 
 }
