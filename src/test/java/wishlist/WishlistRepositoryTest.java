@@ -1,4 +1,5 @@
 package wishlist;
+
 import org.springframework.ui.Model;
 import wishlist.model.Member;
 import wishlist.model.Wishlist;
@@ -49,7 +50,7 @@ public class WishlistRepositoryTest {
         assertThat(items.get(1).getName()).isEqualTo("Spider-Man figure");
     }
 
-   @Test
+  @Test
     void deleteWishlist_shouldDeleteWishlistById() {
         Wishlist model = wishlistRepository.findWishlistById(1);
         wishlistRepository.delete(1);
@@ -62,7 +63,6 @@ public class WishlistRepositoryTest {
     @Test
     void getAllWishlists_shouldReturnAllWishlists() {
         List<Wishlist> wishlists = wishlistRepository.getAllWishlists();
-
         assertThat(wishlists).isNotNull();
         assertThat(wishlists.size()).isEqualTo(2);
         assertThat(wishlists.get(0).getId()).isEqualTo(1);
@@ -85,20 +85,27 @@ public class WishlistRepositoryTest {
         assertThat(created.isPublic()).isEqualTo(true);
         assertThat(created.getOwner_id()).isEqualTo(4);
         assertThat(created.getId()).isGreaterThan(0);
+
+        int rows = wishlistRepository.insertWishlist(newWishlist);
+        assertThat(rows).isEqualTo(1);
     }
+
     @Test
-    void update_returnsUpdatedWishlist(){
-          Wishlist model = wishlistRepository.findWishlistById(1);
+    void update_returnsUpdatedWishlist() {
+        Wishlist model = wishlistRepository.findWishlistById(1);
         model.setTitle("New name");
         model.setDescription("Hej");
         model.setPublic(true);
 
         wishlistRepository.update(model);
 
-           Wishlist updated = wishlistRepository.findWishlistById(1);
-            assertThat(updated.getTitle()).isEqualTo("New name");
-            assertThat(updated.getDescription()).isEqualTo("Hej");
-            assertThat(updated.isPublic()).isEqualTo(true);
+        int rows = wishlistRepository.update(model);
+        assertThat(rows).isEqualTo(1);
 
-        }
+        Wishlist updated = wishlistRepository.findWishlistById(1);
+        assertThat(updated.getTitle()).isEqualTo("New name");
+        assertThat(updated.getDescription()).isEqualTo("Hej");
+        assertThat(updated.isPublic()).isEqualTo(true);
+
+    }
 }
