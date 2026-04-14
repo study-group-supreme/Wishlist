@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import wishlist.repository.ItemRepository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -44,9 +43,9 @@ public class WishlistRepository {
         return jdbc.queryForObject(sql, wishlistRowMapper, title);
     }
 
-    public Wishlist findWishlistByOwnerId(int Owner_id) {
+    public List<Wishlist> findWishlistByOwnerId(int Owner_id) {
         String sql = "SELECT * FROM Wishlist WHERE member_id = ?";
-        return jdbc.queryForObject(sql, wishlistRowMapper, Owner_id);
+        return jdbc.query(sql, wishlistRowMapper, Owner_id);
     }
 
     public List<Item> fetchItemsById(int id) {
@@ -60,32 +59,36 @@ public class WishlistRepository {
         return jdbc.query(sql, itemRepository.getItemRowMapper(), id);
     }
 
-//        public void deleteWishlist(int id){
-//        String sql = "DELETE FROM wishlist WHERE id = ?";
-//        jdbc.update(sql, id);
-//    }
+       public int deleteWishlist(int id){
+        String sql = "DELETE FROM wishlist WHERE id = ?";
+        return jdbc.update(sql, id);
+    }
 
     public List<Wishlist> getAllWishlists() {
         String sql = "SELECT * FROM wishlist ORDER BY id";
         return jdbc.query(sql, wishlistRowMapper);
     }
 
-    public Wishlist createWishlist(Wishlist model) {
+    public int insertWishlist(Wishlist model) {
         String sql = "INSERT INTO wishlist(title, description, member_id, is_public) VALUES (?,?,?,?)";
-        KeyHolder keyHolder = new GeneratedKeyHolder();
+        return jdbc.update(sql,
+                model.getTitle(),
+                model.getDescription(),
+                model.getOwner_id(),
+                model.isPublic());
+    }
 
-        jdbc.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, model.getTitle());
-            ps.setString(2, model.getDescription());
-            ps.setInt(3, model.getOwner_id());
-            ps.setBoolean(4, model.isPublic());
-            return ps;
-        }, keyHolder);
-
-        model.setId(keyHolder.getKey().intValue());
-
-        return model;
+    public int update(Wishlist model) {
+        String sql = """
+                            UPDATE wishlist
+                SET title = ?, description = ?, is_public = ?
+                WHERE id = ?
+                """;
+        return jdbc.update(sql,
+                model.getTitle(),
+                model.getDescription(),
+                model.isPublic(),
+                model.getId());
     }
 }
 

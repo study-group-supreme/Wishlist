@@ -23,7 +23,7 @@ public class WishlistService {
         return wishlistRepository.findWishlistByTitle(title);
     }
 
-    public Wishlist getByOwnerId(int owner_Id) {
+    public List<Wishlist> getByOwnerId(int owner_Id) {
         return wishlistRepository.findWishlistByOwnerId(owner_Id);
     }
 
@@ -35,7 +35,7 @@ public class WishlistService {
         return wishlistRepository.getAllWishlists();
     }
 
-    public Wishlist createNewWishlist(Wishlist model) {
-        return wishlistRepository.createWishlist(model);
+    public int createNewWishlist(Wishlist model) {
+        return wishlistRepository.insertWishlist(model);
     }
 }
