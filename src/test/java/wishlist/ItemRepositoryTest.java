@@ -27,11 +27,11 @@ public class ItemRepositoryTest {
     }
 
     @Test
-    void createItem_createsItemAndInsertsItIntoDB(){
+    void insertItem_createsItemAndInsertsItIntoDB(){
         Item item = new Item("Dark Souls Figurine", "A cool figurine August has"
                             , "www.coolstuff.com", 1300);
 
-        itemRepository.createItem(item);
+        itemRepository.insertItem(item);
         Item foundItem = itemRepository.findItemById(3);
         assertThat(foundItem.getName()).isEqualTo("Dark Souls Figurine");
     }
