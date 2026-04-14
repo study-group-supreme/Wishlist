@@ -15,9 +15,7 @@ create table wishlist (
 create table item (
                       id int auto_increment primary key,
                       title varchar(100) not null,
-                      description varchar(255),
-                      url varchar(255),
-                      price long
+                      description varchar(255)
 );
 
 create table member (
@@ -32,6 +30,8 @@ create table wishlist_item (
                                wishlist_id int not null,
                                item_id int not null,
                                note varchar(255),
+                               url varchar(500),
+                               price long,
                                primary key (wishlist_id, item_id),
                                foreign key (wishlist_id) references wishlist (id),
                                foreign key (item_id) references item (id)
