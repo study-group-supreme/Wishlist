@@ -38,4 +38,12 @@ public class WishlistService {
     public int createNewWishlist(Wishlist model) {
         return wishlistRepository.insertWishlist(model);
     }
+
+    public int deleteWishlist(int id) {
+        return wishlistRepository.deleteWishlist(id);
+    }
+
+    public int updateWishlist(Wishlist model) {
+        return wishlistRepository.update(model);
+    }
 }
