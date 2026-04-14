@@ -67,9 +67,12 @@ public class ItemRepository {
                 item.getName(),
                 item.getDescription(),
                 item.getUrl(),
-                item.getPrice()
+                item.getPrice(),
+                item.getId()
                 );
     }
+
+
 
     public int deleteItemById(int id){
         String sql = "DELETE FROM item WHERE id = ?";
