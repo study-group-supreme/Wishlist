@@ -96,10 +96,10 @@ public class WishlistRepository {
                 FROM item
                 JOIN wishlist_item
                 ON item.id = wishlist_item.item_id
-                WHERE item.title = ?
+                WHERE item.title LIKE ?
                 AND wishlist_item.wishlist_id = ?
                 """;
-        return jdbc.query(sql, itemRepository.getItemRowMapper(), keyword, id);
+        return jdbc.query(sql, itemRepository.getItemRowMapper(), "%"+keyword+"%", id);
     }
 
 }

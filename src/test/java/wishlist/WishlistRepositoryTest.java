@@ -107,7 +107,7 @@ public class WishlistRepositoryTest {
     }
     @Test
     void fetchItemsByWishlistTitle_returnsAllItemsFromDBWithMatchingKeywordAndId(){
-        List<Item> items = wishlistRepository.fetchItemsInWishlistByTitel(1, "Life-size Darth Vader");
+        List<Item> items = wishlistRepository.fetchItemsInWishlistByTitel(1, "size");
         assertThat(items.get(0).getName()).isEqualTo("Life-size Darth Vader");
 
     }
