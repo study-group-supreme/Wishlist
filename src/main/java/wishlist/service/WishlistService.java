@@ -39,7 +39,7 @@ public class WishlistService {
         return wishlistRepository.insertWishlist(model);
     }
 
-    public int deleteWishlist(int id) {
+    public int deleteWishlistById(int id) {
         return wishlistRepository.deleteWishlist(id);
     }
 
