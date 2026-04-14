@@ -23,8 +23,13 @@ public class ItemRepository {
         return item;
     };
 
+
     public ItemRepository(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
+    }
+
+    public RowMapper<Item> getItemRowMapper() {
+        return itemRowMapper;
     }
 
     public Item findItemById(int itemId){
@@ -37,35 +42,40 @@ public class ItemRepository {
         return jdbc.query(sql, itemRowMapper);
     }
 
-    public Item createItem(Item item){
+    public int insertItem(Item item){
         String sql = """
                 INSERT INTO item (title, description, url, price)
                 VALUES(?,?,?,?)
                 """;
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-
-        jdbc.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-            ps.setString(1, item.getName());
-            ps.setString(2, item.getDescription());
-            ps.setString(3, item.getUrl());
-            ps.setLong(4, item.getPrice());
-            return ps;
-        }, keyHolder);
-
-        int id = keyHolder.getKey() != null ? keyHolder.getKey().intValue() : -1;
-
-        if(id != -1){
-            return findItemById(id);
-        } else {
-            throw new RuntimeException("Item creation failed");
-        }
+        return jdbc.update(
+                sql,
+                item.getName(),
+                item.getDescription(),
+                item.getUrl(),
+                item.getPrice()
+        );
     }
 
-    public void deleteItemById(int id){
+    public int updateItem(Item item){
+        String sql = """
+                UPDATE item
+                SET title = ?, description = ?, url = ?, price = ?
+                WHERE id = ?
+                """;
+
+        return jdbc.update(
+                sql,
+                item.getName(),
+                item.getDescription(),
+                item.getUrl(),
+                item.getPrice()
+                );
+    }
+
+    public int deleteItemById(int id){
         String sql = "DELETE FROM item WHERE id = ?";
-        jdbc.update(sql, id);}
-    public RowMapper<Item> getItemRowMapper() {
-        return itemRowMapper;
+        return jdbc.update(sql, id);
     }
+
+
 }

@@ -20,6 +20,7 @@ public class ItemService {
         return itemRepository.getAllItems();
     }
     public Item createItem(Item item){
-        return itemRepository.createItem(item);
+        itemRepository.insertItem(item);
+        return itemRepository.findItemById(item.getId());
     }
 }
