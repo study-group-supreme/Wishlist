@@ -36,7 +36,7 @@ public class MemberService {
 
     public Member delete(int id){
         Member deletedMember = memberRepository.findById(id);
-        memberRepository.delete(id);
+        memberRepository.deleteById(id);
         return deletedMember;
     }
 }
