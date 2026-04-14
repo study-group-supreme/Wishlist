@@ -59,9 +59,9 @@ public class WishlistRepository {
         return jdbc.query(sql, itemRepository.getItemRowMapper(), id);
     }
 
-       public void delete(int id){
+       public int deleteWishlist(int id){
         String sql = "DELETE FROM wishlist WHERE id = ?";
-        jdbc.update(sql, id);
+        return jdbc.update(sql, id);
     }
 
     public List<Wishlist> getAllWishlists() {
