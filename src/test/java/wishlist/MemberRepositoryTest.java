@@ -40,14 +40,14 @@ public class MemberRepositoryTest {
     }
 
     @Test
-    void insert_addsNewMember() {
+    void insert_Member_addsNewMember() {
         Member newMember = new Member();
         newMember.setName("Gabriella");
         newMember.setUsername("bella");
         newMember.setPassword("pw");
         newMember.setEmail("bella@example.com");
 
-        int rows = memberRepository.insert(newMember);
+        int rows = memberRepository.insertMember(newMember);
         assertThat(rows).isEqualTo(1);
 
         Member fetched = memberRepository.findByUsername("bella");
@@ -55,11 +55,11 @@ public class MemberRepositoryTest {
     }
 
     @Test
-    void update_updatesExistingMember() {
+    void update_Member_updatesExistingMember() {
         Member member = memberRepository.findById(1);
         member.setName("Updated name");
 
-        int rows = memberRepository.update(member);
+        int rows = memberRepository.updateMember(member);
         assertThat(rows).isEqualTo(1);
 
         Member updated = memberRepository.findById(1);
@@ -69,7 +69,7 @@ public class MemberRepositoryTest {
 
     @Test
     void delete_removesMember() {
-        int rows = memberRepository.delete(1);
+        int rows = memberRepository.deleteById(1);
         assertThat(rows).isEqualTo(1);
 
         assertThatThrownBy(() -> memberRepository.findById(1))
