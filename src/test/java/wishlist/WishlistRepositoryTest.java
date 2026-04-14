@@ -38,8 +38,8 @@ public class WishlistRepositoryTest {
 
     @Test
     void findByOwnerId_returnsCorrectWishlist() {
-        Wishlist model = wishlistRepository.findWishlistByOwnerId(2);
-        assertThat(model.getTitle()).isEqualTo("Andreas Filthy Dirty Wishes");
+       List<Wishlist> wishlists = wishlistRepository.findWishlistByOwnerId(2);
+        assertThat(wishlists.get(0).getTitle()).isEqualTo("Andreas Filthy Dirty Wishes");
     }
 
     @Test
@@ -52,11 +52,8 @@ public class WishlistRepositoryTest {
 
   @Test
     void deleteWishlist_shouldDeleteWishlistById() {
-        Wishlist model = wishlistRepository.findWishlistById(1);
-        wishlistRepository.delete(1);
-        assertThat(model.getTitle()).isEqualTo(null);
-        assertThat(model.getDescription()).isEqualTo(null);
-        assertThat(model.getId()).isEqualTo(null);
+      int rows = wishlistRepository.deleteWishlist(1);
+      assertThat(rows).isEqualTo(1);
 
     }
 

@@ -43,9 +43,9 @@ public class WishlistRepository {
         return jdbc.queryForObject(sql, wishlistRowMapper, title);
     }
 
-    public Wishlist findWishlistByOwnerId(int Owner_id) {
+    public List<Wishlist> findWishlistByOwnerId(int Owner_id) {
         String sql = "SELECT * FROM Wishlist WHERE member_id = ?";
-        return jdbc.queryForObject(sql, wishlistRowMapper, Owner_id);
+        return jdbc.query(sql, wishlistRowMapper, Owner_id);
     }
 
     public List<Item> fetchItemsById(int id) {
