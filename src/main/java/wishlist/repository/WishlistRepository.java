@@ -80,13 +80,14 @@ public class WishlistRepository {
     public int update(Wishlist model){
         String sql = """
                 UPDATE wishlist
-    SET title = ?, SET description = ?, SET is_public = ?
+    SET title = ?, description = ?, is_public = ?
     WHERE id = ?
     """;
         return jdbc.update(sql,
                 model.getTitle(),
                 model.getDescription(),
-                model.isPublic());
+                model.isPublic(),
+                model.getId());
     }
 }
 
