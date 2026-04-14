@@ -105,4 +105,10 @@ public class WishlistRepositoryTest {
         assertThat(updated.isPublic()).isEqualTo(true);
 
     }
+    @Test
+    void fetchItemsByWishlistTitle_returnsAllItemsFromDBWithMatchingKeywordAndId(){
+        List<Item> items = wishlistRepository.fetchItemsInWishlistByTitel(1, "Life-size Darth Vader");
+        assertThat(items.get(0).getName()).isEqualTo("Life-size Darth Vader");
+
+    }
 }

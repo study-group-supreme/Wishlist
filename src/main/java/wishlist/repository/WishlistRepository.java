@@ -90,6 +90,18 @@ public class WishlistRepository {
                 model.isPublic(),
                 model.getId());
     }
+    public List<Item> fetchItemsInWishlistByTitel(int id, String keyword) {
+        String sql = """
+                SELECT item.id, item.title, item.description, item.url, item.price
+                FROM item
+                JOIN wishlist_item
+                ON item.id = wishlist_item.item_id
+                WHERE item.title = ?
+                AND wishlist_item.wishlist_id = ?
+                """;
+        return jdbc.query(sql, itemRepository.getItemRowMapper(), keyword, id);
+    }
+
 }
 
 
