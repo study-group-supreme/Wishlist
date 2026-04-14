@@ -77,6 +77,17 @@ public class WishlistRepository {
                 model.getOwner_id(),
                 model.isPublic());
     }
+    public int update(Wishlist model){
+        String sql = """
+                UPDATE wishlist
+    SET title = ?, SET description = ?, SET is_public = ?
+    WHERE id = ?
+    """;
+        return jdbc.update(sql,
+                model.getTitle(),
+                model.getDescription(),
+                model.isPublic());
+    }
 }
 
 
