@@ -4,9 +4,9 @@ public class Item {
     private int id;
     private String name;
     private String description;
+
     private String url;
     private long price;
-
     private String note;
 
     public Item() {

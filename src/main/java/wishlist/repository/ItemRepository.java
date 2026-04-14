@@ -13,6 +13,10 @@ import java.util.List;
 @Repository
 public class ItemRepository {
     private final JdbcTemplate jdbc;
+    private String itemDataSqlSnippet = """
+            SELECT item.id, item.title, item.description, wishlist_item.note, wishlist_item.url, wishlist_item.price
+            JOIN ON wishlist_item
+            WHERE item_id = id""";
     private final RowMapper<Item> itemRowMapper = (rs, rowNum) -> {
         Item item = new Item();
         item.setId(rs.getInt("id"));
@@ -20,6 +24,7 @@ public class ItemRepository {
         item.setDescription(rs.getString("description"));
         item.setPrice(rs.getLong("price"));
         item.setUrl(rs.getString("url"));
+        item.setNote(rs.getString("note"));
         return item;
     };
 
@@ -33,7 +38,11 @@ public class ItemRepository {
     }
 
     public Item findItemById(int itemId){
-        String sql = "SELECT * FROM item WHERE id = ?";
+        String sql = """
+            SELECT item.id, item.title, item.description, wishlist_item.note, wishlist_item.url, wishlist_item.price
+            FROM item
+            JOIN wishlist_item ON wishlist_item.item_id = id
+            WHERE id = ?""";
         return jdbc.queryForObject(sql, itemRowMapper, itemId);
     }
 
