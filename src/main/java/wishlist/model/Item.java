@@ -7,6 +7,8 @@ public class Item {
     private String url;
     private long price;
 
+    private String note;
+
     public Item() {
     }
 
@@ -55,5 +57,13 @@ public class Item {
 
     public void setPrice(long price) {
         this.price = price;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }
