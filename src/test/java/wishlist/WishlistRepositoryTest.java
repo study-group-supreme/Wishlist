@@ -68,7 +68,7 @@ public class WishlistRepositoryTest {
         newWishlist.setPublic(true);
         newWishlist.setOwner_id(4);
 
-        wishlistRepository.createWishlist(newWishlist);
+        wishlistRepository.insertWishlist(newWishlist);
         Wishlist created = wishlistRepository.findWishlistByTitle("Mads ønskeliste");
         assertThat(created).isNotNull();
         assertThat(created.getTitle()).isEqualTo("Mads ønskeliste");

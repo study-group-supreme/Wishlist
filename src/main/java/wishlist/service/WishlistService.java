@@ -35,7 +35,7 @@ public class WishlistService {
         return wishlistRepository.getAllWishlists();
     }
 
-    public Wishlist createNewWishlist(Wishlist model) {
-        return wishlistRepository.createWishlist(model);
+    public int createNewWishlist(Wishlist model) {
+        return wishlistRepository.insertWishlist(model);
     }
 }
