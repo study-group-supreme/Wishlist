@@ -1,4 +1,4 @@
-package wishlist;
+package wishlist.integration;
 
 import wishlist.model.Member;
 import wishlist.repository.MemberRepository;
