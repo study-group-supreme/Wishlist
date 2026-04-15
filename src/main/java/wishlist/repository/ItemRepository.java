@@ -37,7 +37,7 @@ public class ItemRepository {
         String sql = """
             SELECT item.id, item.title, item.description, wishlist_item.note, wishlist_item.url, wishlist_item.price
             FROM item
-            JOIN wishlist_item ON wishlist_item.item_id = id
+            LEFT JOIN wishlist_item ON wishlist_item.item_id = id
             WHERE id = ?""";
         return jdbc.queryForObject(sql, itemRowMapper, itemId);
     }
@@ -47,7 +47,7 @@ public class ItemRepository {
         String sql = """
             SELECT item.id, item.title, item.description, wishlist_item.note, wishlist_item.url, wishlist_item.price
             FROM item
-            JOIN wishlist_item ON wishlist_item.item_id = id
+            LEFT JOIN wishlist_item ON wishlist_item.item_id = id
             ORDER BY id""";
         return jdbc.query(sql, itemRowMapper);
     }
