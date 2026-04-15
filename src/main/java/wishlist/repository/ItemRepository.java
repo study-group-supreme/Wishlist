@@ -55,11 +55,16 @@ public class ItemRepository {
                 INSERT INTO item (title, description)
                 VALUES(?,?)
                 """;
-        return jdbc.update(
-                sql,
-                item.getName(),
-                item.getDescription()
-        );
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        int rows = jdbc.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setString(1, item.getName());
+            ps.setString(2, item.getDescription());
+            return ps;
+        },keyHolder);
+        item.setId(keyHolder.getKey().intValue());
+        return rows;
     }
 
     public int updateItem(Item item){
@@ -73,8 +78,6 @@ public class ItemRepository {
                 sql,
                 item.getName(),
                 item.getDescription(),
-                item.getUrl(),
-                item.getPrice(),
                 item.getId()
                 );
     }
