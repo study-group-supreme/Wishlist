@@ -21,12 +21,13 @@ public class AuthController {
 
     @GetMapping("/login")
     public String showLoginForm(){
-        return "login";
+        return "member-login";
     }
 
     @PostMapping("/login")
     public String loginFormHandler(@RequestParam ("username") String username, @RequestParam ("password") String password,
                                    HttpSession session, Model model){
+
 
     }
 }
