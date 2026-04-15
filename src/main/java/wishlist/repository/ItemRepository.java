@@ -44,7 +44,11 @@ public class ItemRepository {
 
     public List<Item> getAllItems(){
         //String sql = "SELECT * FROM item ORDER BY id";
-
+        String sql = """
+            SELECT item.id, item.title, item.description, wishlist_item.note, wishlist_item.url, wishlist_item.price
+            FROM item
+            JOIN wishlist_item ON wishlist_item.item_id = id
+            ORDER BY id""";
         return jdbc.query(sql, itemRowMapper);
     }
 
