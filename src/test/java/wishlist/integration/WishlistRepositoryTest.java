@@ -1,7 +1,5 @@
-package wishlist;
+package wishlist.integration;
 
-import org.springframework.ui.Model;
-import wishlist.model.Member;
 import wishlist.model.Wishlist;
 import wishlist.model.Item;
 import wishlist.repository.WishlistRepository;
@@ -13,7 +11,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
