@@ -12,31 +12,39 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public Member getById(int id){
+    public Member getById(int id) {
         return memberRepository.findById(id);
     }
 
-    public Member getByUsername(String username){
+    public Member getByUsername(String username) {
         return memberRepository.findByUsername(username);
     }
 
-    public Member getByEmail(String email){
+    public Member getByEmail(String email) {
         return memberRepository.findByEmail(email);
     }
 
-    public Member create(Member member){
+    public Member create(Member member) {
         memberRepository.insertMember(member);
         return memberRepository.findByUsername(member.getUsername());
     }
 
-    public Member update(Member member){
+    public Member update(Member member) {
         memberRepository.updateMember(member);
         return memberRepository.findById(member.getId());
     }
 
-    public Member delete(int id){
+    public Member delete(int id) {
         Member deletedMember = memberRepository.findById(id);
         memberRepository.deleteById(id);
         return deletedMember;
+    }
+
+    public Member login(String username, String password) {
+        Member member = memberRepository.findByUsername(username);
+        if (member != null && member.getPassword().equals(password)) {
+            return member;
+        }
+        return null;
     }
 }
