@@ -13,10 +13,6 @@ import java.util.List;
 @Repository
 public class ItemRepository {
     private final JdbcTemplate jdbc;
-    private String itemDataSqlSnippet = """
-            SELECT item.id, item.title, item.description, wishlist_item.note, wishlist_item.url, wishlist_item.price
-            JOIN ON wishlist_item
-            WHERE item_id = id""";
     private final RowMapper<Item> itemRowMapper = (rs, rowNum) -> {
         Item item = new Item();
         item.setId(rs.getInt("id"));
@@ -47,21 +43,20 @@ public class ItemRepository {
     }
 
     public List<Item> getAllItems(){
-        String sql = "SELECT * FROM item ORDER BY id";
+        //String sql = "SELECT * FROM item ORDER BY id";
+
         return jdbc.query(sql, itemRowMapper);
     }
 
     public int insertItem(Item item){
         String sql = """
-                INSERT INTO item (title, description, url, price)
-                VALUES(?,?,?,?)
+                INSERT INTO item (title, description)
+                VALUES(?,?)
                 """;
         return jdbc.update(
                 sql,
                 item.getName(),
-                item.getDescription(),
-                item.getUrl(),
-                item.getPrice()
+                item.getDescription()
         );
     }
 
