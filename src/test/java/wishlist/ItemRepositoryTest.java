@@ -35,10 +35,6 @@ public class ItemRepositoryTest {
         int rows = itemRepository.insertItem(item);
         assertThat(rows).isEqualTo(1);
 
-
-        int rowsAffected = itemRepository.insertItem(item);
-        assertThat(rowsAffected).isEqualTo(1);
-
         Item foundItem = itemRepository.findItemById(3);
         assertThat(foundItem.getName()).isEqualTo("Dark Souls Figurine");
 
