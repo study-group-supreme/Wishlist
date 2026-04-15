@@ -50,9 +50,9 @@ public class WishlistRepository {
 
     public List<Item> fetchItemsById(int id) {
         String sql = """
-                SELECT item.id, item.title, item.description, item.url, item.price
+                SELECT item.id, item.title, item.description, wishlist_item.url, wishlist_item.price, wishlist_item.note
                 FROM item
-                JOIN wishlist_item
+                LEFT JOIN wishlist_item
                 ON item.id = wishlist_item.item_id
                 WHERE wishlist_item.wishlist_id = ?
                 """;
