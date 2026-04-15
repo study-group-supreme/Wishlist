@@ -6,7 +6,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-
 import java.sql.PreparedStatement;
 import java.util.List;
 
@@ -74,9 +73,13 @@ public class ItemRepository {
                 sql,
                 item.getName(),
                 item.getDescription(),
+                item.getUrl(),
+                item.getPrice(),
                 item.getId()
                 );
     }
+
+
 
     public int deleteItemById(int id){
         String sql = "DELETE FROM item WHERE id = ?";

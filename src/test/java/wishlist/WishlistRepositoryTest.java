@@ -1,4 +1,7 @@
 package wishlist;
+
+import org.springframework.ui.Model;
+import wishlist.model.Member;
 import wishlist.model.Wishlist;
 import wishlist.model.Item;
 import wishlist.repository.WishlistRepository;
@@ -10,6 +13,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -34,8 +38,8 @@ public class WishlistRepositoryTest {
 
     @Test
     void findByOwnerId_returnsCorrectWishlist() {
-        Wishlist model = wishlistRepository.findWishlistByOwnerId(2);
-        assertThat(model.getTitle()).isEqualTo("Andreas Filthy Dirty Wishes");
+       List<Wishlist> wishlists = wishlistRepository.findWishlistByOwnerId(2);
+        assertThat(wishlists.get(0).getTitle()).isEqualTo("Andreas Filthy Dirty Wishes");
     }
 
     @Test
@@ -46,14 +50,16 @@ public class WishlistRepositoryTest {
         assertThat(items.get(1).getName()).isEqualTo("Spider-Man figure");
     }
 
-//    @Test
-//    void deleteWishlist_shouldDeleteWishlistById() {
-//    }
+  @Test
+    void deleteWishlist_shouldDeleteWishlistById() {
+      int rows = wishlistRepository.deleteWishlist(1);
+      assertThat(rows).isEqualTo(1);
+
+    }
 
     @Test
     void getAllWishlists_shouldReturnAllWishlists() {
         List<Wishlist> wishlists = wishlistRepository.getAllWishlists();
-
         assertThat(wishlists).isNotNull();
         assertThat(wishlists.size()).isEqualTo(2);
         assertThat(wishlists.get(0).getId()).isEqualTo(1);
@@ -68,7 +74,7 @@ public class WishlistRepositoryTest {
         newWishlist.setPublic(true);
         newWishlist.setOwner_id(4);
 
-        wishlistRepository.createWishlist(newWishlist);
+        wishlistRepository.insertWishlist(newWishlist);
         Wishlist created = wishlistRepository.findWishlistByTitle("Mads ønskeliste");
         assertThat(created).isNotNull();
         assertThat(created.getTitle()).isEqualTo("Mads ønskeliste");
@@ -76,5 +82,33 @@ public class WishlistRepositoryTest {
         assertThat(created.isPublic()).isEqualTo(true);
         assertThat(created.getOwner_id()).isEqualTo(4);
         assertThat(created.getId()).isGreaterThan(0);
+
+        int rows = wishlistRepository.insertWishlist(newWishlist);
+        assertThat(rows).isEqualTo(1);
+    }
+
+    @Test
+    void update_returnsUpdatedWishlist() {
+        Wishlist model = wishlistRepository.findWishlistById(1);
+        model.setTitle("New name");
+        model.setDescription("Hej");
+        model.setPublic(true);
+
+        wishlistRepository.update(model);
+
+        int rows = wishlistRepository.update(model);
+        assertThat(rows).isEqualTo(1);
+
+        Wishlist updated = wishlistRepository.findWishlistById(1);
+        assertThat(updated.getTitle()).isEqualTo("New name");
+        assertThat(updated.getDescription()).isEqualTo("Hej");
+        assertThat(updated.isPublic()).isEqualTo(true);
+
+    }
+    @Test
+    void fetchItemsByWishlistTitle_returnsAllItemsFromDBWithMatchingKeywordAndId(){
+        List<Item> items = wishlistRepository.fetchItemsInWishlistByTitel(1, "size");
+        assertThat(items.get(0).getName()).isEqualTo("Life-size Darth Vader");
+
     }
 }
