@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register New Member</title>
+</head>
+<body>
+<div th:replace="fragments/header :: header">...</div>
+<form th:action="@{/member/register}" th:object="${member}" method="post">
+    <p><label>Name:</label>
+        <input type="text" th:field="*{member.name}" placeholder="John Doe" autofocus></p>
+    <br>
+    <p><label>E-Mail:</label>
+        <input type="email" th:field="*{member.email}" placeholder="john@doe.com"></p>
+    <br>
+    <p><label>Username:</label>
+        <input type="text" th:field="*{member.username}" placeholder="jodo420blaze"></p>
+    <br>
+    <p><label>Password:</label>
+        <input type="text" th:field="*{member.password}"></p>
+    <br>
+    <button type="submit">Register</button>
+
+</form>
+<button type="button" onclick="window.location.href='/'">Go Back</button>
+
+</body>
+</html>
