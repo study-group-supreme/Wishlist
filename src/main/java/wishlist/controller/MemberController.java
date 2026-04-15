@@ -25,7 +25,7 @@ public class MemberController {
         return "member-registration";
     }
 
-    @PostMapping("/register")
+    @PostMapping("/save")
     public String registrationFormHandler(@ModelAttribute Member member, RedirectAttributes redirectAttributes){
         Member registeredMember = service.create(member);
         redirectAttributes.addFlashAttribute("member", registeredMember);
