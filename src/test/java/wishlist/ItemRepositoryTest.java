@@ -32,8 +32,8 @@ public class ItemRepositoryTest {
         item.setName("Dark Souls Figurine");
         item.setDescription("A cool figurine August has");
 
-        int row = itemRepository.insertItem(item);
-        assertThat(row).isEqualTo(1);
+        int rows = itemRepository.insertItem(item);
+        assertThat(rows).isEqualTo(1);
 
 
         Item foundItem = itemRepository.findItemById(3);
@@ -47,6 +47,18 @@ public class ItemRepositoryTest {
         List<Item> allItems = itemRepository.getAllItems();
         assertThat(allItems.size()).isEqualTo(2);
         assertThat(allItems.get(0).getName()).isEqualTo("Life-size Darth Vader");
+    }
+
+    @Test
+    void updateItem_updatesItemData(){
+        Item item = itemRepository.findItemById(1);
+
+        item.setName("Updated name");
+
+        int rows = itemRepository.updateItem(item);
+        assertThat(rows).isEqualTo(1);
+
+        assertThat(itemRepository.findItemById(1).getName()).isEqualTo("Updated name");
     }
 
 }

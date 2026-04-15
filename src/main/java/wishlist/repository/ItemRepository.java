@@ -67,7 +67,7 @@ public class ItemRepository {
     public int updateItem(Item item){
         String sql = """
                 UPDATE item
-                SET title = ?, description = ?, url = ?, price = ?
+                SET title = ?, description = ?
                 WHERE id = ?
                 """;
 
@@ -75,8 +75,7 @@ public class ItemRepository {
                 sql,
                 item.getName(),
                 item.getDescription(),
-                item.getUrl(),
-                item.getPrice()
+                item.getId()
                 );
     }
 
