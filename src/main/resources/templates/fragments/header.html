@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Fragment Header</title>
+</head>
+<body>
+<div th:fragment="header">
+    <nav>
+        <div class="container">
+            <button type="button" onclick="window.location.href='/auth/login'"
+            th:if="${session.memberId} == null">
+                Login
+            </button>
+
+            <button type="button" onclick="window,location.href='/auth/logout'"
+            th:if="${session.memberId != null}">
+                Logout
+            </button>
+
+        </div>
+    </nav>
+
+</div>
+
+</body>
+</html>

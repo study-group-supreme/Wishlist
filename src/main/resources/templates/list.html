@@ -5,7 +5,7 @@
     <title>All Wishlists</title>
 </head>
 <body>
-
+<div th:replace="fragments/header :: header">...</div>
 <ul>
     <li th:each="wishlist : ${wishlists}">
         <strong th:text="${wishlist.title}">Wishlist name</strong>
