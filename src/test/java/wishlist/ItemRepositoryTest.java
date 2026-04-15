@@ -28,14 +28,21 @@ public class ItemRepositoryTest {
 
     @Test
     void insertItem_createsItemAndInsertsItIntoDB(){
-        Item item = new Item("Dark Souls Figurine", "A cool figurine August has"
-                            , "www.coolstuff.com", 1300);
+        Item item = new Item();
+        item.setName("Dark Souls Figurine");
+        item.setDescription("A cool figurine August has");
+
+        int rows = itemRepository.insertItem(item);
+        assertThat(rows).isEqualTo(1);
+
 
         int rowsAffected = itemRepository.insertItem(item);
         assertThat(rowsAffected).isEqualTo(1);
 
         Item foundItem = itemRepository.findItemById(3);
         assertThat(foundItem.getName()).isEqualTo("Dark Souls Figurine");
+
+        assertThat(itemRepository.getAllItems().size()).isEqualTo(3);
     }
 
     @Test
