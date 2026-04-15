@@ -27,7 +27,13 @@ public class AuthController {
     @PostMapping("/login")
     public String loginFormHandler(@RequestParam ("username") String username, @RequestParam ("password") String password,
                                    HttpSession session, Model model){
-
-
+        Member member = memberService.login(username, password);
+        if(member != null){
+            session.setAttribute("memberId", member.getId());
+            return "redirect:/";
+        } else{
+            model.addAttribute("wrongCredentials", true);
+            return "redirect:/login";
+        }
     }
 }
