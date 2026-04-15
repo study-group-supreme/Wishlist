@@ -73,8 +73,6 @@ public class ItemRepository {
                 sql,
                 item.getName(),
                 item.getDescription(),
-                item.getUrl(),
-                item.getPrice(),
                 item.getId()
                 );
     }
