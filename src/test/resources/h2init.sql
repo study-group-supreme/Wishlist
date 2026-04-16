@@ -31,10 +31,10 @@ create table wishlist_item (
                                item_id int not null,
                                note varchar(255),
                                url varchar(500),
-                               price long,
-                               primary key (wishlist_id, item_id),
-                               foreign key (wishlist_id) references wishlist (id),
-                               foreign key (item_id) references item (id)
+                               price BIGINT(),
+                               primary key (wishlist_id, item_id) ,
+                               foreign key (wishlist_id) references wishlist (id) ON DELETE CASCADE,
+                               foreign key (item_id) references item (id) ON DELETE CASCADE
 );
 
 create table saved_wishlist (

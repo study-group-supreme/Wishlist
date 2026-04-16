@@ -48,11 +48,14 @@ public class WishlistRepositoryTest {
     }
 
   @Test
-    void deleteWishlist_shouldDeleteWishlistById() {
+  void deleteWishlist_shouldDeleteWishlistById() {
       int rows = wishlistRepository.deleteWishlist(1);
-      assertThat(rows).isEqualTo(1);
 
-    }
+      assertThat(rows).isEqualTo(1);
+      assertThat(wishlistRepository.findWishlistById(1)).isNull();
+  }
+
+
 
     @Test
     void getAllWishlists_shouldReturnAllWishlists() {
