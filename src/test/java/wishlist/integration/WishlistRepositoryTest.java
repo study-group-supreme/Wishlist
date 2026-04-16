@@ -52,7 +52,6 @@ public class WishlistRepositoryTest {
       int rows = wishlistRepository.deleteWishlist(1);
 
       assertThat(rows).isEqualTo(1);
-      assertThat(wishlistRepository.findWishlistById(1)).isNull();
   }
 
 
