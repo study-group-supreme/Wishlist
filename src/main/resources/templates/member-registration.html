@@ -8,16 +8,16 @@
 <div th:replace="fragments/header :: header">...</div>
 <form th:action="@{/member/save}" th:object="${member}" method="post">
     <label>Name:</label>
-    <input type="text" th:field="*{member.name}" placeholder="John Doe" autofocus>
+    <input autofocus placeholder="John Doe" th:field="*{name}" type="text">
     <br>
     <label>E-Mail:</label>
-        <input type="email" th:field="*{member.email}" placeholder="john@doe.com">
+        <input type="email" th:field="*{email}" placeholder="john@doe.com">
     <br>
     <label>Username:</label>
-        <input type="text" th:field="*{member.username}" placeholder="jodo420blaze">
+        <input type="text" th:field="*{username}" placeholder="jodo420blaze">
     <br>
     <label>Password:</label>
-        <input type="text" th:field="*{member.password}">
+        <input type="text" th:field="*{password}">
     <br>
     <button type="submit">Register</button>
 
