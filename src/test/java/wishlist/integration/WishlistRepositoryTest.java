@@ -41,7 +41,7 @@ public class WishlistRepositoryTest {
 
     @Test
     void fetchItemsByWishlistId_returnsCorrectItemsOnWishlist() {
-        List<Item> items = wishlistRepository.fetchItemsById(1);
+        List<Item> items = wishlistRepository.fetchItemsByWishlistId(1);
         assertThat(items.size()).isEqualTo(2);
         assertThat(items.get(0).getName()).isEqualTo("Life-size Darth Vader");
         assertThat(items.get(1).getName()).isEqualTo("Spider-Man figure");
