@@ -31,18 +31,20 @@ create table wishlist_item (
                                item_id int not null,
                                note varchar(255),
                                url varchar(500),
-                               price long,
+                               price DECIMAL(10,2),
+
                                primary key (wishlist_id, item_id),
-                               foreign key (wishlist_id) references wishlist (id),
-                               foreign key (item_id) references item (id)
+                               foreign key (wishlist_id) references wishlist (id) ON DELETE CASCADE,
+                               foreign key (item_id) references item (id) ON DELETE CASCADE
 );
+
 
 create table saved_wishlist (
                                 wishlist_id int not null,
                                 member_id int not null,
                                 primary key (wishlist_id, member_id),
-                                foreign key (wishlist_id) references wishlist (id),
-                                foreign key (member_id) references member (id)
+                                foreign key (wishlist_id) references wishlist (id) ON DELETE CASCADE,
+                                foreign key (member_id) references member (id) ON DELETE CASCADE
 );
 
 insert into member (username, password, name, email)
