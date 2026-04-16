@@ -8,6 +8,17 @@
 <div th:fragment="header">
     <nav>
         <div class="container">
+
+            <button type="button" onclick="window.location.href='/wishlist'"
+            th:if="${session.memberId} != null">
+                My Wishlists!
+            </button>
+
+            <button type="button" onclick="window.location.href='/member/register'"
+            th:if="${session.memberId} == null">
+                Register
+            </button>
+
             <button type="button" onclick="window.location.href='/auth/login'"
             th:if="${session.memberId} == null">
                 Login
