@@ -2,16 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>All Wishlists</title>
+    <title>Welcome</title>
     <link rel="icon" th:href="@{/images/greenwish-favicon.png}">
 </head>
 <body>
 <div th:replace="fragments/header :: header">...</div>
-<ul>
-    <li th:each="wishlist : ${wishlists}">
-        <strong th:text="${wishlist.title}">Wishlist name</strong>
-    </li>
-</ul>
-
+<img th:src="@{/images/WISHLIST_LOGO.png}" alt="Logo">
 </body>
 </html>
