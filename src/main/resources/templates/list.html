@@ -9,7 +9,9 @@
 <div th:replace="fragments/header :: header">...</div>
 <ul>
     <li th:each="wishlist : ${wishlists}">
-        <strong th:text="${wishlist.title}">Wishlist name</strong>
+        <a th:href="@{/wishlist/{id}(id=${wishlist.id})}">
+            <strong th:text="${wishlist.title}">Wishlist name</strong>
+        </a>
     </li>
 </ul>
 

@@ -28,7 +28,7 @@ public class WishlistService {
     }
 
     public List<Item> getItemsFromWishlistByWishlistId(int id) {
-        return wishlistRepository.fetchItemsById(id);
+        return wishlistRepository.fetchItemsByWishlistId(id);
     }
 
     public List<Wishlist> getAllWishlists() {
