@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Wislist</title>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<h2>Edit Wishlist</h2>
+
+<form th:action="@{/wishlist/{wishlistId}/update(wishlistId=${wishlist.id})}" th:object="${wishlist}" method="post">
+
+    <p>
+        <label>Title</label><br>
+        <input type="text" th:field="*{title}" autofocus>
+    </p>
+
+    <p>
+        <label>Description</label><br>
+        <textarea th:field="*{description}"></textarea>
+    </p>
+
+    <p>
+        <label>Public?</label>
+        <input type="checkbox" th:field="*{public}">
+    </p>
+
+    <button type="submit">Save Changes</button>
+</form>
+
+<button onclick="window.location.href='/wishlist'">Cancel</button>
+
+</body>
+</html>

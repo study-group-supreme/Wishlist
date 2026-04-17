@@ -77,4 +77,35 @@ public class WishlistController {
         wishlistService.deleteWishlistById(wishlistId);
         return "redirect:/wishlist";
     }
+
+    @GetMapping("/{wishlistId}/edit")
+    public String showEditWishlistForm(@PathVariable int wishlistId, Model model, HttpSession session){
+        int memberId = (Integer) session.getAttribute("memberId");
+
+        Wishlist wishlist = wishlistService.getById(wishlistId);
+
+        if (wishlist.getOwner_id() != memberId){
+            return "redirect:/wishlist";
+        }
+
+        model.addAttribute("wishlist", wishlist);
+        return "wishlist/edit-wishlist";
+    }
+
+    @PostMapping("/{wishlistId}/update")
+    public String updateWishlist(@PathVariable int wishlistId, @ModelAttribute Wishlist wishlist, HttpSession session){
+        int memberId = (Integer) session.getAttribute("memberId");
+
+        Wishlist existingWishlist = wishlistService.getById(wishlistId);
+        if (existingWishlist.getOwner_id() != memberId){
+            return "redirect:/wishlist";
+        }
+
+        wishlist.setId(wishlistId);
+        wishlist.setOwner_id(memberId);
+
+        wishlistService.updateWishlist(wishlist);
+
+        return "redirect:/wishlist/" + wishlistId;
+    }
 }
