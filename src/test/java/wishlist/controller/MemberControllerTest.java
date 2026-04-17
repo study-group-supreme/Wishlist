@@ -62,7 +62,16 @@ class MemberControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("/member/member-edit"));
         verify(service).getById(1);
-
+        }
+        @Test
+    void shouldUpdateMemberAndRedirectToWishlist() throws Exception {
+        mockMvc.perform(post("/member/edit")
+                .param("id", "1")
+                .param("username", "shaz")
+                .param("email", "shaz@test.dk"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/wishlist"));
+        verify(service).update(any(Member.class));
 
         }
     }
