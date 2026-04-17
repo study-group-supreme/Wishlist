@@ -39,11 +39,14 @@ public class WishlistRepository {
         return wishlist;
     }
     public Wishlist findWishlistByTitle(String title) {
-        String sql = "SELECT * FROM Wishlist WHERE title = ?";
-      Wishlist wishlist = jdbc.queryForObject(sql, wishlistRowMapper, title);
-       if(wishlist != null){
-           wishlist.setItems(fetchItemsByWishlistId(wishlist.getId()));
-       }
+        String sql = "SELECT * FROM wishlist WHERE title = ?";
+
+        Wishlist wishlist = jdbc.queryForObject(sql, wishlistRowMapper, title);
+
+        if (wishlist != null) {
+            wishlist.setItems(fetchItemsByWishlistId(wishlist.getId()));
+        }
+
         return wishlist;
     }
 
