@@ -7,9 +7,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class MemberRepository {
+
     private final JdbcTemplate jdbc;
 
-    public MemberRepository(JdbcTemplate jdbc){
+    public MemberRepository(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
     }
 
@@ -23,33 +24,45 @@ public class MemberRepository {
         return m;
     };
 
-    public Member findById(int id){
+    public Member findById(int id) {
         String sql = "SELECT * FROM member WHERE id = ?";
-        return jdbc.queryForObject(sql, memberRowMapper, id);
+        return jdbc.query(sql, memberRowMapper, id)
+                .stream()
+                .findFirst()
+                .orElse(null);
     }
 
     public Member findByUsername(String username) {
         String sql = "SELECT * FROM member WHERE username = ?";
-        return jdbc.queryForObject(sql, memberRowMapper, username);
+        return jdbc.query(sql, memberRowMapper, username)
+                .stream()
+                .findFirst()
+                .orElse(null);
     }
 
     public Member findByEmail(String email) {
         String sql = "SELECT * FROM member WHERE email = ?";
-        return jdbc.queryForObject(sql, memberRowMapper, email);
+        return jdbc.query(sql, memberRowMapper, email)
+                .stream()
+                .findFirst()
+                .orElse(null);
     }
 
-
     public int insertMember(Member member) {
-        String sql = "INSERT INTO member (username, password, name, email) VALUES (?, ?, ?, ?)";
+        String sql = """
+                INSERT INTO member (username, password, name, email)
+                VALUES (?, ?, ?, ?)
+                """;
         return jdbc.update(
                 sql,
                 member.getUsername(),
                 member.getPassword(),
                 member.getName(),
-                member.getEmail());
+                member.getEmail()
+        );
     }
 
-    public int updateMember(Member member){
+    public int updateMember(Member member) {
         String sql = """
                 UPDATE member
                 SET username = ?, password = ?, name = ?, email = ?
@@ -65,7 +78,7 @@ public class MemberRepository {
         );
     }
 
-    public int deleteById(int memberId){
+    public int deleteById(int memberId) {
         String sql = "DELETE FROM member WHERE id = ?";
         return jdbc.update(sql, memberId);
     }
