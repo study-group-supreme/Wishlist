@@ -40,7 +40,7 @@ public class WishlistController {
 
     // show wishlist by wishlist-id
     @GetMapping("/{id}")
-    public String showOneWishlist(@PathVariable("id") int id, Model model, HttpSession session) {
+    public String showOneWishlist(@PathVariable int id, Model model, HttpSession session) {
 
         int memberId = (Integer) session.getAttribute("memberId");
 
