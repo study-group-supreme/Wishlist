@@ -72,7 +72,7 @@ public class MemberRepositoryTest {
         int rows = memberRepository.deleteById(1);
         assertThat(rows).isEqualTo(1);
 
-        assertThatThrownBy(() -> memberRepository.findById(1))
-                .isInstanceOf(Exception.class);
+        Member member = memberRepository.findById(1);
+        assertThat(member).isNull();
     }
 }
