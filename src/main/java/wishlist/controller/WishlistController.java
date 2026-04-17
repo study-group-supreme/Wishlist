@@ -64,4 +64,9 @@ public class WishlistController {
 
         return "redirect:/wishlist";
     }
+
+    @GetMapping("/wishlistId/delete")
+    public String deleteWishlist(@PathVariable int wishlistId, HttpSession session){
+        return "redirect:/wishlist";
+    }
 }
