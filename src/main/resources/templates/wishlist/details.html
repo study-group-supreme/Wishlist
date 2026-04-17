@@ -22,6 +22,12 @@
         <p th:text="${item.note}"></p>
     </li>
 </ul>
+<form th:action="@{/wishlist/{wishlistId}/edit(wishlistId=${wishlist.id})}" method="get">
+    <button type="submit">Edit Wishlist</button>
+</form>
+<form th:action="@{/wishlist/{wishlistId}/delete(wishlistId=${wishlist.id})}" method="post">
+    <button type="submit" style="color:red">Delete Wishlist</button>
+</form>
 
 </body>
 </html>
