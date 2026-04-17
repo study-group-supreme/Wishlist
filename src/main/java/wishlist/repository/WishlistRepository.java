@@ -33,9 +33,16 @@ public class WishlistRepository {
     };
 
     public Wishlist findWishlistById(int id) {
-        String sql = "SELECT * FROM Wishlist WHERE id = ?";
-        return jdbc.queryForObject(sql, wishlistRowMapper, id);
+        String sql = "SELECT * FROM wishlist WHERE id = ?";
+        Wishlist wishlist = jdbc.queryForObject(sql, wishlistRowMapper, id);
+
+        if (wishlist != null) {
+            wishlist.setItems(fetchItemsById(wishlist.getId()));
+        }
+
+        return wishlist;
     }
+
 
     public Wishlist findWishlistByTitle(String title) {
         String sql = "SELECT * FROM Wishlist WHERE title = ?";
