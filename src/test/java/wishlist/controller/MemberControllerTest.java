@@ -51,7 +51,7 @@ class MemberControllerTest {
         verify(service).create(any(Member.class));
     }
     @Test
-    void shouldEditMember() throws Exception{
+    void shouldDisplayEditForm_whenMemberIsInSession() throws Exception{
         Member member = new Member();
         member.setId(1);
         member.setUsername("shaz");
