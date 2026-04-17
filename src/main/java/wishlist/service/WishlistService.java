@@ -40,6 +40,36 @@ public class WishlistService {
     }
 
     public Wishlist createNewWishlist(Wishlist wishlist) {
+
+        // Validate title
+        if (wishlist.getTitle() == null || wishlist.getTitle().isBlank()) {
+            throw new BadRequestException("Title cannot be empty");
+        }
+
+        if (wishlist.getTitle().length() > 100){
+            throw new BadRequestException("Wishlist title cannot exceed 100 characters");
+        }
+
+        // Validate description
+        if (wishlist.getDescription() != null && wishlist.getDescription().length() > 255){
+            throw new BadRequestException("Description cannot exceed 255 characters");
+        }
+
+        // Validate owner
+        if (wishlist.getOwner_id() <= 0){
+            throw new BadRequestException("Wishlist must have a valid owner");
+        }
+
+        try {
+            wishlistRepository.insertWishlist(wishlist);
+            return wishlistRepository.findWishlistById(wishlist.getId());
+        } catch (Exception e) {
+            throw new BadRequestException("Could not create wishlist: "+ e.getMessage());
+        }
+
+
+
+
         wishlistRepository.insertWishlist(wishlist);
         return wishlistRepository.findWishlistById(wishlist.getId());
     }
