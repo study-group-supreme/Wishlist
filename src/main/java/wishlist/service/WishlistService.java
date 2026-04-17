@@ -24,7 +24,16 @@ public class WishlistService {
     }
 
     public Wishlist getByTitle(String title) {
-        return wishlistRepository.findWishlistByTitle(title);
+        if (title == null || title.isBlank()){
+            throw new BadRequestException("Title cannot be empty");
+        }
+
+        try {
+            return wishlistRepository.findWishlistByTitle(title);
+        } catch (Exception e) {
+            throw new NotFoundException("Could not find wishlist with title: '"+title);
+        }
+
     }
 
     public List<Wishlist> getByOwnerId(int owner_Id) {
