@@ -13,12 +13,12 @@
 
     <p>
         <label>Title</label><br>
-        <input type="text" th:field="*{title}" autofocus>
+        <input type="text" th:field="*{title}" autofocus maxlength="100" required>
     </p>
 
     <p>
         <label>Description</label><br>
-        <textarea th:field="*{description}"></textarea>
+        <textarea th:field="*{description}" maxlength="255"></textarea>
     </p>
 
     <p>
