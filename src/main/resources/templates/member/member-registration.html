@@ -8,17 +8,20 @@
 <body>
 <div th:replace="fragments/header :: header">...</div>
 <form th:action="@{/member/save}" th:object="${member}" method="post">
+    <div class="error-box" th:if="${errorMessage}">
+        <p th:text="${errorMessage}"></p>
+    </div>
     <label>Name:</label>
     <input autofocus placeholder="John Doe" th:field="*{name}" type="text" maxlength="200">
     <br>
     <label>E-Mail:</label>
-        <input type="email" th:field="*{email}" placeholder="john@doe.com" maxlength="200">
+    <input type="email" th:field="*{email}" placeholder="john@doe.com" maxlength="200">
     <br>
     <label>Username:</label>
-        <input type="text" th:field="*{username}" placeholder="jodo420blaze" maxlength="100">
+    <input type="text" th:field="*{username}" placeholder="jodo420blaze" maxlength="100">
     <br>
     <label>Password:</label>
-        <input type="text" th:field="*{password}" maxlength="100">
+    <input type="text" th:field="*{password}" maxlength="100">
     <br>
     <button type="submit">Register</button>
 

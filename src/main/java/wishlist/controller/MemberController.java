@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import wishlist.exception.DuplicateMemberException;
 import wishlist.model.Member;
 import wishlist.service.MemberService;
 
@@ -20,15 +21,20 @@ public class MemberController {
     @GetMapping("/register")
     public String showMemberRegistrationForm(Model model){
         model.addAttribute("member", new Member());
-        return "member-registration";
+        return "/member/member-registration";
     }
 
     @PostMapping("/save")
-    public String registrationFormHandler(@ModelAttribute Member member, RedirectAttributes redirectAttributes){
-        Member registeredMember = service.create(member);
-        redirectAttributes.addFlashAttribute("member", registeredMember);
-        return "redirect:/auth/login";
-
+    public String registrationFormHandler(@ModelAttribute Member member, Model model, RedirectAttributes redirectAttributes){
+        try {
+            Member registeredMember = service.create(member);
+            redirectAttributes.addFlashAttribute("member", registeredMember);
+            return "redirect:/auth/login";
+        } catch (DuplicateMemberException e){
+            model.addAttribute("member", member);
+            model.addAttribute("errorMessage", e.getMessage());
+            return "/member/member-registration";
+        }
     }
 
     @GetMapping("/edit")
