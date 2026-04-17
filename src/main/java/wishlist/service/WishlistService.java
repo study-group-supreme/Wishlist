@@ -36,11 +36,11 @@ public class WishlistService {
 
     }
 
-    public List<Wishlist> getByOwnerId(int owner_Id) {
-        if (owner_Id <= 0){
+    public List<Wishlist> getByOwnerId(int ownerId) {
+        if (ownerId <= 0){
             throw new BadRequestException("Invalid owner id");
         }
-        return wishlistRepository.findWishlistByOwnerId(owner_Id);
+        return wishlistRepository.findWishlistByOwnerId(ownerId);
     }
 
     public List<Item> getItemsFromWishlistByWishlistId(int id) {
