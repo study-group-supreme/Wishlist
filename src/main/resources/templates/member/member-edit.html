@@ -12,22 +12,22 @@
     <br>
     <label>
         Name
-        <input type="text" th:field="*{name}">
+        <input type="text" th:field="*{name}" maxlength="200">
     </label>
     <br>
     <label>
         E-mail
-        <input type="email" th:field="*{email}">
+        <input type="email" th:field="*{email}" maxlength="200">
     </label>
     <br>
     <label>
         Username
-        <input type="text" th:field="*{username}">
+        <input type="text" th:field="*{username}" maxlength="100">
     </label>
     <br>
     <label>
         Password
-        <input type="text" th:field="*{password}">
+        <input type="text" th:field="*{password}" maxlength="100">
     </label>
 
     <button type="submit">Update information</button>
