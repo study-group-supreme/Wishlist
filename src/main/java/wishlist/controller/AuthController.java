@@ -30,16 +30,16 @@ public class  AuthController {
         Member member = memberService.login(username, password);
         if(member != null){
             session.setAttribute("memberId", member.getId());
-            return "redirect:/";
+            return "redirect:/wishlist";
         } else{
             model.addAttribute("wrongCredentials", true);
-            return "redirect:/login";
+            return "redirect:/auth/login";
         }
     }
 
     @GetMapping("/logout")
     public String logout(HttpSession session){
         session.invalidate();
-        return "redirect:/login";
+        return "redirect:/auth/login";
     }
 }
