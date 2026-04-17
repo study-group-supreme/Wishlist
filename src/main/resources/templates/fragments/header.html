@@ -14,6 +14,11 @@
                 My Wishlists!
             </button>
 
+            <button type="button" onclick="window.location.href='/member/edit'"
+            th:if="${session.memberId} != null">
+                Edit Account
+            </button>
+
             <button type="button" onclick="window.location.href='/member/register'"
             th:if="${session.memberId} == null">
                 Register

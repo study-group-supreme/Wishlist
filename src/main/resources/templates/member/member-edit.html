@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Member</title>
+    <link rel="icon" th:href="@{/images/greenwish-favicon.png}">
+</head>
+<body>
+<div th:replace="fragments/header :: header">...</div>
+<form th:action="@{/member/edit}" th:object="${member}" method="post">
+    <input type="hidden" th:field="*{id}">
+    <br>
+    <label>
+        Name
+        <input type="text" th:field="*{name}">
+    </label>
+    <br>
+    <label>
+        E-mail
+        <input type="email" th:field="*{email}">
+    </label>
+    <br>
+    <label>
+        Username
+        <input type="text" th:field="*{username}">
+    </label>
+    <br>
+    <label>
+        Password
+        <input type="text" th:field="*{password}">
+    </label>
+
+    <button type="submit">Update information</button>
+</form>
+    <button type="button" onclick="window.location.href='/wishlist'">Cancel</button>
+</body>
+</html>
