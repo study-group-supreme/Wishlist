@@ -1,5 +1,9 @@
 package wishlist.repository;
 
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import wishlist.exception.DuplicateMemberException;
 import wishlist.model.Member;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -9,7 +13,7 @@ import org.springframework.stereotype.Repository;
 public class MemberRepository {
     private final JdbcTemplate jdbc;
 
-    public MemberRepository(JdbcTemplate jdbc){
+    public MemberRepository(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
     }
 
@@ -23,23 +27,38 @@ public class MemberRepository {
         return m;
     };
 
-    public Member findById(int id){
+    public Member findById(int id) {
         String sql = "SELECT * FROM member WHERE id = ?";
         return jdbc.queryForObject(sql, memberRowMapper, id);
     }
 
     public Member findByUsername(String username) {
         String sql = "SELECT * FROM member WHERE username = ?";
-        return jdbc.queryForObject(sql, memberRowMapper, username);
+        try {
+            return jdbc.queryForObject(sql, memberRowMapper, username);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     public Member findByEmail(String email) {
         String sql = "SELECT * FROM member WHERE email = ?";
-        return jdbc.queryForObject(sql, memberRowMapper, email);
+        try {
+            return jdbc.queryForObject(sql, memberRowMapper, email);
+        }catch (EmptyResultDataAccessException e){
+            return null;
+        }
     }
 
 
     public int insertMember(Member member) {
+
+        if (findByUsername(member.getUsername()) != null) {
+            throw new DuplicateMemberException("Username exists");
+        }
+        if (findByEmail(member.getEmail()) != null) {
+            throw new DuplicateMemberException("Email already registered");
+        }
         String sql = "INSERT INTO member (username, password, name, email) VALUES (?, ?, ?, ?)";
         return jdbc.update(
                 sql,
@@ -49,7 +68,7 @@ public class MemberRepository {
                 member.getEmail());
     }
 
-    public int updateMember(Member member){
+    public int updateMember(Member member) {
         String sql = """
                 UPDATE member
                 SET username = ?, password = ?, name = ?, email = ?
@@ -65,7 +84,7 @@ public class MemberRepository {
         );
     }
 
-    public int deleteById(int memberId){
+    public int deleteById(int memberId) {
         String sql = "DELETE FROM member WHERE id = ?";
         return jdbc.update(sql, memberId);
     }
