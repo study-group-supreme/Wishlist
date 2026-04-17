@@ -23,5 +23,9 @@
     </li>
 </ul>
 
+<form th:action="@{/wishlist/{wishlistId}/delete(wishlistId=${wishlist.id})}" method="post">
+    <button type="submit" style="color:red">Delete Wishlist</button>
+</form>
+
 </body>
 </html>
