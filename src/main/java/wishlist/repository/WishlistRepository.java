@@ -40,13 +40,24 @@ public class WishlistRepository {
     }
     public Wishlist findWishlistByTitle(String title) {
         String sql = "SELECT * FROM Wishlist WHERE title = ?";
-        return jdbc.queryForObject(sql, wishlistRowMapper, title);
+      Wishlist wishlist = jdbc.queryForObject(sql, wishlistRowMapper, title);
+       if(wishlist != null){
+           wishlist.setItems(fetchItemsByWishlistId(wishlist.getId()));
+       }
+        return wishlist;
     }
 
-    public List<Wishlist> findWishlistByOwnerId(int Owner_id) {
-        String sql = "SELECT * FROM Wishlist WHERE member_id = ?";
-        return jdbc.query(sql, wishlistRowMapper, Owner_id);
+    public List<Wishlist> findWishlistByOwnerId(int ownerId) {
+        String sql = "SELECT * FROM wishlist WHERE member_id = ?";
+        List<Wishlist> wishlists = jdbc.query(sql, wishlistRowMapper, ownerId);
+
+        for (Wishlist wishlist : wishlists) {
+            wishlist.setItems(fetchItemsByWishlistId(wishlist.getId()));
+        }
+
+        return wishlists;
     }
+
 
     public List<Item> fetchItemsByWishlistId(int id) {
         String sql = """
@@ -66,7 +77,13 @@ public class WishlistRepository {
 
     public List<Wishlist> getAllWishlists() {
         String sql = "SELECT * FROM wishlist ORDER BY id";
-        return jdbc.query(sql, wishlistRowMapper);
+        List<Wishlist> wishlists = jdbc.query(sql, wishlistRowMapper);
+
+        for (Wishlist wishlist : wishlists) {
+            wishlist.setItems(fetchItemsByWishlistId(wishlist.getId()));
+        }
+
+        return wishlists;
     }
 
     public int insertWishlist(Wishlist model) {
