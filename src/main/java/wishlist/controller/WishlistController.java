@@ -52,4 +52,11 @@ public class WishlistController {
 
         return "wishlist/details";
     }
+
+    @GetMapping("/new")
+    public String showCreateWishlistForm(Model model){
+        model.addAttribute("wishlist", new Wishlist());
+        return "wishlist/create";
+    }
+
 }
