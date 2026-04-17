@@ -25,7 +25,6 @@ public class WishlistRepository {
         w.setDescription(rs.getString("description"));
         w.setPublic(rs.getBoolean("is_public"));
         w.setOwner_id(rs.getInt("member_id"));
-        w.setItems(fetchItemsByWishlistId(w.getId()));
         return w;
     };
 
