@@ -16,7 +16,11 @@ public class WishlistService {
     }
 
     public Wishlist getById(int id) {
-        return wishlistRepository.findWishlistById(id);
+        try {
+            return wishlistRepository.findWishlistById(id);
+        } catch (Exception e){
+            throw new NotFoundException("The wishlist could not load.");
+        }
     }
 
     public Wishlist getByTitle(String title) {
