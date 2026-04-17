@@ -44,6 +44,7 @@ public class WishlistService {
     }
 
     public List<Item> getItemsFromWishlistByWishlistId(int id) {
+        getById(id); //Ensure wishlist exists
         return wishlistRepository.fetchItemsByWishlistId(id);
     }
 
