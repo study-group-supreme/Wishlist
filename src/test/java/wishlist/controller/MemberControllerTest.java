@@ -25,7 +25,7 @@ class MemberControllerTest {
     private MemberService service;
 
     @Test
-    void shouldRegisterMember() throws Exception {
+    void shouldDisplayMemberRegistrationForm() throws Exception {
         mockMvc.perform(get("/member/register"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("member-registration"))
