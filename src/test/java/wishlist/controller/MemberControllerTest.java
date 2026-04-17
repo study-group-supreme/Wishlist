@@ -50,5 +50,21 @@ class MemberControllerTest {
 
         verify(service).create(any(Member.class));
     }
-}
+    @Test
+    void shouldEditMember() throws Exception{
+        Member member = new Member();
+        member.setId(1);
+        member.setUsername("shaz");
+
+        when(service.getById(1)).thenReturn(member);
+
+        mockMvc.perform(get("/member/edit").sessionAttr("memberId", 1))
+                .andExpect(status().isOk())
+                .andExpect(view().name("/member/member-edit"));
+        verify(service).getById(1);
+
+
+        }
+    }
+
 
