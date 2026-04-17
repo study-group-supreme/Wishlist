@@ -66,12 +66,6 @@ public class WishlistService {
         } catch (Exception e) {
             throw new BadRequestException("Could not create wishlist: "+ e.getMessage());
         }
-
-
-
-
-        wishlistRepository.insertWishlist(wishlist);
-        return wishlistRepository.findWishlistById(wishlist.getId());
     }
 
     public Wishlist deleteWishlistById(int id) {
@@ -80,7 +74,8 @@ public class WishlistService {
         return deletedWishlist;
     }
 
-    public int updateWishlist(Wishlist model) {
-        return wishlistRepository.update(model);
+    public Wishlist updateWishlist(Wishlist wishlist) {
+        wishlistRepository.update(wishlist);
+        return wishlistRepository.findWishlistById(wishlist.getId());
     }
 }
