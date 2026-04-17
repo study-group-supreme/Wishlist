@@ -4,8 +4,12 @@ import wishlist.model.Item;
 import wishlist.model.Wishlist;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 
 @Repository
@@ -25,7 +29,6 @@ public class WishlistRepository {
         w.setDescription(rs.getString("description"));
         w.setPublic(rs.getBoolean("is_public"));
         w.setOwner_id(rs.getInt("member_id"));
-        w.setItems(fetchItemsByWishlistId(w.getId()));
         return w;
     };
 
@@ -44,7 +47,7 @@ public class WishlistRepository {
         return jdbc.query(sql, wishlistRowMapper, Owner_id);
     }
 
-    public List<Item> fetchItemsByWishlistId(int id) {
+    public List<Item> fetchItemsById(int id) {
         String sql = """
                 SELECT item.id, item.title, item.description, wishlist_item.url, wishlist_item.price, wishlist_item.note
                 FROM item
