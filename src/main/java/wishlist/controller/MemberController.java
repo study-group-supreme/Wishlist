@@ -1,11 +1,9 @@
 package wishlist.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import wishlist.model.Member;
 import wishlist.service.MemberService;
@@ -31,6 +29,19 @@ public class MemberController {
         redirectAttributes.addFlashAttribute("member", registeredMember);
         return "redirect:/auth/login";
 
+    }
+
+    @GetMapping("/edit")
+    public String showEditForm(Model model, HttpSession session){
+        Member member = service.getById((Integer) session.getAttribute("memberId"));
+        model.addAttribute("member", member);
+        return "/member/member-edit";
+    }
+
+    @PostMapping("/edit")
+    public String editFormHandler(@ModelAttribute Member member){
+        service.update(member);
+        return "redirect:/wishlist";
     }
 
 }
