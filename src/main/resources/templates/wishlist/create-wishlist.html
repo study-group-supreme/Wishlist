@@ -11,12 +11,12 @@
 
     <p>
         <label>Title</label><br>
-        <input type="text" th:field="*{title}" placeholder="My Wishlist" autofocus>
+        <input type="text" th:field="*{title}" placeholder="My Wishlist" autofocus maxlength="100" required>
     </p>
 
     <p>
         <label>Description</label><br>
-        <textarea th:field="*{description}" placeholder="What this wishlist is about"></textarea>
+        <textarea th:field="*{description}" placeholder="What this wishlist is about" maxlength="255"></textarea>
     </p>
 
     <p>
