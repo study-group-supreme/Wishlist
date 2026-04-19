@@ -53,4 +53,15 @@ public class WishlistServiceTest {
         assertEquals(1, result.getId());
     }
 
+    @Test
+    void getByTitle_throwsNotFound_whenMissing() {
+        // Simulate the real behavior of JdbcTemplate.queryForObject:
+        // When no row is found, it throws EmptyResultDataAccessException.
+        when(wishlistRepository.findWishlistByTitle("Unknown"))
+                .thenThrow(new EmptyResultDataAccessException(1));
+
+        // The service should catch that exception and convert it into NotFoundException.
+        assertThrows(NotFoundException.class, () -> wishlistService.getByTitle("Unknown"));
+    }
+
 }
