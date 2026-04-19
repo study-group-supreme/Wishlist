@@ -110,4 +110,13 @@ public class WishlistServiceTest {
         verify(wishlistRepository).fetchItemsByWishlistId(1); // actual fetch
     }
 
+    @Test
+    void createNewWishlist_throwsBadRequest_whenTitleEmpty() {
+        Wishlist w = new Wishlist();
+        w.setTitle("");
+        w.setOwner_id(1);
+
+        assertThrows(BadRequestException.class, () -> wishlistService.createNewWishlist(w));
+    }
+
 }
