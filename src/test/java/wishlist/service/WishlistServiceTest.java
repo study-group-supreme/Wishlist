@@ -69,4 +69,10 @@ public class WishlistServiceTest {
         assertThrows(BadRequestException.class, () -> wishlistService.getByTitle(""));
     }
 
+    @Test
+    void getByOwnerId_throwsBadRequest_whenOwnerInvalid() {
+        // Owner ID must be positive, 0 means broken session or bug
+        assertThrows(BadRequestException.class, () -> wishlistService.getByOwnerId(0));
+    }
+
 }
