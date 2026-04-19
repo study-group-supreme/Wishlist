@@ -34,9 +34,23 @@ public class WishlistServiceTest {
 
     @Test
     void getById_throwsNotFound_whenMissing() {
-        when(wishlistRepository.findWishlistById(99)).thenThrow(new EmptyResultDataAccessException(1));
+        when(wishlistRepository.findWishlistById(99))
+                .thenThrow(new EmptyResultDataAccessException(1));
 
-        assertThrows(NotFoundException.class, () -> wishlistService.getById(99));
+        assertThrows(NotFoundException.class,
+                () -> wishlistService.getById(99));
+    }
+
+    @Test
+    void getByTitle_returnsWishlist_whenFound() {
+        Wishlist wishlist = new Wishlist();
+        wishlist.setId(1);
+
+        when(wishlistRepository.findWishlistByTitle("MyList"))
+                .thenReturn(wishlist);
+
+        Wishlist result = wishlistService.getByTitle("MyList");
+        assertEquals(1, result.getId());
     }
 
 }
