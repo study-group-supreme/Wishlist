@@ -8,6 +8,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.EmptyResultDataAccessException;
 import wishlist.model.Wishlist;
 import wishlist.repository.WishlistRepository;
+
+import java.util.List;
+
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -73,6 +76,20 @@ public class WishlistServiceTest {
     void getByOwnerId_throwsBadRequest_whenOwnerInvalid() {
         // Owner ID must be positive, 0 means broken session or bug
         assertThrows(BadRequestException.class, () -> wishlistService.getByOwnerId(0));
+    }
+
+    @Test
+    void getByOwnerId_returnsWishlists_whenValid(){
+        Wishlist w = new Wishlist();
+        w.setId(1);
+
+        when(wishlistRepository.findWishlistByOwnerId(5))
+                .thenReturn(List.of(w));
+
+        List<Wishlist> result = wishlistService.getByOwnerId(5);
+
+        assertEquals(1, result.size());
+        assertEquals(1, result.get(0).getId());
     }
 
 }
