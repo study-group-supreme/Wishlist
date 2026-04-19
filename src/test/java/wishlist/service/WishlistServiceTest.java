@@ -163,4 +163,19 @@ public class WishlistServiceTest {
         assertEquals(1, deleted.getId());
     }
 
+    @Test
+    void updateWishlist_throwsBadRequestWhenTitleEmpty() {
+        Wishlist existing = new Wishlist();
+        existing.setId(1);
+        existing.setTitle("Old");
+
+        Wishlist update = new Wishlist();
+        update.setId(1);
+        update.setTitle(""); // invalid
+
+        when(wishlistRepository.findWishlistById(1)).thenReturn(existing);
+
+        assertThrows(BadRequestException.class, () -> wishlistService.updateWishlist(update));
+    }
+
 }
