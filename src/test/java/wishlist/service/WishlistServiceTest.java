@@ -149,4 +149,18 @@ public class WishlistServiceTest {
         verify(wishlistRepository).insertWishlist(w);
     }
 
+    @Test
+    void deleteWishlistById_returnsDeletedWishlist() {
+        Wishlist w  = new Wishlist();
+        w.setId(1);
+
+        // getById must return the wishlist before deletion
+        when(wishlistRepository.findWishlistById(1)).thenReturn(w);
+
+        Wishlist deleted = wishlistService.deleteWishlistById(1);
+
+        verify(wishlistRepository).deleteWishlist(1);
+        assertEquals(1, deleted.getId());
+    }
+
 }
