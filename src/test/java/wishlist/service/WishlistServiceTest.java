@@ -178,4 +178,38 @@ public class WishlistServiceTest {
         assertThrows(BadRequestException.class, () -> wishlistService.updateWishlist(update));
     }
 
+    @Test
+    void updateWishlist_updatesFieldsCorrectly() {
+        // The 'existing' simulates the wishlist currently stored in the db
+        // This object is the one that will be mutated by the update method
+        Wishlist existing = new Wishlist();
+        existing.setId(1);
+        existing.setTitle("Old Title");
+        existing.setDescription("Old Text");
+        existing.setPublic(false);
+
+        // The 'update' is the incoming data from the user's edit form
+        // The object is not saved directly, it is used as a source of changes
+        Wishlist update = new Wishlist();
+        update.setId(1);
+        update.setTitle("New Title");
+        update.setDescription("New Text");
+        update.setPublic(true);
+
+        // inside updateWishlist the service calls getById to return the 'existing' object
+        when(wishlistRepository.findWishlistById(1)).thenReturn(existing);
+
+        Wishlist result = wishlistService.updateWishlist(update);
+
+        // Verify repository is called with the merged object
+        verify(wishlistRepository).update(existing);
+
+        assertEquals("New Title", existing.getTitle());
+        assertEquals("New Text", existing.getDescription());
+        assertTrue(existing.isPublic());
+
+        // Returned object should be the updated one
+        assertEquals(existing, result);
+
+    }
 }
