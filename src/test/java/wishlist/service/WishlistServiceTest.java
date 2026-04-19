@@ -119,4 +119,14 @@ public class WishlistServiceTest {
         assertThrows(BadRequestException.class, () -> wishlistService.createNewWishlist(w));
     }
 
+    @Test
+    void createNewWishlist_throwsBadRequest_whenOwnerInvalid() {
+        // owner ID must be positive
+        Wishlist w = new Wishlist();
+        w.setTitle("Title");
+        w.setOwner_id(0);
+
+        assertThrows(BadRequestException.class, () -> wishlistService.createNewWishlist(w));
+    }
+
 }
