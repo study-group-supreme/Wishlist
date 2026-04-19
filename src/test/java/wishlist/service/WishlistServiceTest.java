@@ -129,4 +129,24 @@ public class WishlistServiceTest {
         assertThrows(BadRequestException.class, () -> wishlistService.createNewWishlist(w));
     }
 
+    @Test
+    void createNewWishlist_savesAndReturnsWishlist(){
+        Wishlist w = new Wishlist();
+        w.setTitle("My List");
+        w.setOwner_id(1);
+
+        // Simulate DB assigning ID during insert.
+        doAnswer(invocation -> {
+            w.setId(10);
+            return null;
+        }).when(wishlistRepository).insertWishlist(w);
+
+        when(wishlistRepository.findWishlistById(10)).thenReturn(w);
+
+        Wishlist result = wishlistService.createNewWishlist(w);
+
+        assertEquals(10, result.getId());
+        verify(wishlistRepository).insertWishlist(w);
+    }
+
 }
