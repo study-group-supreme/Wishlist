@@ -61,6 +61,15 @@ public class MemberService {
      * - Ensure member exists before updating
      * - Catch SQL exceptions and convert to BadRequestException
      */
+    // TODO: For updateMember:
+    // 1. Load existing member using getById()
+    // 2. Validate username, email, password, name
+    // 3. Apply only allowed fields (e.g., do NOT overwrite id)
+    // 4. Save using memberRepository.updateMember(existing)
+    // 5. Return the updated member
+    //
+    // Reason: Members have sensitive fields (username, email, password).
+    // We must prevent accidental or malicious overwrites.
     public Member update(Member member) {
         memberRepository.updateMember(member);
         return memberRepository.findById(member.getId());
