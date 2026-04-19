@@ -6,11 +6,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.EmptyResultDataAccessException;
+import wishlist.model.Item;
 import wishlist.model.Wishlist;
 import wishlist.repository.WishlistRepository;
 
 import java.util.List;
-
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -90,6 +91,23 @@ public class WishlistServiceTest {
 
         assertEquals(1, result.size());
         assertEquals(1, result.get(0).getId());
+    }
+
+    @Test
+    void getItemsFromWishlistByWishlistId_callsGetByIdFirst() {
+        // getById must be called first to ensure the wishlist exists
+        Wishlist w = new Wishlist();
+        w.setId(1);
+
+        when(wishlistRepository.findWishlistById(1)).thenReturn(w);
+        when(wishlistRepository.fetchItemsByWishlistId(1))
+                .thenReturn(List.of(new Item()));
+
+        List<Item> result = wishlistService.getItemsFromWishlistByWishlistId(1);
+
+        assertEquals(1, result.size());
+        verify(wishlistRepository).findWishlistById(1); // check so it exists
+        verify(wishlistRepository).fetchItemsByWishlistId(1); // actual fetch
     }
 
 }
