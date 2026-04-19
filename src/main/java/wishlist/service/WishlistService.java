@@ -37,6 +37,7 @@ public class WishlistService {
     }
 
     public List<Wishlist> getByOwnerId(int ownerId) {
+        // negative or zero id must be a broken session or bug (this method is used with sessionattribute memberId in showAllWishlists)
         if (ownerId <= 0){
             throw new BadRequestException("Invalid owner id");
         }
@@ -82,13 +83,34 @@ public class WishlistService {
     }
 
     public Wishlist deleteWishlistById(int id) {
-        Wishlist deletedWishlist = wishlistRepository.findWishlistById(id);
+        Wishlist deletedWishlist = getById(id);
         wishlistRepository.deleteWishlist(id);
         return deletedWishlist;
     }
 
     public Wishlist updateWishlist(Wishlist wishlist) {
-        wishlistRepository.update(wishlist);
-        return wishlistRepository.findWishlistById(wishlist.getId());
+        // Ensure it exists
+        Wishlist existing = getById(wishlist.getId());
+
+        // Validate title
+        if (wishlist.getTitle() == null || wishlist.getTitle().isBlank()) {
+            throw new BadRequestException("Title cannot be empty");
+        }
+        if (wishlist.getTitle().length() > 100) {
+            throw new BadRequestException("Wishlist title cannot exceed 100 characters");
+        }
+
+        // Validate description
+        if (wishlist.getDescription() != null && wishlist.getDescription().length() > 255) {
+            throw new BadRequestException("Description cannot exceed 255 characters");
+        }
+
+        // Apply updates
+        existing.setTitle(wishlist.getTitle());
+        existing.setDescription(wishlist.getDescription());
+        existing.setPublic(wishlist.isPublic());
+
+        wishlistRepository.update(existing);
+        return existing;
     }
 }
