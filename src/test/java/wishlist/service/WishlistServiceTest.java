@@ -64,4 +64,9 @@ public class WishlistServiceTest {
         assertThrows(NotFoundException.class, () -> wishlistService.getByTitle("Unknown"));
     }
 
+    @Test
+    void getByTitle_throwsBadRequest_whenTitleEmpty() {
+        assertThrows(BadRequestException.class, () -> wishlistService.getByTitle(""));
+    }
+
 }
