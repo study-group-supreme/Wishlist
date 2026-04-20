@@ -130,4 +130,22 @@ public class WishlistController {
 
         return "redirect:/wishlist/" + wishlistId;
     }
+
+    @PostMapping("/{wishlistId}/items/{itemId}/delete")
+    public String deleteItem(
+            @PathVariable int wishlistId,
+            @PathVariable int itemId,
+            HttpSession session
+    ) {
+        int memberId = (Integer) session.getAttribute("memberId");
+
+        Wishlist wishlist = wishlistService.getById(wishlistId);
+        if (wishlist.getOwner_id() != memberId){
+            return "redirect:/wishlist";
+        }
+
+        wishlistService.removeItemFromWishlist(wishlistId, itemId);
+
+        return "redirect:/wishlist/" + wishlistId;
+    }
 }
