@@ -25,8 +25,6 @@ class AuthControllerTest {
 
     @MockitoBean
     private MemberService service;
-    @Autowired
-    private HttpSession httpSession;
 
     @Test
         //"(/login)"
