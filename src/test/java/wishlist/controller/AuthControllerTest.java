@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.RequestBuilder;
+import wishlist.model.Member;
 import wishlist.service.MemberService;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -30,5 +32,21 @@ class AuthControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("/member/member-login"));
     }
+    @Test
+    void shouldLoginAndRedirectToWishlist() throws Exception {
 
+        Member member = new Member();
+        member.setId(6);
+        member.setUsername("Shaz");
+
+        when(service.login("Shaz", "1234")).thenReturn(member);
+
+        mockMvc.perform(post("/auth/login")
+                        .param("username", "Shaz")
+                        .param("password", "1234"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/wishlist"));
+
+        verify(service).login("Shaz", "1234");
+    }
 }
