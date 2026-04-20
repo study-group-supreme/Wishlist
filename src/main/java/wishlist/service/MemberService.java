@@ -23,7 +23,13 @@ public class MemberService {
      * - Catch EmptyResultDataAccessException and convert to NotFoundException
      */
     public Member getById(int id) {
-        return memberRepository.findById(id);
+        try {
+            if (id > 0) {
+            }
+            return memberRepository.findById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("No members with ID under 0. Please try again");
+        }
     }
 
     /**
@@ -70,8 +76,8 @@ public class MemberService {
      */
     public Member create(Member member) {
         try {
-            if(member.getUsername() != null && member.getPassword() != null && member.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"))
-            memberRepository.insertMember(member);
+            if (member.getUsername() != null && member.getPassword() != null && member.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"))
+                memberRepository.insertMember(member);
             return memberRepository.findByUsername(member.getUsername());
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateMemberException(e.getMessage());
