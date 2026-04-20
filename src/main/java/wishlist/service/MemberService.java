@@ -77,9 +77,11 @@ public class MemberService {
      * - Convert to BadRequestException with a friendly message
      */
     public Member create(Member member) {
+        getByEmail(member.getEmail());
+        getById(member.getId());
+        getByUsername(member.getUsername());
         try {
-            if (member.getUsername() != null && member.getPassword() != null && member.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"))
-                memberRepository.insertMember(member);
+            memberRepository.insertMember(member);
             return memberRepository.findByUsername(member.getUsername());
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateMemberException(e.getMessage());
@@ -104,8 +106,17 @@ public class MemberService {
     // Reason: Members have sensitive fields (username, email, password).
     // We must prevent accidental or malicious overwrites.
     public Member update(Member member) {
-        memberRepository.updateMember(member);
-        return memberRepository.findById(member.getId());
+        getByEmail(member.getEmail());
+        getById(member.getId());
+        getByUsername(member.getUsername());
+
+        try {
+
+            memberRepository.updateMember(member);
+            return memberRepository.findById(member.getId());
+        } catch (EmptyResultDataAccessException e) {
+            throw new NotFoundException("The account you are trying to update, does not exit. Please Tru again");
+        }
     }
 
     /**
@@ -114,27 +125,32 @@ public class MemberService {
      * - Convert repository exceptions into NotFoundException
      */
     public Member delete(int id) {
-        Member deletedMember = memberRepository.findById(id);
-        memberRepository.deleteById(id);
-        return deletedMember;
-    }
+        getById(id);
 
-    /**
-     * TODO: Add validation:
-     * - username not blank
-     * - password not blank
-     * <p>
-     * TODO: Add error handling:
-     * - If findByUsername throws, convert to NotFoundException
-     * - If password mismatch, return null or throw BadRequestException
-     * <p>
-     * TODO: Consider hashing passwords (future improvement)
-     */
-    public Member login(String username, String password) {
-        Member member = memberRepository.findByUsername(username);
-        if (member != null && member.getPassword().equals(password)) {
-            return member;
+        try {
+            Member deletedMember = memberRepository.findById(id);
+            memberRepository.deleteById(id);
+            return deletedMember;
+        } catch (Exception e) {
+            throw new NotFoundException("Delete failed: Could not find user: " + id);
         }
-        return null;
+
+        /**
+         * TODO: Add validation:
+         * - username not blank
+         * - password not blank
+         * <p>
+         * TODO: Add error handling:
+         * - If findByUsername throws, convert to NotFoundException
+         * - If password mismatch, return null or throw BadRequestException
+         * <p>
+         * TODO: Consider hashing passwords (future improvement)
+         */
+        public Member login (String username, String password){
+            Member member = memberRepository.findByUsername(username);
+            if (member != null && member.getPassword().equals(password)) {
+                return member;
+            }
+            return null;
+        }
     }
-}
