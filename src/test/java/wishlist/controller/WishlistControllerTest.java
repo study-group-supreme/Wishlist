@@ -62,4 +62,12 @@ class WishlistControllerTest {
         verify(wishlistservice).getItemsFromWishlistByWishlistId(5);
 
     }
+    @Test
+    //("/new")
+    void shouldShowCreateWishlistForm() throws Exception {
+        mockMvc.perform(get("/wishlist/new"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("wishlist/create-wishlist"))
+                .andExpect(model().attributeExists("wishlist"));
+    }
 }
