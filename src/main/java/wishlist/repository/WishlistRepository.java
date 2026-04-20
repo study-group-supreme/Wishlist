@@ -122,6 +122,14 @@ public class WishlistRepository {
         return jdbc.update(sql, wishlistId, itemId, note, url, price);
     }
 
+    public int removeItemFromWishlist(int wishlistId, int itemId){
+        String sql = """
+                DELETE FROM wishlist_item
+                WHERE wishlist_id = ? AND item_id = ?
+                """;
+        return jdbc.update(sql, wishlistId, itemId);
+    }
+
 }
 
 
