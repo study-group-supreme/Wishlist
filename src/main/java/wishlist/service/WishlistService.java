@@ -16,18 +16,36 @@ public class WishlistService {
     }
 
     public Wishlist getById(int id) {
-        return wishlistRepository.findWishlistById(id);
+        try {
+            return wishlistRepository.findWishlistById(id);
+        } catch (Exception e){
+            throw new NotFoundException("The wishlist could not load.");
+        }
     }
 
     public Wishlist getByTitle(String title) {
-        return wishlistRepository.findWishlistByTitle(title);
+        if (title == null || title.isBlank()){
+            throw new BadRequestException("Title cannot be empty");
+        }
+
+        try {
+            return wishlistRepository.findWishlistByTitle(title);
+        } catch (Exception e) {
+            throw new NotFoundException("Could not find wishlist with title: '"+title);
+        }
+
     }
 
-    public List<Wishlist> getByOwnerId(int owner_Id) {
-        return wishlistRepository.findWishlistByOwnerId(owner_Id);
+    public List<Wishlist> getByOwnerId(int ownerId) {
+        // negative or zero id must be a broken session or bug (this method is used with sessionattribute memberId in showAllWishlists)
+        if (ownerId <= 0){
+            throw new BadRequestException("Invalid owner id");
+        }
+        return wishlistRepository.findWishlistByOwnerId(ownerId);
     }
 
     public List<Item> getItemsFromWishlistByWishlistId(int id) {
+        getById(id); //Ensure wishlist exists
         return wishlistRepository.fetchItemsByWishlistId(id);
     }
 
@@ -35,17 +53,64 @@ public class WishlistService {
         return wishlistRepository.getAllWishlists();
     }
 
-    public int createNewWishlist(Wishlist model) {
-        return wishlistRepository.insertWishlist(model);
+    public Wishlist createNewWishlist(Wishlist wishlist) {
+
+        // Validate title
+        if (wishlist.getTitle() == null || wishlist.getTitle().isBlank()) {
+            throw new BadRequestException("Title cannot be empty");
+        }
+
+        if (wishlist.getTitle().length() > 100){
+            throw new BadRequestException("Wishlist title cannot exceed 100 characters");
+        }
+
+        // Validate description
+        if (wishlist.getDescription() != null && wishlist.getDescription().length() > 255){
+            throw new BadRequestException("Description cannot exceed 255 characters");
+        }
+
+        // Validate owner
+        if (wishlist.getOwner_id() <= 0){
+            throw new BadRequestException("Wishlist must have a valid owner");
+        }
+
+        try {
+            wishlistRepository.insertWishlist(wishlist);
+            return wishlistRepository.findWishlistById(wishlist.getId());
+        } catch (Exception e) {
+            throw new BadRequestException("Could not create wishlist: "+ e.getMessage());
+        }
     }
 
     public Wishlist deleteWishlistById(int id) {
-        Wishlist deletedWishlist = wishlistRepository.findWishlistById(id);
+        Wishlist deletedWishlist = getById(id);
         wishlistRepository.deleteWishlist(id);
         return deletedWishlist;
     }
 
-    public int updateWishlist(Wishlist model) {
-        return wishlistRepository.update(model);
+    public Wishlist updateWishlist(Wishlist wishlist) {
+        // Ensure it exists
+        Wishlist existing = getById(wishlist.getId());
+
+        // Validate title
+        if (wishlist.getTitle() == null || wishlist.getTitle().isBlank()) {
+            throw new BadRequestException("Title cannot be empty");
+        }
+        if (wishlist.getTitle().length() > 100) {
+            throw new BadRequestException("Wishlist title cannot exceed 100 characters");
+        }
+
+        // Validate description
+        if (wishlist.getDescription() != null && wishlist.getDescription().length() > 255) {
+            throw new BadRequestException("Description cannot exceed 255 characters");
+        }
+
+        // Apply updates
+        existing.setTitle(wishlist.getTitle());
+        existing.setDescription(wishlist.getDescription());
+        existing.setPublic(wishlist.isPublic());
+
+        wishlistRepository.update(existing);
+        return existing;
     }
 }

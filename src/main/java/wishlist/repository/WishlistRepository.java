@@ -1,11 +1,14 @@
 package wishlist.repository;
 
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import wishlist.model.Item;
 import wishlist.model.Wishlist;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.util.List;
 
 @Repository
@@ -66,12 +69,25 @@ public class WishlistRepository {
     }
 
     public int insertWishlist(Wishlist model) {
-        String sql = "INSERT INTO wishlist(title, description, member_id, is_public) VALUES (?,?,?,?)";
-        return jdbc.update(sql,
-                model.getTitle(),
-                model.getDescription(),
-                model.getOwner_id(),
-                model.isPublic());
+        String sql = """
+            INSERT INTO wishlist (title, description, member_id, is_public)
+            VALUES (?, ?, ?, ?)
+            """;
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        int rows = jdbc.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setString(1, model.getTitle());
+            ps.setString(2, model.getDescription());
+            ps.setInt(3, model.getOwner_id());
+            ps.setBoolean(4, model.isPublic());
+            return ps;
+        }, keyHolder);
+
+        model.setId(keyHolder.getKey().intValue());
+
+        return rows;
     }
 
     public int update(Wishlist model) {
