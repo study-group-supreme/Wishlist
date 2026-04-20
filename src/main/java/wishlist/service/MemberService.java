@@ -4,6 +4,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import wishlist.exception.BadRequestException;
 import wishlist.exception.DatabaseOperationException;
 import wishlist.exception.DuplicateMemberException;
 import wishlist.exception.NotFoundException;
@@ -134,23 +135,36 @@ public class MemberService {
         } catch (Exception e) {
             throw new NotFoundException("Delete failed: Could not find user: " + id);
         }
+    }
 
-        /**
-         * TODO: Add validation:
-         * - username not blank
-         * - password not blank
-         * <p>
-         * TODO: Add error handling:
-         * - If findByUsername throws, convert to NotFoundException
-         * - If password mismatch, return null or throw BadRequestException
-         * <p>
-         * TODO: Consider hashing passwords (future improvement)
-         */
-        public Member login (String username, String password){
+    /**
+     * TODO: Add validation:
+     * - username not blank
+     * - password not blank
+     * <p>
+     * TODO: Add error handling:
+     * - If findByUsername throws, convert to NotFoundException
+     * - If password mismatch, return null or throw BadRequestException
+     * <p>
+     * TODO: Consider hashing passwords (future improvement)
+     */
+    public Member login(String username, String password) {
+        if (username == null || username.isBlank()) {
+            throw new BadRequestException("Username must not be blank");
+        }
+
+        if (password == null || password.isBlank()) {
+            throw new BadRequestException("Password must not be blank");
+        }
+
+        try {
             Member member = memberRepository.findByUsername(username);
-            if (member != null && member.getPassword().equals(password)) {
-                return member;
+
+            if (!member.getPassword().equals(password)) {
             }
-            return null;
+            throw new BadRequestException("Wrong username or password");
+        } catch (BadRequestException e) {
+            throw new RuntimeException(e);
         }
     }
+}
