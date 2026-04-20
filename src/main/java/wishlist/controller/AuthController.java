@@ -21,7 +21,7 @@ public class  AuthController {
 
     @GetMapping("/login")
     public String showLoginForm(){
-        return "member-login";
+        return "/member/member-login";
     }
 
     @PostMapping("/login")
@@ -40,6 +40,6 @@ public class  AuthController {
     @GetMapping("/logout")
     public String logout(HttpSession session){
         session.invalidate();
-        return "redirect:/auth/login";
+        return "redirect:/";
     }
 }

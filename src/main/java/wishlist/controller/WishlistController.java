@@ -32,7 +32,7 @@ public class WishlistController {
         int memberId = (Integer) session.getAttribute("memberId");
 
         model.addAttribute("wishlists",  wishlistService.getByOwnerId(memberId));
-        return "list";
+        return "/wishlist/list";
     }
 
     // show wishlist by wishlist-id

@@ -1,6 +1,10 @@
 package wishlist.service;
 
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import wishlist.exception.DatabaseOperationException;
+import wishlist.exception.DuplicateMemberException;
 import wishlist.model.Member;
 import wishlist.repository.MemberRepository;
 
@@ -51,8 +55,16 @@ public class MemberService {
      * - Convert to BadRequestException with a friendly message
      */
     public Member create(Member member) {
-        memberRepository.insertMember(member);
-        return memberRepository.findByUsername(member.getUsername());
+        try {
+            memberRepository.insertMember(member);
+            return memberRepository.findByUsername(member.getUsername());
+        }
+
+        catch (DataIntegrityViolationException e) {
+            throw new DuplicateMemberException(e.getMessage());
+        } catch (DataAccessException e){
+            throw new DatabaseOperationException("User creation failed", e);
+        }
     }
 
     /**
