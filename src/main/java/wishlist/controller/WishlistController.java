@@ -148,4 +148,46 @@ public class WishlistController {
 
         return "redirect:/wishlist/" + wishlistId;
     }
+
+    @GetMapping("/{wishlistId}/items/{itemId}/edit")
+    public String showEditItemForm(
+            @PathVariable int wishlistId,
+            @PathVariable int itemId,
+            Model model,
+            HttpSession session
+    ) {
+        int memberId = (Integer) session.getAttribute("memberId");
+        Wishlist wishlist = wishlistService.getById(wishlistId);
+
+        if (wishlist.getOwner_id() != memberId){
+            return "redirect:/wislist";
+        }
+
+        Item item = itemService.getItemById(itemId);
+
+        model.addAttribute("item", item);
+        model.addAttribute("wishlistId", wishlistId);
+
+        return "wishlist/edit-item";
+    }
+
+    @PostMapping("/{wishlistId}/items/{itemId}/edit")
+    public String updateItem(
+            @PathVariable int wishlistId,
+            @PathVariable int itemId,
+            @ModelAttribute Item item,
+            HttpSession session
+    ){
+        int memberId = (Integer) session.getAttribute("memberId");
+        Wishlist wishlist = wishlistService.getById(wishlistId);
+
+        if (wishlist.getOwner_id() != memberId){
+            return "redirect:/wishlist";
+        }
+
+        item.setId(itemId);
+        wishlistService.updateItemInWishlist(wishlistId, item);
+        return "redirect:/wishlist/"+ wishlistId;
+    }
+
 }
