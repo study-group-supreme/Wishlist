@@ -5,6 +5,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import wishlist.exception.DatabaseOperationException;
 import wishlist.exception.DuplicateMemberException;
+import wishlist.exception.NotFoundException;
 import wishlist.model.Member;
 import wishlist.repository.MemberRepository;
 
@@ -31,7 +32,14 @@ public class MemberService {
      * - Catch repository exceptions and convert to NotFoundException
      */
     public Member getByUsername(String username) {
-        return memberRepository.findByUsername(username);
+        try {
+            if (username != null) {
+                return memberRepository.findByUsername(username);
+            }
+        } catch (Exception e) {
+            throw new NotFoundException("No account with this username found: " + username);
+        }
+        return null;
     }
 
     /**
@@ -50,7 +58,7 @@ public class MemberService {
      * - password not blank
      * - email valid format
      * - name not blank
-     *
+     * <p>
      * TODO: Catch SQL exceptions (duplicate username/email)
      * - Convert to BadRequestException with a friendly message
      */
@@ -58,11 +66,9 @@ public class MemberService {
         try {
             memberRepository.insertMember(member);
             return memberRepository.findByUsername(member.getUsername());
-        }
-
-        catch (DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
             throw new DuplicateMemberException(e.getMessage());
-        } catch (DataAccessException e){
+        } catch (DataAccessException e) {
             throw new DatabaseOperationException("User creation failed", e);
         }
     }
@@ -102,11 +108,11 @@ public class MemberService {
      * TODO: Add validation:
      * - username not blank
      * - password not blank
-     *
+     * <p>
      * TODO: Add error handling:
      * - If findByUsername throws, convert to NotFoundException
      * - If password mismatch, return null or throw BadRequestException
-     *
+     * <p>
      * TODO: Consider hashing passwords (future improvement)
      */
     public Member login(String username, String password) {
