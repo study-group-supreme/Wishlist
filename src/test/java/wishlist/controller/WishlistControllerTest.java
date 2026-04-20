@@ -113,6 +113,7 @@ class WishlistControllerTest {
     }
 
     @Test
+        //("/{wishlistId}/edit")
     void shouldEditWishlistByWishlistId() throws Exception {
 
         Wishlist wishlist = new Wishlist();
@@ -129,4 +130,26 @@ class WishlistControllerTest {
 
         verify(wishlistservice).getById(1);
     }
-}
+    @Test
+    //("/{wishlistId}/update")
+        void shouldUpdateExistingWishlistByWishlistId() throws Exception {
+
+            Wishlist existingWishlist = new Wishlist();
+            existingWishlist.setId(1);
+            existingWishlist.setOwner_id(1);
+
+
+            when(wishlistservice.getById(1)).thenReturn(existingWishlist);
+
+            mockMvc.perform(post("/wishlist/1/update")
+                            .sessionAttr("memberId", 1)
+                            .param("titel", "Test")
+                            .param("description", "Test"))
+                    .andExpect(status().is3xxRedirection())
+                    .andExpect(redirectedUrl("/wishlist/1"));
+
+            verify(wishlistservice).updateWishlist(any(Wishlist.class));
+
+        }
+    }
+
