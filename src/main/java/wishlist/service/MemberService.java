@@ -2,9 +2,12 @@ package wishlist.service;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import wishlist.exception.BadRequestException;
 import wishlist.exception.DatabaseOperationException;
 import wishlist.exception.DuplicateMemberException;
+import wishlist.exception.NotFoundException;
 import wishlist.model.Member;
 import wishlist.repository.MemberRepository;
 
@@ -22,7 +25,14 @@ public class MemberService {
      * - Catch EmptyResultDataAccessException and convert to NotFoundException
      */
     public Member getById(int id) {
-        return memberRepository.findById(id);
+        try {
+            if (id > 0) {
+            }
+            return memberRepository.findById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new NotFoundException("No members with ID under 0. Please try again");
+
+        }
     }
 
     /**
@@ -31,7 +41,14 @@ public class MemberService {
      * - Catch repository exceptions and convert to NotFoundException
      */
     public Member getByUsername(String username) {
-        return memberRepository.findByUsername(username);
+        try {
+            if (username != null) {
+                return memberRepository.findByUsername(username);
+            }
+        } catch (Exception e) {
+            throw new NotFoundException("No account with this username found: " + username);
+        }
+        return null;
     }
 
     /**
@@ -41,7 +58,13 @@ public class MemberService {
      * - Catch repository exceptions and convert to NotFoundException
      */
     public Member getByEmail(String email) {
-        return memberRepository.findByEmail(email);
+        try {
+            if (email != null && email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+            }
+            return memberRepository.findByEmail(email);
+        } catch (Exception e) {
+            throw new NotFoundException("No accout with this email found " + email);
+        }
     }
 
     /**
@@ -50,19 +73,20 @@ public class MemberService {
      * - password not blank
      * - email valid format
      * - name not blank
-     *
+     * <p>
      * TODO: Catch SQL exceptions (duplicate username/email)
      * - Convert to BadRequestException with a friendly message
      */
     public Member create(Member member) {
+        getByEmail(member.getEmail());
+        getById(member.getId());
+        getByUsername(member.getUsername());
         try {
             memberRepository.insertMember(member);
             return memberRepository.findByUsername(member.getUsername());
-        }
-
-        catch (DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
             throw new DuplicateMemberException(e.getMessage());
-        } catch (DataAccessException e){
+        } catch (DataAccessException e) {
             throw new DatabaseOperationException("User creation failed", e);
         }
     }
@@ -83,8 +107,17 @@ public class MemberService {
     // Reason: Members have sensitive fields (username, email, password).
     // We must prevent accidental or malicious overwrites.
     public Member update(Member member) {
-        memberRepository.updateMember(member);
-        return memberRepository.findById(member.getId());
+        getByEmail(member.getEmail());
+        getById(member.getId());
+        getByUsername(member.getUsername());
+
+        try {
+
+            memberRepository.updateMember(member);
+            return memberRepository.findById(member.getId());
+        } catch (EmptyResultDataAccessException e) {
+            throw new NotFoundException("The account you are trying to update, does not exit. Please Tru again");
+        }
     }
 
     /**
@@ -93,27 +126,45 @@ public class MemberService {
      * - Convert repository exceptions into NotFoundException
      */
     public Member delete(int id) {
-        Member deletedMember = memberRepository.findById(id);
-        memberRepository.deleteById(id);
-        return deletedMember;
+        getById(id);
+
+        try {
+            Member deletedMember = memberRepository.findById(id);
+            memberRepository.deleteById(id);
+            return deletedMember;
+        } catch (Exception e) {
+            throw new NotFoundException("Delete failed: Could not find user: " + id);
+        }
     }
 
     /**
      * TODO: Add validation:
      * - username not blank
      * - password not blank
-     *
+     * <p>
      * TODO: Add error handling:
      * - If findByUsername throws, convert to NotFoundException
      * - If password mismatch, return null or throw BadRequestException
-     *
+     * <p>
      * TODO: Consider hashing passwords (future improvement)
      */
     public Member login(String username, String password) {
-        Member member = memberRepository.findByUsername(username);
-        if (member != null && member.getPassword().equals(password)) {
-            return member;
+        if (username == null || username.isBlank()) {
+            throw new BadRequestException("Username must not be blank");
         }
-        return null;
+
+        if (password == null || password.isBlank()) {
+            throw new BadRequestException("Password must not be blank");
+        }
+
+        try {
+            Member member = memberRepository.findByUsername(username);
+
+            if (!member.getPassword().equals(password)) {
+            }
+            throw new BadRequestException("Wrong username or password");
+        } catch (BadRequestException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
