@@ -190,4 +190,10 @@ public class WishlistController {
         return "redirect:/wishlist/"+ wishlistId;
     }
 
+    //Andreas trying stuffs with search function
+    @GetMapping("/{username}")
+    public String showWishlistsForUsername(Model model, @PathVariable String username){
+        model.addAttribute("ownerPublicLists", wishlistService.getWishlistByOwnerUsername(username));
+
+    }
 }
