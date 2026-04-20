@@ -2,6 +2,7 @@ package wishlist.service;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import wishlist.exception.DatabaseOperationException;
 import wishlist.exception.DuplicateMemberException;
@@ -27,8 +28,9 @@ public class MemberService {
             if (id > 0) {
             }
             return memberRepository.findById(id);
-        } catch (Exception e) {
-            throw new RuntimeException("No members with ID under 0. Please try again");
+        } catch (EmptyResultDataAccessException e) {
+            throw new NotFoundException("No members with ID under 0. Please try again");
+
         }
     }
 
