@@ -136,7 +136,7 @@ public class WishlistRepository {
                 SET note = ?,url = ?, price = ?
                 WHERE wishlist_id = ? AND item_id = ?
                 """;
-        return jdbc.update(sql, note, url, price, wishlistId, itemId)
+        return jdbc.update(sql, note, url, price, wishlistId, itemId);
     }
 
 }

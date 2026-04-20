@@ -141,4 +141,20 @@ public class WishlistService {
         wishlistRepository.removeItemFromWishlist(wishlistId, itemId);
         return removedItem;
     }
+
+    public Item updateItemInWishlist(int wishlistId, Item item){
+        getById(wishlistId);
+
+        itemRepository.updateItem(item);
+
+        wishlistRepository.updateWishlistItem(
+                wishlistId,
+                item.getId(),
+                item.getNote(),
+                item.getUrl(),
+                item.getPrice()
+        );
+
+        return itemRepository.findItemById(item.getId());
+    }
 }
