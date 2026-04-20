@@ -1,6 +1,8 @@
 package wishlist.service;
 
 import org.springframework.stereotype.Service;
+import wishlist.exception.BadRequestException;
+import wishlist.exception.NotFoundException;
 import wishlist.model.Item;
 import wishlist.model.Wishlist;
 import wishlist.repository.WishlistRepository;
