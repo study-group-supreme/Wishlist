@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import wishlist.model.Item;
+import wishlist.model.Member;
 import wishlist.model.Wishlist;
 import wishlist.service.ItemService;
 import wishlist.service.MemberService;
@@ -32,6 +33,8 @@ public class WishlistController {
         int memberId = (Integer) session.getAttribute("memberId");
 
         model.addAttribute("wishlists",  wishlistService.getByOwnerId(memberId));
+        //added line below in feature/seeing-others-public-list by Andreas
+        model.addAttribute("isOwner", true);
         return "/wishlist/list";
     }
 
@@ -191,9 +194,15 @@ public class WishlistController {
     }
 
     //Andreas trying stuffs with search function
-    @GetMapping("/{username}")
-    public String showWishlistsForUsername(Model model, @PathVariable String username){
-        model.addAttribute("ownerPublicLists", wishlistService.getWishlistByOwnerUsername(username));
+    @GetMapping("/search/{username}")
+    public String showWishlistsForUsername(Model model, @PathVariable String username, HttpSession session){
+        Member owner = memberService.getByUsername(username);
+        int loggedInId = (Integer) session.getAttribute("memberId");
 
+        List<Wishlist> publicListsForUsername = wishlistService.getWishlistByOwnerUsername(username);
+        model.addAttribute("owner", memberService.getByUsername(username));
+        model.addAttribute("wishlists", publicListsForUsername);
+        model.addAttribute("isOwner", owner.getId() == loggedInId);
+        return "wishlist/list";
     }
 }

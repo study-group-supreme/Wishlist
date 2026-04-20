@@ -19,7 +19,7 @@
 </ul>
 
 
-<button type="button" onclick="window.location.href='/wishlist/new'">Create New Wishlist</button>
+<button th:if="${isOwner}" type="button" onclick="window.location.href='/wishlist/new'">Create New Wishlist</button>
 
 </body>
 </html>
