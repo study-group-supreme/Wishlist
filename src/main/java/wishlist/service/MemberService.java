@@ -49,7 +49,13 @@ public class MemberService {
      * - Catch repository exceptions and convert to NotFoundException
      */
     public Member getByEmail(String email) {
-        return memberRepository.findByEmail(email);
+        try {
+            if (email != null && email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+            }
+            return memberRepository.findByEmail(email);
+        } catch (Exception e) {
+            throw new NotFoundException("No accout with this email found " + email);
+        }
     }
 
     /**
