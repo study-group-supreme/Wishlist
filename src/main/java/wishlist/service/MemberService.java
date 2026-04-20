@@ -149,22 +149,21 @@ public class MemberService {
      * TODO: Consider hashing passwords (future improvement)
      */
     public Member login(String username, String password) {
-        if (username == null || username.isBlank()) {
-            throw new BadRequestException("Username must not be blank");
+
+        // Find user by username
+        Member member = memberRepository.findByUsername(username);
+
+        // Username not found
+        if (member == null) {
+            return null;
         }
 
-        if (password == null || password.isBlank()) {
-            throw new BadRequestException("Password must not be blank");
+        // Password mismatch
+        if (!member.getPassword().equals(password)) {
+            return null;
         }
 
-        try {
-            Member member = memberRepository.findByUsername(username);
-
-            if (!member.getPassword().equals(password)) {
-            }
-            throw new BadRequestException("Wrong username or password");
-        } catch (BadRequestException e) {
-            throw new RuntimeException(e);
-        }
+        // Success
+        return member;
     }
 }
