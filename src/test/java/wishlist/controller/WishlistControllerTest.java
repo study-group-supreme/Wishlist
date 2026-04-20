@@ -16,8 +16,7 @@ import wishlist.service.WishlistService;
 import java.security.Provider;
 import java.util.List;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -62,12 +61,28 @@ class WishlistControllerTest {
         verify(wishlistservice).getItemsFromWishlistByWishlistId(5);
 
     }
+
     @Test
-    //("/new")
+        //("/new")
     void shouldShowCreateWishlistForm() throws Exception {
         mockMvc.perform(get("/wishlist/new"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("wishlist/create-wishlist"))
                 .andExpect(model().attributeExists("wishlist"));
+    }
+
+    @Test
+        //("/save)
+    void shouldSaveNewWishlistAndRedirectToWishlist() throws Exception {
+
+        mockMvc.perform(post("/wishlist/save")
+                        .sessionAttr("memberId", 4)
+                        .param("title", "Tester123")
+                        .param("description", "Test")
+                        .param("public", "false"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/wishlist"));
+
+        verify(wishlistservice).createNewWishlist(any(Wishlist.class));
     }
 }
