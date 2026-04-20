@@ -20,7 +20,7 @@ class PublicViewControllerTest {
     private MemberService service;
 
     @Test
-    void shouldDisplayPublicHomePage() throws Exception {
+    void showHomepage_shouldDisplayPublicHomePage() throws Exception {
         mockMvc.perform(get(""))
                 .andExpect(view().name("public/public-homepage"));
     }

@@ -33,7 +33,7 @@ class WishlistControllerTest {
 
     @Test
         //("/wishlist)"
-    void shouldDisplayAllWishlistsForLoggedInUser() throws Exception {
+    void showAllWishlists_shouldDisplayAllWishlistForMemberInSession() throws Exception {
 
         mockMvc.perform(get("/wishlist")
                         .sessionAttr("memberId", 1))
@@ -43,7 +43,7 @@ class WishlistControllerTest {
     }
 
     @Test
-    void shouldShowWishlistByWishlistId() throws Exception {
+    void showOneWishlist_shouldShowWishlistByWishlistId() throws Exception {
         Wishlist newWishlist = new Wishlist(5, null, "Min ønskeliste", "test", true, 4);
         when(wishlistservice.getById(5)).thenReturn(newWishlist);
         when(wishlistservice.getItemsFromWishlistByWishlistId(5)).thenReturn(List.of());
@@ -60,7 +60,7 @@ class WishlistControllerTest {
 
     @Test
         //("/new")
-    void shouldShowCreateWishlistForm() throws Exception {
+    void showCreateWishlistForm_shouldShowCreateWishlistForm() throws Exception {
         mockMvc.perform(get("/wishlist/new"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("wishlist/create-wishlist"))
@@ -69,7 +69,7 @@ class WishlistControllerTest {
 
     @Test
         //("/save)
-    void shouldSaveNewWishlistAndRedirectToWishlist() throws Exception {
+    void saveNewWishlist_shouldSaveNewWishlistAndRedirectToWishlist() throws Exception {
 
         mockMvc.perform(post("/wishlist/save")
                         .sessionAttr("memberId", 4)
@@ -84,8 +84,7 @@ class WishlistControllerTest {
 
     @Test
         //("/{wishlistId}/delete")
-
-    void shouldDeleteWishlistByWishlistId() throws Exception {
+    void deleteWishlist_shouldDeleteWishlistByWishlistId() throws Exception {
         Wishlist wishlist = new Wishlist();
         wishlist.setId(5);
         wishlist.setTitle("Test");
@@ -110,7 +109,7 @@ class WishlistControllerTest {
 
     @Test
         //("/{wishlistId}/edit")
-    void shouldEditWishlistByWishlistId() throws Exception {
+    void showEditWishlistForm_shouldEditWishlistByWishlistId() throws Exception {
 
         Wishlist wishlist = new Wishlist();
         wishlist.setId(1);
@@ -129,7 +128,7 @@ class WishlistControllerTest {
 
     @Test
         //("/{wishlistId}/update")
-    void shouldUpdateExistingWishlistByWishlistId() throws Exception {
+    void updateWishlist_shouldUpdateExistingWishlistByWishlistId() throws Exception {
 
         Wishlist existingWishlist = new Wishlist();
         existingWishlist.setId(1);

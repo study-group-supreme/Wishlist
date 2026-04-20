@@ -26,7 +26,7 @@ class MemberControllerTest {
 
     @Test
         //("/register)"
-    void shouldDisplayMemberRegistrationForm() throws Exception {
+    void showMemberRegistrationForm_shouldDisplayMemberRegistrationForm() throws Exception {
         mockMvc.perform(get("/member/register"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("member-registration"))
@@ -35,7 +35,7 @@ class MemberControllerTest {
 
     //"(/save)"
     @Test
-    void shouldRegisterMemberAndRedirectToLogin() throws Exception {
+    void registrationFormHandler_shouldRegisterMemberAndRedirectToLogin() throws Exception {
 
         Member savedMember = new Member();
         savedMember.setUsername("mads");
@@ -56,7 +56,7 @@ class MemberControllerTest {
 
     @Test
         //"(/edit)"
-    void shouldDisplayEditForm_whenMemberIsInSession() throws Exception {
+    void showEditForm_shouldDisplayEditFormWhenMemberIsInSession() throws Exception {
         Member member = new Member();
         member.setId(1);
         member.setUsername("shaz");
@@ -71,7 +71,7 @@ class MemberControllerTest {
 
     @Test
         //("/edit)
-    void shouldEditMemberAndRedirectToWishlist() throws Exception {
+    void editFormHandler_shouldEditMemberAndRedirectToWishlist() throws Exception {
         mockMvc.perform(post("/member/edit")
                         .param("id", "1")
                         .param("username", "shaz")

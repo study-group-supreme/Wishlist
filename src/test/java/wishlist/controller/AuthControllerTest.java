@@ -25,7 +25,7 @@ class AuthControllerTest {
 
     @Test
         //"(/login)"
-    void shouldDisplayLoginForm() throws Exception {
+    void showLoginForm_shouldDisplayLoginForm() throws Exception {
         mockMvc.perform(get("/auth/login"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("/member/member-login"));
@@ -33,7 +33,7 @@ class AuthControllerTest {
 
     @Test
         //("login)"
-    void shouldLoginAndRedirectToWishlist() throws Exception {
+    void loginFormHandler_shouldLoginAndRedirectToWishlist() throws Exception {
 
         Member member = new Member();
         member.setId(6);
@@ -52,7 +52,7 @@ class AuthControllerTest {
 
     @Test
         //("logout)"
-    void logoutShouldEndUserSession() throws Exception {
+    void logout_ShouldEndUserSession() throws Exception {
         mockMvc.perform(get("/auth/logout"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"))
