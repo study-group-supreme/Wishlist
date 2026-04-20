@@ -41,6 +41,8 @@
     <button type="submit">Add Item</button>
 </form>
 
-<button onclick="window.location.href='/wishlist/ + ${wishlistId}'">Cancel</button>
+<button th:onclick="'window.location.href=\'/wishlist/' + ${wishlistId} + '\''">
+    Cancel
+</button>
 </body>
 </html>

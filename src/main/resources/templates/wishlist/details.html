@@ -20,6 +20,10 @@
         <span th:text="${item.price}"></span>
         <a th:href="${item.url}" target="_blank">Link</a>
         <p th:text="${item.note}"></p>
+        <a th:href="@{/wishlist/{wishlistId}/items/{itemId}/edit(
+        wishlistId=${wishlist.id},
+        itemId=${item.id}
+         )}">Edit</a>
         <form th:action="@{/wishlist/{wishlistId}/items/{itemId}/delete(
         wishlistId=${wishlist.id},
         itemId=${item.id}
