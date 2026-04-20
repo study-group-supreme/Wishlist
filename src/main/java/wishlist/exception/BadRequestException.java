@@ -1,4 +1,4 @@
-package wishlist.service;
+package wishlist.exception;
 
 public class BadRequestException extends RuntimeException {
     // TODO: move to wishlist/exception

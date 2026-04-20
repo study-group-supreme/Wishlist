@@ -6,6 +6,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.EmptyResultDataAccessException;
+import wishlist.exception.BadRequestException;
+import wishlist.exception.NotFoundException;
 import wishlist.model.Item;
 import wishlist.model.Wishlist;
 import wishlist.repository.WishlistRepository;
