@@ -25,14 +25,17 @@ class MemberControllerTest {
     private MemberService service;
 
     @Test
-    void shouldDisplayMemberRegistrationForm() throws Exception {
+        //("/register)"
+    void showMemberRegistrationForm_shouldDisplayMemberRegistrationForm() throws Exception {
         mockMvc.perform(get("/member/register"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("member-registration"))
                 .andExpect(model().attributeExists("member"));
     }
-@Test
-    void shouldRegisterMemberAndRedirectToLogin() throws Exception {
+
+    //"(/save)"
+    @Test
+    void registrationFormHandler_shouldRegisterMemberAndRedirectToLogin() throws Exception {
 
         Member savedMember = new Member();
         savedMember.setUsername("mads");
@@ -50,8 +53,10 @@ class MemberControllerTest {
 
         verify(service).create(any(Member.class));
     }
+
     @Test
-    void shouldDisplayEditForm_whenMemberIsInSession() throws Exception{
+        //"(/edit)"
+    void showEditForm_shouldDisplayEditFormWhenMemberIsInSession() throws Exception {
         Member member = new Member();
         member.setId(1);
         member.setUsername("shaz");
@@ -62,18 +67,21 @@ class MemberControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("/member/member-edit"));
         verify(service).getById(1);
-        }
-        @Test
-    void shouldUpdateMemberAndRedirectToWishlist() throws Exception {
+    }
+
+    @Test
+        //("/edit)
+    void editFormHandler_shouldEditMemberAndRedirectToWishlist() throws Exception {
         mockMvc.perform(post("/member/edit")
-                .param("id", "1")
-                .param("username", "shaz")
-                .param("email", "shaz@test.dk"))
+                        .param("id", "1")
+                        .param("username", "shaz")
+                        .param("email", "shaz@test.dk"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/wishlist"));
         verify(service).update(any(Member.class));
 
-        }
     }
+
+}
 
 
