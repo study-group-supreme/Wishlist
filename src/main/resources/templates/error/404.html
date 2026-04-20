@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${status} + ' - ' + ${error}">404 - Not Found</title>
+</head>
+<body>
+
+<div>
+    <h1 th:text="${status} + ' - ' + ${error}">404 - Not Found</h1>
+
+    <div class="error-box">
+        <p><strong>Error:</strong> <span th:text="${error}">Not Found</span></p>
+        <p><strong>Message:</strong> <span th:text="${message}">The requested resource could not be found.</span></p>
+    </div>
+
+    <p>The page or ressource you are looking for has already been recycled. Press the button below to get back to making
+        your green wishes!</p>
+
+    <div>
+        <button type="button" onclick="window.location.href='/'">Home Page</button>
+    </div>
+</div>
+</body>
+</html>
