@@ -10,4 +10,8 @@ public class PublicViewController {
     public String showHomepage(){
         return "public/public-homepage";
     }
+    @GetMapping("/aboutus")
+    public String showAboutUs(){
+        return "public/public-aboutUs";
+    }
 }
