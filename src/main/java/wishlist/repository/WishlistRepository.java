@@ -130,6 +130,15 @@ public class WishlistRepository {
         return jdbc.update(sql, wishlistId, itemId);
     }
 
+    public int updateWishlistItem(int wishlistId, int itemId, String note, String url, long price){
+        String sql = """
+                UPDATE wishlist_item
+                SET note = ?,url = ?, price = ?
+                WHERE wishlist_id = ? AND item_id = ?
+                """;
+        return jdbc.update(sql, note, url, price, wishlistId, itemId)
+    }
+
 }
 
 

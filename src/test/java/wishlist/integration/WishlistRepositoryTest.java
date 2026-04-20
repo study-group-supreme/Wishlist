@@ -1,5 +1,6 @@
 package wishlist.integration;
 
+import org.springframework.jdbc.core.JdbcTemplate;
 import wishlist.model.Wishlist;
 import wishlist.model.Item;
 import wishlist.repository.WishlistRepository;
@@ -9,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
