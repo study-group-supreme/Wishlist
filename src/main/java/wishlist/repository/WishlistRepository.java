@@ -114,6 +114,31 @@ public class WishlistRepository {
         return jdbc.query(sql, itemRepository.getItemRowMapper(), "%"+keyword+"%", id);
     }
 
+    public int addItemToWishlist(int wishlistId, int itemId, String note, String url, long price){
+        String sql = """
+                INSERT INTO wishlist_item (wishlist_id, item_id, note, url, price)
+                VALUES (?, ?, ?, ?, ?)
+                """;
+        return jdbc.update(sql, wishlistId, itemId, note, url, price);
+    }
+
+    public int removeItemFromWishlist(int wishlistId, int itemId){
+        String sql = """
+                DELETE FROM wishlist_item
+                WHERE wishlist_id = ? AND item_id = ?
+                """;
+        return jdbc.update(sql, wishlistId, itemId);
+    }
+
+    public int updateWishlistItem(int wishlistId, int itemId, String note, String url, long price){
+        String sql = """
+                UPDATE wishlist_item
+                SET note = ?,url = ?, price = ?
+                WHERE wishlist_id = ? AND item_id = ?
+                """;
+        return jdbc.update(sql, note, url, price, wishlistId, itemId);
+    }
+
 }
 
 

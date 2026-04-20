@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Item</title>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<h2>Add Item to Wishlist</h2>
+
+<form th:action="@{/wishlist/{wishlistId}/items(wishlistId=${wishlistId})}"
+      th:object="${item}"
+      method="post">
+
+    <p>
+        <label>Name</label><br>
+        <input type="text" th:field="*{name}" required maxlength="100">
+    </p>
+
+    <p>
+        <label>Description</label><br>
+        <textarea th:field="*{description}" maxlength="255"></textarea>
+    </p>
+
+    <p>
+        <label>URL</label><br>
+        <input type="text" th:field="*{url}" maxlength="500" placeholder="Optional link (if any)">
+    </p>
+
+    <p>
+        <label>Price</label><br>
+        <input type="number" th:field="*{price}" min="0" step="0.01">
+    </p>
+
+    <p>
+        <label>Note</label><br>
+        <textarea th:field="*{note}" maxlength="255"></textarea>
+    </p>
+
+    <button type="submit">Add Item</button>
+</form>
+
+<button th:onclick="'window.location.href=\'/wishlist/' + ${wishlistId} + '\''">
+    Cancel
+</button>
+</body>
+</html>
