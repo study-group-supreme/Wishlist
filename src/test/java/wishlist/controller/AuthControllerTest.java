@@ -1,5 +1,6 @@
 package wishlist.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -24,6 +25,8 @@ class AuthControllerTest {
 
     @MockitoBean
     private MemberService service;
+    @Autowired
+    private HttpSession httpSession;
 
     @Test
         //"(/login)"
@@ -32,7 +35,9 @@ class AuthControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("/member/member-login"));
     }
+
     @Test
+    //("login)"
     void shouldLoginAndRedirectToWishlist() throws Exception {
 
         Member member = new Member();
@@ -48,5 +53,14 @@ class AuthControllerTest {
                 .andExpect(redirectedUrl("/wishlist"));
 
         verify(service).login("Shaz", "1234");
+    }
+    @Test
+    //("logout)"
+    void logoutShouldEndUserSession() throws Exception {
+        mockMvc.perform(get("/auth/logout"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"))
+                .andExpect(request().sessionAttributeDoesNotExist("memberId"));
+
     }
 }
