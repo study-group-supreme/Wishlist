@@ -108,4 +108,26 @@ public class WishlistController {
 
         return "redirect:/wishlist/" + wishlistId;
     }
+
+    @GetMapping("/{wishlistId}/items/new")
+    public String showAddItrmForm(@PathVariable int wishlistId, Model model) {
+        model.addAttribute("item", new Item());
+        model.addAttribute("wishlistId", wishlistId);
+        return "wishlist/add-item";
+    }
+
+    @PostMapping("/{wishlistId}/items")
+    public String addItemToWishlist(@PathVariable int wishlistId, @ModelAttribute Item item, HttpSession session) {
+        int memberId = (Integer) session.getAttribute("memberId");
+
+        Wishlist wishlist = wishlistService.getById(wishlistId);
+
+        if (wishlist.getOwner_id() != memberId) {
+            return "redirect:/wishlist";
+        }
+
+        wishlistService.addNewItemToWishlist(wishlistId, item);
+
+        return "redirect:/wishlist/" + wishlistId;
+    }
 }
