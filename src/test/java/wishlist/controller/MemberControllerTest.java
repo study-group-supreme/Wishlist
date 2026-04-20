@@ -25,14 +25,15 @@ class MemberControllerTest {
     private MemberService service;
 
     @Test
-    //("/register)"
+        //("/register)"
     void shouldDisplayMemberRegistrationForm() throws Exception {
         mockMvc.perform(get("/member/register"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("member-registration"))
                 .andExpect(model().attributeExists("member"));
     }
-//"(/save)"
+
+    //"(/save)"
     @Test
     void shouldRegisterMemberAndRedirectToLogin() throws Exception {
 
@@ -54,7 +55,7 @@ class MemberControllerTest {
     }
 
     @Test
-    //"(/edit)"
+        //"(/edit)"
     void shouldDisplayEditForm_whenMemberIsInSession() throws Exception {
         Member member = new Member();
         member.setId(1);
@@ -69,7 +70,7 @@ class MemberControllerTest {
     }
 
     @Test
-    //("/edit)
+        //("/edit)
     void shouldEditMemberAndRedirectToWishlist() throws Exception {
         mockMvc.perform(post("/member/edit")
                         .param("id", "1")

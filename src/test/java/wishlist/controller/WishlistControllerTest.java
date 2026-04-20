@@ -5,15 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import wishlist.controller.AuthController;
-import wishlist.controller.PublicViewController;
-import wishlist.model.Member;
 import wishlist.model.Wishlist;
 import wishlist.service.ItemService;
 import wishlist.service.MemberService;
 import wishlist.service.WishlistService;
 
-import java.security.Provider;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
@@ -130,26 +126,27 @@ class WishlistControllerTest {
 
         verify(wishlistservice).getById(1);
     }
+
     @Test
-    //("/{wishlistId}/update")
-        void shouldUpdateExistingWishlistByWishlistId() throws Exception {
+        //("/{wishlistId}/update")
+    void shouldUpdateExistingWishlistByWishlistId() throws Exception {
 
-            Wishlist existingWishlist = new Wishlist();
-            existingWishlist.setId(1);
-            existingWishlist.setOwner_id(1);
+        Wishlist existingWishlist = new Wishlist();
+        existingWishlist.setId(1);
+        existingWishlist.setOwner_id(1);
 
 
-            when(wishlistservice.getById(1)).thenReturn(existingWishlist);
+        when(wishlistservice.getById(1)).thenReturn(existingWishlist);
 
-            mockMvc.perform(post("/wishlist/1/update")
-                            .sessionAttr("memberId", 1)
-                            .param("titel", "Test")
-                            .param("description", "Test"))
-                    .andExpect(status().is3xxRedirection())
-                    .andExpect(redirectedUrl("/wishlist/1"));
+        mockMvc.perform(post("/wishlist/1/update")
+                        .sessionAttr("memberId", 1)
+                        .param("titel", "Test")
+                        .param("description", "Test"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/wishlist/1"));
 
-            verify(wishlistservice).updateWishlist(any(Wishlist.class));
+        verify(wishlistservice).updateWishlist(any(Wishlist.class));
 
-        }
     }
+}
 

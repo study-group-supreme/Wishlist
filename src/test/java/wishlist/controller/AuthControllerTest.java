@@ -1,16 +1,13 @@
 package wishlist.controller;
 
-import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.RequestBuilder;
 import wishlist.model.Member;
 import wishlist.service.MemberService;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -35,7 +32,7 @@ class AuthControllerTest {
     }
 
     @Test
-    //("login)"
+        //("login)"
     void shouldLoginAndRedirectToWishlist() throws Exception {
 
         Member member = new Member();
@@ -52,8 +49,9 @@ class AuthControllerTest {
 
         verify(service).login("Shaz", "1234");
     }
+
     @Test
-    //("logout)"
+        //("logout)"
     void logoutShouldEndUserSession() throws Exception {
         mockMvc.perform(get("/auth/logout"))
                 .andExpect(status().is3xxRedirection())
