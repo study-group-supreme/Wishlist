@@ -40,11 +40,15 @@ public class WishlistController {
 
     // show wishlist by wishlist-id
     @GetMapping("/{wishlistId}")
-    public String showOneWishlist(@PathVariable int wishlistId, Model model) {
+    public String showOneWishlist(@PathVariable int wishlistId, Model model, HttpSession session) {
 
         Wishlist wishlist = wishlistService.getById(wishlistId);
         List<Item> items = wishlistService.getItemsFromWishlistByWishlistId(wishlistId);
 
+        //Stuff below added in feature/seeing-others-public-list by Andreas messing about
+        int ownerId = wishlist.getOwner_id();
+        int loggedInId = (Integer) session.getAttribute("memberId");
+        model.addAttribute("isOwner", ownerId == loggedInId);
         model.addAttribute("wishlist", wishlist);
         model.addAttribute("items", items);
 
