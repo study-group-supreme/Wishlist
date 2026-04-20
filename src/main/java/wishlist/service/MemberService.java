@@ -70,6 +70,7 @@ public class MemberService {
      */
     public Member create(Member member) {
         try {
+            if(member.getUsername() != null && member.getPassword() != null && member.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"))
             memberRepository.insertMember(member);
             return memberRepository.findByUsername(member.getUsername());
         } catch (DataIntegrityViolationException e) {
