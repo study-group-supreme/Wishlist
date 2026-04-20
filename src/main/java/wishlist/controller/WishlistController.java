@@ -110,7 +110,7 @@ public class WishlistController {
     }
 
     @GetMapping("/{wishlistId}/items/new")
-    public String showAddItrmForm(@PathVariable int wishlistId, Model model) {
+    public String showAddItemForm(@PathVariable int wishlistId, Model model) {
         model.addAttribute("item", new Item());
         model.addAttribute("wishlistId", wishlistId);
         return "wishlist/add-item";
