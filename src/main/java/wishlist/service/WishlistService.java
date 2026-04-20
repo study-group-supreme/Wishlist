@@ -134,4 +134,11 @@ public class WishlistService {
 
         return itemRepository.findItemById(item.getId());
     }
+
+    public Item removeItemFromWishlist(int wishlistId, int itemId){
+        getById(wishlistId);
+        Item removedItem = itemRepository.findItemById(itemId);
+        wishlistRepository.removeItemFromWishlist(wishlistId, itemId);
+        return removedItem;
+    }
 }
