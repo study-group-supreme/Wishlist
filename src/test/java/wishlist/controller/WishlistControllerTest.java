@@ -85,4 +85,29 @@ class WishlistControllerTest {
 
         verify(wishlistservice).createNewWishlist(any(Wishlist.class));
     }
+    @Test
+    //("/{wishlistId}/delete")
+
+    void shouldDeleteWishlistByWishlistId() throws Exception {
+        Wishlist wishlist = new Wishlist();
+        wishlist.setId(5);
+        wishlist.setTitle("Test");
+        wishlist.setDescription("Test");
+        wishlist.setOwner_id(4);
+        wishlist.setPublic(true);
+        wishlist.setItems(null);
+
+        when(wishlistservice.getById(5)).thenReturn(wishlist);
+
+        mockMvc.perform(post("/wishlist/5/delete")
+                .sessionAttr("memberId", 4)
+                .param("Titel", "Test")
+                .param("Description", "Test")
+                .param("public", "true"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/wishlist"));
+
+        verify(wishlistservice).deleteWishlistById(5);
+
+    }
 }
