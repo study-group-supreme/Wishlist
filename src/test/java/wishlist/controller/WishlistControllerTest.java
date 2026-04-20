@@ -13,6 +13,7 @@ import wishlist.service.ItemService;
 import wishlist.service.MemberService;
 import wishlist.service.WishlistService;
 
+import java.security.Provider;
 import java.util.List;
 
 import static org.mockito.Mockito.verify;
@@ -29,8 +30,10 @@ class WishlistControllerTest {
 
     @MockitoBean
     private WishlistService wishlistservice;
-    @MockitoBean private MemberService memberservice;
-    @MockitoBean private ItemService itemservice;
+    @MockitoBean
+    private MemberService memberservice;
+    @MockitoBean
+    private ItemService itemservice;
 
 
     @Test
@@ -41,6 +44,22 @@ class WishlistControllerTest {
                         .sessionAttr("memberId", 1))
                 .andExpect(status().isOk())
                 .andExpect(view().name("/wishlist/list"));
+
+    }
+
+    @Test
+    void shouldShowWishlistByWishlistId() throws Exception {
+        Wishlist newWishlist = new Wishlist(5, null, "Min ønskeliste", "test", true, 4);
+        when(wishlistservice.getById(5)).thenReturn(newWishlist);
+        when(wishlistservice.getItemsFromWishlistByWishlistId(5)).thenReturn(List.of());
+
+        mockMvc.perform(get("/wishlist/5"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("wishlist/details"))
+                .andExpect(model().attribute("wishlist", newWishlist));
+
+        verify(wishlistservice).getById(5);
+        verify(wishlistservice).getItemsFromWishlistByWishlistId(5);
 
     }
 }
