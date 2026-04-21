@@ -317,4 +317,20 @@ public class WishlistServiceTest {
         assertThrows(BadRequestException.class,
                 () -> wishlistService.updateItemInWishlist(1, item));
     }
+
+    @Test
+    void updateItemInWishlist_throwsDatabaseOperationException_whenDbFails() {
+        Item item = new Item();
+        item.setId(1);
+        item.setName("Valid");
+
+        when(wishlistRepository.findWishlistById(1)).thenReturn(new Wishlist());
+
+        doThrow(new org.springframework.dao.DataAccessResourceFailureException("DB down"))
+                .when(itemRepository).updateItem(item);
+
+        assertThrows(DatabaseOperationException.class,
+                () -> wishlistService.updateItemInWishlist(1, item));
+    }
+
 }
