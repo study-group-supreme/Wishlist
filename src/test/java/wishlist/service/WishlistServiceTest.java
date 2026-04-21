@@ -272,6 +272,20 @@ public class WishlistServiceTest {
     }
 
     @Test
+    void addNewItemToWishlist_throwsDatabaseOperationException_whenDbFails() {
+        Item item = new Item();
+        item.setName("Title");
+
+        when(wishlistRepository.findWishlistById(1)).thenReturn(new Wishlist());
+
+        doThrow(new org.springframework.dao.DataAccessResourceFailureException("DB down"))
+                .when(itemRepository).insertItem(item);
+
+        assertThrows(DatabaseOperationException.class,
+                () -> wishlistService.addNewItemToWishlist(1, item));
+    }
+
+    @Test
     void removeItemFromWishlist_throwsNoFound_whenItemMissing() {
         when(wishlistRepository.findWishlistById(1)).thenReturn(new Wishlist());
         when(itemRepository.findItemById(99))
