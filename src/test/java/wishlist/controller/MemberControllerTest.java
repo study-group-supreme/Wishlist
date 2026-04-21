@@ -29,7 +29,7 @@ class MemberControllerTest {
     void showMemberRegistrationForm_shouldDisplayMemberRegistrationForm() throws Exception {
         mockMvc.perform(get("/member/register"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("member-registration"))
+                .andExpect(view().name("/member/member-registration"))
                 .andExpect(model().attributeExists("member"));
     }
 

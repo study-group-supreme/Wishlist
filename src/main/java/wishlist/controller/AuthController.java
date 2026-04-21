@@ -33,7 +33,7 @@ public class  AuthController {
             return "redirect:/wishlist";
         } else{
             model.addAttribute("wrongCredentials", true);
-            return "redirect:/auth/login";
+            return "member/member-login";
         }
     }
 
