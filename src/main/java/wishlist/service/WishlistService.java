@@ -3,6 +3,7 @@ package wishlist.service;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import wishlist.exception.BadRequestException;
 import wishlist.exception.DatabaseOperationException;
 import wishlist.exception.NotFoundException;
@@ -66,6 +67,7 @@ public class WishlistService {
         return wishlistRepository.getAllWishlists();
     }
 
+    @Transactional
     public Wishlist createNewWishlist(Wishlist wishlist) {
 
         // Validate title
@@ -101,6 +103,7 @@ public class WishlistService {
         return deletedWishlist;
     }
 
+    @Transactional
     public Wishlist updateWishlist(Wishlist wishlist) {
         // Ensure it exists
         Wishlist existing = getById(wishlist.getId());
@@ -127,6 +130,7 @@ public class WishlistService {
         return existing;
     }
 
+    @Transactional
     public Item addNewItemToWishlist(int wishlistId, Item item) {
         Wishlist wishlist = getById(wishlistId);
 
@@ -150,6 +154,7 @@ public class WishlistService {
         return removedItem;
     }
 
+    @Transactional
     public Item updateItemInWishlist(int wishlistId, Item item){
         getById(wishlistId);
 
