@@ -167,8 +167,14 @@ public class MemberService {
      * TODO: Consider hashing passwords (future improvement)
      */
     public Member login(String username, String password) {
+        // TODO: is this checked for on template-level??
+//        if (username == null || username.isBlank()) {
+//            throw new BadRequestException("Username cannot be empty");
+//        }
+//        if (password == null || password.isBlank()) {
+//            throw new BadRequestException("Password cannot be empty");
+//        }
 
-        // Find user by username
         Member member = memberRepository.findByUsername(username);
 
         // Username not found
