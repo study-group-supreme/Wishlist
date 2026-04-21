@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.EmptyResultDataAccessException;
 import wishlist.exception.BadRequestException;
+import wishlist.exception.DatabaseOperationException;
 import wishlist.exception.NotFoundException;
 import wishlist.model.Item;
 import wishlist.model.Wishlist;
@@ -213,5 +214,16 @@ public class WishlistServiceTest {
         // Returned object should be the updated one
         assertEquals(existing, result);
 
+    }
+
+    @Test
+    void addNewItemToWishlist_throwsBadRequest_whenItemNameEmpty() {
+        Item item = new Item();
+        item.setName("");
+
+        when(wishlistRepository.findWishlistById(1)).thenReturn(new Wishlist());
+
+        assertThrows(BadRequestException.class,
+                () -> wishlistService.addNewItemToWishlist(1, item));
     }
 }

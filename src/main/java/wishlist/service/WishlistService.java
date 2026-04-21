@@ -29,15 +29,6 @@ public class WishlistService {
         this.memberRepository = memberRepository;
     }
 
-    // issue: catches ALL exceptions (Exception e), hides real DB errors
-//    public Wishlist getById(int id) {
-//        try {
-//            return wishlistRepository.findWishlistById(id);
-//        } catch (Exception e) {
-//            throw new NotFoundException("The wishlist could not load.");
-//        }
-//    }
-
     public Wishlist getById(int id){
         try {
             return wishlistRepository.findWishlistById(id);
@@ -47,19 +38,6 @@ public class WishlistService {
             throw new DatabaseOperationException("Database error while loading wishlist", e);
         }
     }
-
-    // Exception e catches all exceptions
-//    public Wishlist getByTitle(String title) {
-//        if (title == null || title.isBlank()) {
-//            throw new BadRequestException("Title cannot be empty");
-//        }
-//
-//        try {
-//            return wishlistRepository.findWishlistByTitle(title);
-//        } catch (Exception e) {
-//            throw new NotFoundException("Could not find wishlist with title: '" + title);
-//        }
-//    }
 
     public Wishlist getByTitle(String title) {
         if (title == null || title.isBlank()) {
@@ -102,37 +80,6 @@ public class WishlistService {
     public List<Wishlist> getAllWishlists() {
         return wishlistRepository.getAllWishlists();
     }
-
-    // catches ALL exceptions
-//    @Transactional
-//    public Wishlist createNewWishlist(Wishlist wishlist) {
-//
-//        // Validate title
-//        if (wishlist.getTitle() == null || wishlist.getTitle().isBlank()) {
-//            throw new BadRequestException("Title cannot be empty");
-//        }
-//
-//        if (wishlist.getTitle().length() > 100) {
-//            throw new BadRequestException("Wishlist title cannot exceed 100 characters");
-//        }
-//
-//        // Validate description
-//        if (wishlist.getDescription() != null && wishlist.getDescription().length() > 255) {
-//            throw new BadRequestException("Description cannot exceed 255 characters");
-//        }
-//
-//        // Validate owner
-//        if (wishlist.getOwner_id() <= 0) {
-//            throw new BadRequestException("Wishlist must have a valid owner");
-//        }
-//
-//        try {
-//            wishlistRepository.insertWishlist(wishlist);
-//            return wishlistRepository.findWishlistById(wishlist.getId());
-//        } catch (Exception e) {
-//            throw new BadRequestException("Could not create wishlist: " + e.getMessage());
-//        }
-//    }
 
     @Transactional
     public Wishlist createNewWishlist(Wishlist wishlist){
