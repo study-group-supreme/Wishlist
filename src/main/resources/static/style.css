@@ -1,4 +1,3 @@
-
 body {
     margin: 0;
     padding: 0;
@@ -411,3 +410,11 @@ form textarea {
 .btn-danger:hover {
     background-color: #922c2c;
 }
+.nav-left img {
+    width: 40px;
+    height: auto;
+    cursor: pointer;
+}
+
+.nav-left {
+    display: inline-block;

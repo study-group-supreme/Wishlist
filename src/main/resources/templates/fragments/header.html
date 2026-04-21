@@ -1,9 +1,11 @@
 <div th:fragment="header">
     <nav class="navbar">
 
-        <!-- LEFT -->
+        <!-- LEFT: Logo + Home -->
         <div class="nav-left">
-            <button type="button" onclick="window.location.href='/'">Home</button>
+            <a href="/" class="nav-left">
+                <img src="/images/greenwish-favicon.png" alt="Home" style="height:32px;">
+            </a>
 
             <button type="button"
                     onclick="window.location.href='/wishlist'"
@@ -18,15 +20,15 @@
             </button>
         </div>
 
-        <!-- CENTER -->
+        <!-- CENTER: Search bar -->
         <div class="nav-center">
-            <form class="searchbar" th:action="@{/wishlist/search}" method="get">
+            <form class="searchbar" th:if="${session.memberId != null}" th:action="@{/wishlist/search}" method="get">
                 <input type="search" name="username" placeholder="Search users...">
                 <button type="submit">Go</button>
             </form>
         </div>
 
-        <!-- RIGHT -->
+        <!-- RIGHT: Auth buttons -->
         <div class="nav-right">
             <button type="button"
                     onclick="window.location.href='/member/register'"
