@@ -3,11 +3,15 @@ package wishlist.repository;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import wishlist.exception.DuplicateMemberException;
 import wishlist.model.Member;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+
+import java.sql.PreparedStatement;
 
 @Repository
 public class MemberRepository {
@@ -45,7 +49,7 @@ public class MemberRepository {
         String sql = "SELECT * FROM member WHERE email = ?";
         try {
             return jdbc.queryForObject(sql, memberRowMapper, email);
-        }catch (EmptyResultDataAccessException e){
+        } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
@@ -60,32 +64,36 @@ public class MemberRepository {
             throw new DuplicateMemberException("Email already registered");
         }
         String sql = "INSERT INTO member (username, password, name, email) VALUES (?, ?, ?, ?)";
-        return jdbc.update(
-                sql,
-                member.getUsername(),
-                member.getPassword(),
-                member.getName(),
-                member.getEmail());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        return jdbc.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setString(1, member.getUsername());
+            ps.setString(2, member.getPassword());
+            ps.setString(3, member.getName());
+            ps.setString(4, member.getEmail());
+            return ps;
+        }, keyHolder);
     }
 
-    public int updateMember(Member member) {
-        String sql = """
-                UPDATE member
-                SET username = ?, password = ?, name = ?, email = ?
-                WHERE id = ?
-                """;
-        return jdbc.update(
-                sql,
-                member.getUsername(),
-                member.getPassword(),
-                member.getName(),
-                member.getEmail(),
-                member.getId()
-        );
-    }
 
-    public int deleteById(int memberId) {
-        String sql = "DELETE FROM member WHERE id = ?";
-        return jdbc.update(sql, memberId);
-    }
+public int updateMember(Member member) {
+    String sql = """
+            UPDATE member
+            SET username = ?, password = ?, name = ?, email = ?
+            WHERE id = ?
+            """;
+    return jdbc.update(
+            sql,
+            member.getUsername(),
+            member.getPassword(),
+            member.getName(),
+            member.getEmail(),
+            member.getId()
+    );
+}
+
+public int deleteById(int memberId) {
+    String sql = "DELETE FROM member WHERE id = ?";
+    return jdbc.update(sql, memberId);
+}
 }

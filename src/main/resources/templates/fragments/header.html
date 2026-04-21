@@ -34,7 +34,7 @@
                 Logout
             </button>
 
-            <form th:action="@{/wishlist/search}" method="get">
+            <form th:if="${session.memberId != null}" th:action="@{/wishlist/search}" method="get">
                 <input type="search" name="username"  placeholder="Search for another's lists!">
                 <button type="submit">Search</button>
             </form>
