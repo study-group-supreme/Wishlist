@@ -220,4 +220,11 @@ public class WishlistController {
         model.addAttribute("isOwner", owner.getId() == loggedInId);
         return "wishlist/list";
     }
+
+    @PostMapping ("/follow")
+    public String followWishlist(@ModelAttribute Wishlist wishlist, HttpSession session){
+        Member member = memberService.getById((Integer) session.getAttribute("memberId"));
+        wishlistService.followWishlist(wishlist, member);
+        return "redirect:/wishlist";
+    }
 }
