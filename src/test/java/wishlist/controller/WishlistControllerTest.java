@@ -48,7 +48,8 @@ class WishlistControllerTest {
         when(wishlistservice.getById(5)).thenReturn(newWishlist);
         when(wishlistservice.getItemsFromWishlistByWishlistId(5)).thenReturn(List.of());
 
-        mockMvc.perform(get("/wishlist/5"))
+        mockMvc.perform(get("/wishlist/5")
+                        .sessionAttr("memberId", 4))
                 .andExpect(status().isOk())
                 .andExpect(view().name("wishlist/details"))
                 .andExpect(model().attribute("wishlist", newWishlist));
