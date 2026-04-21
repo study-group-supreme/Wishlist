@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>All Wishlists</title>
+  <link rel="stylesheet" th:href="@{/style.css}">
+  <link rel="icon" th:href="@{/images/greenwish-favicon.png}">
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<div class="content-box">
+  <p th:if="${followedLists.isEmpty()}">You are not following any lists currently</p>
+  <h1>Followed Wishlists</h1>
+  <ul>
+    <li class="wishlist-row" th:each="wishlist : ${followedLists}">
+      <div class="wishlist-header">
+        <a th:href="@{/wishlist/{id}(id=${wishlist.id})}">
+          <strong th:text="${wishlist.title}"></strong>
+        </a>
+      </div>
+
+    </li>
+  </ul>
+
+</div>
+
+</body>
+</html>
