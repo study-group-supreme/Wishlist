@@ -42,4 +42,9 @@ public class MemberServiceTest {
 
         assertThrows(DatabaseOperationException.class, () -> memberService.getById(1));
     }
+
+    @Test
+    void getByUsername_throwsBadRequest_whenUsernameEmpty() {
+        assertThrows(BadRequestException.class, () -> memberService.getByUsername(""));
+    }
 }
