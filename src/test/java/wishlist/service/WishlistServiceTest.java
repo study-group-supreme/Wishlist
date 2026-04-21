@@ -119,6 +119,15 @@ public class WishlistServiceTest {
     }
 
     @Test
+    void getByOwnerId_throwsDatabaseOperationExcetion_whenDbFails() {
+        when(wishlistRepository.findWishlistByOwnerId(5))
+                .thenThrow(new org.springframework.dao.DataAccessResourceFailureException("DB down"));
+
+        assertThrows(DatabaseOperationException.class,
+                () -> wishlistService.getByOwnerId(5));
+    }
+
+    @Test
     void getItemsFromWishlistByWishlistId_callsGetByIdFirst() {
         // getById must be called first to ensure the wishlist exists
         Wishlist w = new Wishlist();
