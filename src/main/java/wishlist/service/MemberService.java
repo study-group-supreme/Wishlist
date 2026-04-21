@@ -155,17 +155,6 @@ public class MemberService {
         }
     }
 
-    /**
-     * TODO: Add validation:
-     * - username not blank
-     * - password not blank
-     * <p>
-     * TODO: Add error handling:
-     * - If findByUsername throws, convert to NotFoundException
-     * - If password mismatch, return null or throw BadRequestException
-     * <p>
-     * TODO: Consider hashing passwords (future improvement)
-     */
     public Member login(String username, String password) {
         // TODO: is this checked for on template-level??
 //        if (username == null || username.isBlank()) {
