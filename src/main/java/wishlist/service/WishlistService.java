@@ -221,9 +221,21 @@ public class WishlistService {
 
     public Item removeItemFromWishlist(int wishlistId, int itemId){
         getById(wishlistId);
-        Item removedItem = itemRepository.findItemById(itemId);
-        wishlistRepository.removeItemFromWishlist(wishlistId, itemId);
-        return removedItem;
+
+        Item removed;
+        try {
+            removed = itemRepository.findItemById(itemId);
+        } catch (EmptyResultDataAccessException e){
+            throw new NotFoundException("Item not found by id: "+ itemId);
+        }
+
+        try {
+            wishlistRepository.removeItemFromWishlist(wishlistId, itemId);
+            return removed;
+        } catch (DataAccessException e) {
+            throw new DatabaseOperationException("Database error while removing item", e);
+        }
+
     }
 
     @Transactional
