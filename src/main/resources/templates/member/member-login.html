@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
     <link rel="icon" th:href="@{/images/greenwish-favicon.png}">
 </head>
 <body>
+<div class="content-box">
 <form action="/auth/login" method="post">
     <p th:if="${wrongCredentials}" class="error">Wrong username or password</p>
     <p><label>Username</label>
@@ -14,6 +16,6 @@
         <input name="password" type="password"></p>
     <p><button type="submit">Login</button></p>
 </form>
-
+</div>
 </body>
 </html>

@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Register New Member</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
     <link rel="icon" th:href="@{/images/greenwish-favicon.png}">
 </head>
 <body>
-<div th:replace="fragments/header :: header">...</div>
+<div th:replace="fragments/header :: header"></div>
+<div class="content-box">
 <form th:action="@{/member/save}" th:object="${member}" method="post">
     <div class="error-box" th:if="${errorMessage}">
         <p th:text="${errorMessage}"></p>
@@ -27,6 +29,6 @@
 
 </form>
 <button type="button" onclick="window.location.href='/'">Go Back</button>
-
+</div>
 </body>
 </html>

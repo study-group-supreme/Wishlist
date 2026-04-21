@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Sustainability Guide</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" th:href="@{/style.css}">
     <link rel="icon" th:href="@{/images/greenwish-favicon.png}">
 </head>
 <body>
+<div th:replace="fragments/header :: header"></div>
+<div class="content-box">
+
 <h1>About GreenWish</h1>
 
 <div class="about-box">
@@ -30,6 +33,6 @@
 <div class="button-container">
     <a href="https://www.matas.dk/stories-beauty-vaner-bliv-mere-baeredygtig" class="action-button">Self-Care</a>
 </div>
-
+</div>
 </body>
 </html>
