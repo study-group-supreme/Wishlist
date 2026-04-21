@@ -47,4 +47,11 @@ public class MemberServiceTest {
     void getByUsername_throwsBadRequest_whenUsernameEmpty() {
         assertThrows(BadRequestException.class, () -> memberService.getByUsername(""));
     }
+
+    @Test
+    void getByUsername_throwsNotFound_whenUserMissing() {
+        when(memberRepository.findByUsername("missing")).thenReturn(null);
+
+        assertThrows(NotFoundException.class, () -> memberService.getByUsername("missing"));
+    }
 }
