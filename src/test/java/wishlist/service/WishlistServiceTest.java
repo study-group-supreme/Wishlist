@@ -240,4 +240,15 @@ public class WishlistServiceTest {
         assertThrows(NotFoundException.class,
                 () -> wishlistService.removeItemFromWishlist(1, 99));
     }
+
+    @Test
+    void updateItemInWishlist_throwsBadRequest_whenItemNameEmpty() {
+        Item item = new Item();
+        item.setName("");
+
+        when(wishlistRepository.findWishlistById(1)).thenReturn(new Wishlist());
+
+        assertThrows(BadRequestException.class,
+                () -> wishlistService.updateItemInWishlist(1, item));
+    }
 }
