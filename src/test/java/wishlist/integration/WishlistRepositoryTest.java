@@ -23,6 +23,9 @@ public class WishlistRepositoryTest {
     @Autowired
     private WishlistRepository wishlistRepository;
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     @Test
     void findById_returnsCorrectWishlist() {
         Wishlist model = wishlistRepository.findWishlistById(1);
@@ -111,5 +114,31 @@ public class WishlistRepositoryTest {
         List<Item> items = wishlistRepository.fetchItemsInWishlistByTitel(1, "size");
         assertThat(items.get(0).getName()).isEqualTo("Life-size Darth Vader");
 
+    }
+
+    @Test
+    void updateWishlistItem_updatesExistingRow() {
+        int wishlistId = 1;
+        int itemId = 1;
+
+        String newNote = "Updated note";
+        String newUrl = "http://updated-url.com";
+        long newPrice = 12345;
+
+        int rows = wishlistRepository.updateWishlistItem(wishlistId, itemId, newNote, newUrl, newPrice);
+
+        assertThat(rows).isEqualTo(1);
+
+        String sql = """
+        SELECT note, url, price
+        FROM wishlist_item
+        WHERE wishlist_id = ? AND item_id = ?
+        """;
+
+        var result = jdbcTemplate.queryForMap(sql, wishlistId, itemId);
+
+        assertThat(result.get("note")).isEqualTo(newNote);
+        assertThat(result.get("url")).isEqualTo(newUrl);
+        assertThat(((Number) result.get("price")).longValue()).isEqualTo(newPrice);
     }
 }
