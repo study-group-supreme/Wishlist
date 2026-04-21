@@ -109,3 +109,49 @@ button:hover {
         transform: translateY(0);
     }
 }
+
+.footer {
+    background-color: transparent;
+    color: black;
+    padding: 60px 20px 40px;   /* mere luft top, mindre bund */
+    margin-top: 140px;         /* tydelig afstand fra indhold */
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;                 /* mere behagelig spacing */
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.footer h3 {
+    font-size: 1.6rem;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    color: black;
+    margin: 0;
+}
+
+.footer p {
+    font-size: 0.95rem;
+    line-height: 1.5;          /* mere læsbart */
+    margin: 0;
+    color: black;
+    font-weight: 600;          /* lidt mindre tung end bold */
+}
+
+.footer a {
+    color: #6b705c;            /* mere professionel grøn */
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.footer a:hover {
+    color: #8a9078;            /* subtil hover */
+    text-decoration: underline;
+}
