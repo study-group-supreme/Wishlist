@@ -20,15 +20,9 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    /**
-     * TODO: Add error handling:
-     * - Validate id > 0
-     * - Catch EmptyResultDataAccessException and convert to NotFoundException
-     */
+
     public Member getById(int id) {
         try {
-            if (id > 0) {
-            }
             return memberRepository.findById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new NotFoundException("No members with ID under 0. Please try again");
