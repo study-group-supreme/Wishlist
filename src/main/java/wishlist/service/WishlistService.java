@@ -158,9 +158,14 @@ public class WishlistService {
     }
 
     public Wishlist deleteWishlistById(int id) {
-        Wishlist deletedWishlist = getById(id);
-        wishlistRepository.deleteWishlist(id);
-        return deletedWishlist;
+        Wishlist deleted = getById(id);
+        try {
+            wishlistRepository.deleteWishlist(id);
+            return deleted;
+        } catch (DataAccessException e) {
+            throw new DatabaseOperationException("Database error while deleting wishlist", e);
+        }
+
     }
 
     @Transactional
