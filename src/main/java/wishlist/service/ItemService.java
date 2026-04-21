@@ -1,10 +1,13 @@
 package wishlist.service;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wishlist.exception.BadRequestException;
 import wishlist.exception.DatabaseOperationException;
+import wishlist.exception.NotFoundException;
 import wishlist.model.Item;
 import wishlist.repository.ItemRepository;
 
@@ -19,17 +22,18 @@ public class ItemService {
         this.itemRepository = itemRepository;
     }
 
-    /**
-     * TODO: Add meaningful error handling
-     * - Validate that id > 0
-     * - Catch repository exceptions and convert to NotFoundException
-     * - Reasoning: "queryForObject throws EmptyResultDataAccessException when no item exists"
-     */
     public Item getItemById(int id) {
+        if (id <= 0) {
+            throw new BadRequestException("Invalid item id");
+        }
+
+
         try {
             return itemRepository.findItemById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new DatabaseOperationException("Nothing to show", e);
+            throw new NotFoundException("Nothing to show for item with id: " + id);
+        } catch (DataAccessException e) {
+            throw new DatabaseOperationException("Database error while loading item", e);
         }
     }
 
