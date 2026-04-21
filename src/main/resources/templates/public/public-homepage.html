@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Welcome</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" th:href="@{/style.css}">
     <link rel="icon" th:href="@{/images/greenwish-favicon.png}">
 </head>
-<body>
-<div th:replace="fragments/header :: header">...</div>
+<body class="homepage">
+<div th:replace="fragments/header :: header"></div>
 <img class="HomePageLogo" th:src="@{/images/WISHLIST_LOGO.png}" alt="Logo">
 <h3>GET STARTED WITH GREENWISH</h3>
 <h1>All your wishes gathered in one place</h1>

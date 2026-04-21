@@ -3,24 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>All Wishlists</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
     <link rel="icon" th:href="@{/images/greenwish-favicon.png}">
 </head>
 <body>
-<div th:replace="fragments/header :: header">...</div>
+<div th:replace="fragments/header :: header"></div>
+<div class="content-box">
 <p th:if="${nothingToShow}" class="error">There are no wishlists owned by this username</p>
 <ul>
-    <li th:each="wishlist : ${wishlists}">
-        <a th:href="@{/wishlist/{id}(id=${wishlist.id})}">
-            <strong th:text="${wishlist.title}">Wishlist name</strong>
-        </a>
-        <form th:if="${isOwner}" th:action="@{/wishlist/{wishlistId}/delete(wishlistId=${wishlist.id})}" method="post">
-            <button type="submit" style="color:red">Delete Wishlist</button>
-        </form>
+    <li class="wishlist-row" th:each="wishlist : ${wishlists}">
+        <div class="wishlist-header">
+            <a th:href="@{/wishlist/{id}(id=${wishlist.id})}">
+                <strong th:text="${wishlist.title}"></strong>
+            </a>
+
+            <form th:if="${isOwner}"
+                  th:action="@{/wishlist/{wishlistId}/delete(wishlistId=${wishlist.id})}"
+                  method="post">
+                <button class="btn btn-sm btn-danger">Delete</button>
+            </form>
+        </div>
     </li>
 </ul>
 
 
 <button th:if="${isOwner}" type="button" onclick="window.location.href='/wishlist/new'">Create New Wishlist</button>
-
+</div>
 </body>
 </html>

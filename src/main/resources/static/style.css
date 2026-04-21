@@ -165,4 +165,257 @@ button:hover,
 
 .img-link {
     display: inline-block;
+.navbar {
+    width: 100%;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(6px);
+    position: sticky;
+    top: 0;
+}
+
+body:not(.homepage) {
+    background-image: none;
+    background-color: #f5f1eb;
+}
+
+.content-box p,
+.content-box label,
+.content-box span,
+.content-box strong {
+    color: #2e2e2e;
+    text-align: left;
+}
+
+.content-box h2,
+.content-box h3 {
+    text-align: center;
+    color: #6b705c;
+}
+
+ul li {
+    background: #ffffffee; /* slightly transparent white */
+    backdrop-filter: blur(4px);
+    padding: 20px;
+    border-radius: 12px;
+    margin: 16px auto;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+ul li strong {
+    font-size: 20px;
+    color: #6b705c;
+    margin-bottom: 8px;
+}
+
+ul li span,
+ul li p {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.navbar {
+    width: 100%;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(6px);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-sizing: border-box;
+    flex-wrap: wrap;
+}
+
+.nav-left,
+.nav-center,
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-center {
+    flex: 1;
+    justify-content: center;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: flex-end;
+    flex-shrink: 0;
+}
+
+/* Search bar styling */
+.searchbar input {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #bbb;
+    width: 180px;
+    background: white;
+}
+
+.searchbar button {
+    padding: 8px 14px;
+    border-radius: 6px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+form input,
+form textarea {
+    width: 100%;
+}
+
+.navbar button {
+    background-color: transparent;
+    border: 2px solid #6b705c;
+    color: #2e2e2e;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.navbar button:hover {
+    background-color: #6b705c;
+    color: white;
+}
+.content-box form {
+    margin-top: 20px;
+}
+/* Primary action button */
+.btn {
+    background-color: #6b705c;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color .2s ease, transform .15s ease;
+}
+
+.btn:hover {
+    background-color: #5a5f4b;
+    transform: translateY(-2px);
+}
+
+/* Secondary (outline) button */
+.btn-outline {
+    background-color: transparent;
+    border: 2px solid #6b705c;
+    color: #2e2e2e;
+}
+
+.btn-outline:hover {
+    background-color: #6b705c;
+    color: white;
+}
+
+/* Danger button */
+.btn-danger {
+    background-color: #b33939;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #922c2c;
+}
+
+/* Small button variant */
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+.item-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.item-actions form {
+    margin: 0; /* prevent form from adding spacing */
+}
+
+.btn-danger {
+    background-color: #b33939;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.btn-danger:hover {
+    background-color: #922c2c;
+}
+
+.btn-danger {
+    background-color: #a84a4a;
+}
+.btn-danger:hover {
+    background-color: #8c3d3d;
+}
+
+.delete-wishlist-form {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+
+.wishlist-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* --- FINAL CLEANUP FIXES --- */
+
+/* Wishlist list rows */
+.wishlist-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background: #ffffffee;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.wishlist-row form {
+    margin: 0;
+}
+
+/* Final unified danger button */
+.btn-danger {
+    background-color: #b33939;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.btn-danger:hover {
+    background-color: #922c2c;
 }
