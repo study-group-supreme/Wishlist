@@ -148,6 +148,18 @@ public class WishlistRepository {
         return jdbc.update(sql, wishlist.getId(), member.getId(), wishlist.getOwner_id());
     }
 
+    public List<Wishlist> fetchSavedWishlists(Member member){
+        String sql = """
+                SELECT wishlist.id, wishlist.member_id, wishlist.title, wishlist.description, wishlist.is_public
+                FROM saved_wishlist
+                JOIN wishlist
+                ON wishlist.id = saved_wishlist.wishlist_id
+                WHERE saved_wishlist.member_id = ?
+                """;
+
+        return jdbc.query(sql, wishlistRowMapper, member.getId());
+    }
+
 }
 
 
