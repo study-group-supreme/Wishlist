@@ -103,24 +103,48 @@ public class WishlistService {
         return wishlistRepository.getAllWishlists();
     }
 
-    @Transactional
-    public Wishlist createNewWishlist(Wishlist wishlist) {
+    // catches ALL exceptions
+//    @Transactional
+//    public Wishlist createNewWishlist(Wishlist wishlist) {
+//
+//        // Validate title
+//        if (wishlist.getTitle() == null || wishlist.getTitle().isBlank()) {
+//            throw new BadRequestException("Title cannot be empty");
+//        }
+//
+//        if (wishlist.getTitle().length() > 100) {
+//            throw new BadRequestException("Wishlist title cannot exceed 100 characters");
+//        }
+//
+//        // Validate description
+//        if (wishlist.getDescription() != null && wishlist.getDescription().length() > 255) {
+//            throw new BadRequestException("Description cannot exceed 255 characters");
+//        }
+//
+//        // Validate owner
+//        if (wishlist.getOwner_id() <= 0) {
+//            throw new BadRequestException("Wishlist must have a valid owner");
+//        }
+//
+//        try {
+//            wishlistRepository.insertWishlist(wishlist);
+//            return wishlistRepository.findWishlistById(wishlist.getId());
+//        } catch (Exception e) {
+//            throw new BadRequestException("Could not create wishlist: " + e.getMessage());
+//        }
+//    }
 
-        // Validate title
-        if (wishlist.getTitle() == null || wishlist.getTitle().isBlank()) {
+    @Transactional
+    public Wishlist createNewWishlist(Wishlist wishlist){
+        if (wishlist.getTitle() == null || wishlist.getTitle().isBlank()){
             throw new BadRequestException("Title cannot be empty");
         }
-
         if (wishlist.getTitle().length() > 100) {
             throw new BadRequestException("Wishlist title cannot exceed 100 characters");
         }
-
-        // Validate description
         if (wishlist.getDescription() != null && wishlist.getDescription().length() > 255) {
             throw new BadRequestException("Description cannot exceed 255 characters");
         }
-
-        // Validate owner
         if (wishlist.getOwner_id() <= 0) {
             throw new BadRequestException("Wishlist must have a valid owner");
         }
@@ -128,8 +152,8 @@ public class WishlistService {
         try {
             wishlistRepository.insertWishlist(wishlist);
             return wishlistRepository.findWishlistById(wishlist.getId());
-        } catch (Exception e) {
-            throw new BadRequestException("Could not create wishlist: " + e.getMessage());
+        } catch (DataAccessException e) {
+            throw new DatabaseOperationException("Database error while creating wishlist", e);
         }
     }
 
