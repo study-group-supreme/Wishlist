@@ -160,4 +160,28 @@ public class WishlistRepositoryTest {
 
         assertThat(count).isEqualTo(0);
     }
+
+    @Test
+    void addItemToWishlist_insertsRowCorrectly() {
+        jdbcTemplate.update("INSERT INTO item (title, description) VALUES ('JUnit Item', 'Test Desc')");
+        int newItemId = jdbcTemplate.queryForObject("SELECT MAX(id) FROM item", Integer.class);
+
+        int wishlistId = 1;
+
+        String note = "JUnit note";
+        String url = "http://example.com";
+        long price = 999;
+
+        int rows = wishlistRepository.addItemToWishlist(wishlistId, newItemId, note, url, price);
+
+        assertThat(rows).isEqualTo(1);
+
+        Integer count = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM wishlist_item WHERE wishlist_id = ? AND item_id = ?",
+                Integer.class,
+                wishlistId, newItemId
+        );
+
+        assertThat(count).isEqualTo(1);
+    }
 }
