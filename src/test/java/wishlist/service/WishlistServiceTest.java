@@ -154,6 +154,19 @@ public class WishlistServiceTest {
     }
 
     @Test
+    void createNewWishlist_throwsDatabaseOperationException_whenDbFails() {
+        Wishlist w = new Wishlist();
+        w.setTitle("Title");
+        w.setOwner_id(1);
+
+        doThrow(new org.springframework.dao.DataAccessResourceFailureException("DB down"))
+                .when(wishlistRepository).insertWishlist(w);
+
+        assertThrows(DatabaseOperationException.class,
+                () -> wishlistService.createNewWishlist(w));
+    }
+
+    @Test
     void createNewWishlist_throwsBadRequest_whenOwnerInvalid() {
         // owner ID must be positive
         Wishlist w = new Wishlist();
