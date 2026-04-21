@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.EmptyResultDataAccessException;
 import wishlist.exception.BadRequestException;
+import wishlist.exception.DatabaseOperationException;
 import wishlist.exception.NotFoundException;
 import wishlist.repository.MemberRepository;
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,5 +33,13 @@ public class MemberServiceTest {
                 .thenThrow(new EmptyResultDataAccessException(1));
 
         assertThrows(NotFoundException.class, () -> memberService.getById(5));
+    }
+
+    @Test
+    void getById_throwsDatabaseOperationException_whenDbFails() {
+        when(memberRepository.findById(1))
+                .thenThrow(new org.springframework.dao.DataAccessResourceFailureException("DB down"));
+
+        assertThrows(DatabaseOperationException.class, () -> memberService.getById(1));
     }
 }
