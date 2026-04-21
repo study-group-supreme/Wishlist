@@ -90,6 +90,15 @@ public class WishlistServiceTest {
     }
 
     @Test
+    void getByTitle_throwsDatabaseOperationException_whenDbFails() {
+        when(wishlistRepository.findWishlistByTitle("Hello"))
+                .thenThrow(new org.springframework.dao.DataAccessResourceFailureException("DB down"));
+
+        assertThrows(DatabaseOperationException.class,
+                () -> wishlistService.getByTitle("Hello"));
+    }
+
+    @Test
     void getByOwnerId_throwsBadRequest_whenOwnerInvalid() {
         // Owner ID must be positive, 0 means broken session or bug
         assertThrows(BadRequestException.class, () -> wishlistService.getByOwnerId(0));
