@@ -89,7 +89,14 @@ public class WishlistService {
 
     public List<Item> getItemsFromWishlistByWishlistId(int id) {
         getById(id); //Ensure wishlist exists
-        return wishlistRepository.fetchItemsByWishlistId(id);
+
+        try {
+            return wishlistRepository.fetchItemsByWishlistId(id);
+        } catch (DataAccessException e) {
+            throw new DatabaseOperationException("Database error while loading items");
+        }
+
+
     }
 
     public List<Wishlist> getAllWishlists() {
