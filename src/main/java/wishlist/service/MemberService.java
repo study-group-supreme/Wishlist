@@ -72,18 +72,25 @@ public class MemberService {
         }
     }
 
-    /**
-     * TODO: Add validation before inserting:
-     * - username not blank
-     * - password not blank
-     * - email valid format
-     * - name not blank
-     * <p>
-     * TODO: Catch SQL exceptions (duplicate username/email)
-     * - Convert to BadRequestException with a friendly message
-     */
     @Transactional
     public Member create(Member member) {
+        // TODO: are these checked for at template-level actually???
+//        if (member.getUsername() == null || member.getUsername().isBlank()) {
+//            throw new BadRequestException("Username cannot be empty");
+//        }
+//        if (member.getPassword() == null || member.getPassword().isBlank()) {
+//            throw new BadRequestException("Password cannot be empty");
+//        }
+//        if (member.getName() == null || member.getName().isBlank()) {
+//            throw new BadRequestException("Name cannot be empty");
+//        }
+//        if (member.getEmail() == null || member.getEmail().isBlank()) {
+//            throw new BadRequestException("Email cannot be empty");
+//        }
+//        if (!member.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+//            throw new BadRequestException("Invalid email format");
+//        }
+
         try {
             memberRepository.insertMember(member);
             return memberRepository.findByUsername(member.getUsername());
@@ -94,34 +101,47 @@ public class MemberService {
         }
     }
 
-    /**
-     * TODO: Add validation:
-     * - Same rules as create()
-     * - Ensure member exists before updating
-     * - Catch SQL exceptions and convert to BadRequestException
-     */
-    // TODO: For updateMember:
-    // 1. Load existing member using getById()
-    // 2. Validate username, email, password, name
-    // 3. Apply only allowed fields (e.g., do NOT overwrite id)
-    // 4. Save using memberRepository.updateMember(existing)
-    // 5. Return the updated member
-    //
-    // Reason: Members have sensitive fields (username, email, password).
-    // We must prevent accidental or malicious overwrites.
     @Transactional
     public Member update(Member member) {
-        getByEmail(member.getEmail());
-        getById(member.getId());
-        getByUsername(member.getUsername());
+        Member existing = getById(member.getId());
+
+            // TODO: is this needed? is it checked for on template-level?
+//        if (member.getUsername() == null || member.getUsername().isBlank()) {
+//            throw new BadRequestException("Username cannot be empty");
+//        }
+//        if (member.getPassword() == null || member.getPassword().isBlank()) {
+//            throw new BadRequestException("Password cannot be empty");
+//        }
+//        if (member.getName() == null || member.getName().isBlank()) {
+//            throw new BadRequestException("Name cannot be empty");
+//        }
+//        if (member.getEmail() == null || member.getEmail().isBlank()) {
+//            throw new BadRequestException("Email cannot be empty");
+//        }
+//        if (!member.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+//            throw new BadRequestException("Invalid email format");
+//        }
+
+        // Prevent duplicate username/email
+        Member byUsername = memberRepository.findByUsername(member.getUsername());
+        if (byUsername != null && byUsername.getId() != member.getId()) {
+            throw new DuplicateMemberException("Username already taken");
+        }
+
+        Member byEmail = memberRepository.findByEmail(member.getEmail());
+        if (byEmail != null && byEmail.getId() != member.getId()) {
+            throw new DuplicateMemberException("Email already registered");
+        }
 
         try {
-
             memberRepository.updateMember(member);
             return memberRepository.findById(member.getId());
         } catch (EmptyResultDataAccessException e) {
-            throw new NotFoundException("The account you are trying to update, does not exit. Please Tru again");
+            throw new NotFoundException("The account you are trying to update, does not exit. Please Try again");
+        } catch (DataAccessException e) {
+            throw new DatabaseOperationException("Database error while updating member", e);
         }
+
     }
 
     /**
