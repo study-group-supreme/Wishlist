@@ -1,23 +1,32 @@
 package wishlist.service;
 
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import wishlist.exception.BadRequestException;
+import wishlist.exception.DatabaseOperationException;
 import wishlist.exception.NotFoundException;
 import wishlist.model.Item;
+import wishlist.model.Member;
 import wishlist.model.Wishlist;
 import wishlist.repository.ItemRepository;
+import wishlist.repository.MemberRepository;
 import wishlist.repository.WishlistRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class WishlistService {
     private final WishlistRepository wishlistRepository;
     private final ItemRepository itemRepository;
+    private final MemberRepository memberRepository;
 
-    public WishlistService(WishlistRepository wishlistRepository, ItemRepository itemRepository) {
+    public WishlistService(WishlistRepository wishlistRepository, ItemRepository itemRepository, MemberRepository memberRepository) {
         this.wishlistRepository = wishlistRepository;
         this.itemRepository = itemRepository;
+        this.memberRepository = memberRepository;
     }
 
     public Wishlist getById(int id) {
@@ -58,6 +67,7 @@ public class WishlistService {
         return wishlistRepository.getAllWishlists();
     }
 
+    @Transactional
     public Wishlist createNewWishlist(Wishlist wishlist) {
 
         // Validate title
@@ -93,6 +103,7 @@ public class WishlistService {
         return deletedWishlist;
     }
 
+    @Transactional
     public Wishlist updateWishlist(Wishlist wishlist) {
         // Ensure it exists
         Wishlist existing = getById(wishlist.getId());
@@ -119,6 +130,7 @@ public class WishlistService {
         return existing;
     }
 
+    @Transactional
     public Item addNewItemToWishlist(int wishlistId, Item item) {
         Wishlist wishlist = getById(wishlistId);
 
@@ -142,6 +154,7 @@ public class WishlistService {
         return removedItem;
     }
 
+    @Transactional
     public Item updateItemInWishlist(int wishlistId, Item item){
         getById(wishlistId);
 
@@ -156,5 +169,22 @@ public class WishlistService {
         );
 
         return itemRepository.findItemById(item.getId());
+    }
+
+    //Andreas trying stuffs about searching
+    public List<Wishlist> getWishlistByOwnerUsername(String username){
+        try {
+            Member owner = memberRepository.findByUsername(username);
+            List<Wishlist> ownerList= getByOwnerId(owner.getId());
+            List<Wishlist> publicList = new ArrayList<>();
+            for(Wishlist wishlist : ownerList){
+                if(wishlist.isPublic())
+                    publicList.add(wishlist);
+            }
+            return publicList;
+
+        } catch (EmptyResultDataAccessException e){
+            throw new NotFoundException("No wishlists where found for this username");
+        }
     }
 }

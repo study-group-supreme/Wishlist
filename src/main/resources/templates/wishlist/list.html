@@ -12,14 +12,14 @@
         <a th:href="@{/wishlist/{id}(id=${wishlist.id})}">
             <strong th:text="${wishlist.title}">Wishlist name</strong>
         </a>
-        <form th:action="@{/wishlist/{wishlistId}/delete(wishlistId=${wishlist.id})}" method="post">
+        <form th:if="${isOwner}" th:action="@{/wishlist/{wishlistId}/delete(wishlistId=${wishlist.id})}" method="post">
             <button type="submit" style="color:red">Delete Wishlist</button>
         </form>
     </li>
 </ul>
 
 
-<button type="button" onclick="window.location.href='/wishlist/new'">Create New Wishlist</button>
+<button th:if="${isOwner}" type="button" onclick="window.location.href='/wishlist/new'">Create New Wishlist</button>
 
 </body>
 </html>
