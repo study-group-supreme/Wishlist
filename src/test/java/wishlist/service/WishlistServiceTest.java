@@ -53,6 +53,15 @@ public class WishlistServiceTest {
     }
 
     @Test
+    void getById_throwsDatabaseOperationException_whenDbFails() {
+        when(wishlistRepository.findWishlistById(1))
+                .thenThrow(new org.springframework.dao.DataAccessResourceFailureException("DB down"));
+
+        assertThrows(DatabaseOperationException.class,
+                () -> wishlistService.getById(1));
+    }
+
+    @Test
     void getByTitle_returnsWishlist_whenFound() {
         Wishlist wishlist = new Wishlist();
         wishlist.setId(1);
