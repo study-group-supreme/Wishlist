@@ -1,4 +1,4 @@
-# 🤝 Bidrag til Bæredygtig Ønskesky
+# 🤝 Bidrag til GreenWish
 
 Tak fordi du overvejer at bidrage til projektet! 💚
 
