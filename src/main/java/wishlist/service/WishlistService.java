@@ -80,7 +80,11 @@ public class WishlistService {
         if (ownerId <= 0) {
             throw new BadRequestException("Invalid owner id");
         }
-        return wishlistRepository.findWishlistByOwnerId(ownerId);
+        try {
+            return wishlistRepository.findWishlistByOwnerId(ownerId);
+        } catch (DataAccessException e) {
+            throw new DatabaseOperationException("Database error while loading owner wishlists", e);
+        }
     }
 
     public List<Item> getItemsFromWishlistByWishlistId(int id) {
