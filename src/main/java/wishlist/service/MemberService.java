@@ -144,20 +144,14 @@ public class MemberService {
 
     }
 
-    /**
-     * TODO: Add error handling:
-     * - Ensure member exists before deleting
-     * - Convert repository exceptions into NotFoundException
-     */
     public Member delete(int id) {
-        getById(id);
+        Member existing = getById(id);
 
         try {
-            Member deletedMember = memberRepository.findById(id);
             memberRepository.deleteById(id);
-            return deletedMember;
-        } catch (Exception e) {
-            throw new NotFoundException("Delete failed: Could not find user: " + id);
+            return existing;
+        } catch (DataAccessException e) {
+            throw new DatabaseOperationException("Database error while deleting member", e);
         }
     }
 
