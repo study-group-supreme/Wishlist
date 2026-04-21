@@ -37,10 +37,6 @@ public class ItemService {
         }
     }
 
-    /**
-     * TODO: Consider whether empty lists should be allowed or if filtering is needed.
-     * - Probably no validation needed here.
-     */
     public List<Item> getAllItems() {
         return itemRepository.getAllItems();
     }
