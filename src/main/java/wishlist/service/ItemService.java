@@ -41,20 +41,13 @@ public class ItemService {
         return itemRepository.getAllItems();
     }
 
-    /**
-     * TODO: Add validation before inserting:
-     * - name cannot be null/blank
-     * - description length <= 255
-     * - price >= 0 (if price is used)
-     * - url length <= 500 (if url is used)
-     *
-     * TODO: Wrap repository.insertItem in try/catch
-     * - Convert SQL exceptions into BadRequestException
-     *
-     * TODO: After insert, fetch the item again using getItemById
-     */
     @Transactional
     public Item createItem(Item item) {
+        // TODO: is this not checked for errors in WishlistService ... this method is not even used!?
+//        if (item.getName() == null || item.getName().isBlank()) {
+//            throw new BadRequestException("Item name cannot be empty");
+//        }
+
         try {
             itemRepository.insertItem(item);
             return itemRepository.findItemById(item.getId());
