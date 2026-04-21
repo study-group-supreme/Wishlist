@@ -227,4 +227,12 @@ public class WishlistController {
         wishlistService.followWishlist(wishlist, member);
         return "redirect:/wishlist";
     }
+
+    @GetMapping("/followed")
+    public String showFollowedWishlists(Model model, HttpSession session){
+        Member member = memberService.getById((Integer) session.getAttribute("memberId"));
+        List<Wishlist> followedLists = wishlistService.getFollowedWishlists(member);
+        model.addAttribute("followedLists", followedLists);
+        return "wishlist/followed";
+    }
 }
