@@ -170,18 +170,14 @@ public class WishlistService {
 
     @Transactional
     public Wishlist updateWishlist(Wishlist wishlist) {
-        // Ensure it exists
         Wishlist existing = getById(wishlist.getId());
 
-        // Validate title
         if (wishlist.getTitle() == null || wishlist.getTitle().isBlank()) {
             throw new BadRequestException("Title cannot be empty");
         }
         if (wishlist.getTitle().length() > 100) {
             throw new BadRequestException("Wishlist title cannot exceed 100 characters");
         }
-
-        // Validate description
         if (wishlist.getDescription() != null && wishlist.getDescription().length() > 255) {
             throw new BadRequestException("Description cannot exceed 255 characters");
         }
@@ -191,8 +187,13 @@ public class WishlistService {
         existing.setDescription(wishlist.getDescription());
         existing.setPublic(wishlist.isPublic());
 
-        wishlistRepository.update(existing);
-        return existing;
+        try {
+            wishlistRepository.update(existing);
+            return existing;
+        } catch (DataAccessException e){
+            throw new DatabaseOperationException("Database error while updating wishlist", e);
+        }
+
     }
 
     @Transactional
