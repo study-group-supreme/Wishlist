@@ -29,25 +29,50 @@ public class WishlistService {
         this.memberRepository = memberRepository;
     }
 
-    public Wishlist getById(int id) {
+    // issue: catches ALL exceptions (Exception e), hides real DB errors
+//    public Wishlist getById(int id) {
+//        try {
+//            return wishlistRepository.findWishlistById(id);
+//        } catch (Exception e) {
+//            throw new NotFoundException("The wishlist could not load.");
+//        }
+//    }
+
+    public Wishlist getById(int id){
         try {
             return wishlistRepository.findWishlistById(id);
-        } catch (Exception e) {
-            throw new NotFoundException("The wishlist could not load.");
+        } catch (EmptyResultDataAccessException e) {
+            throw new NotFoundException("Wishlist not found for id: "+ id);
+        } catch (DataAccessException e) {
+            throw new DatabaseOperationException("Database error while loading wishlist", e);
         }
     }
 
+    // Exception e catches all exceptions
+//    public Wishlist getByTitle(String title) {
+//        if (title == null || title.isBlank()) {
+//            throw new BadRequestException("Title cannot be empty");
+//        }
+//
+//        try {
+//            return wishlistRepository.findWishlistByTitle(title);
+//        } catch (Exception e) {
+//            throw new NotFoundException("Could not find wishlist with title: '" + title);
+//        }
+//    }
+
     public Wishlist getByTitle(String title) {
         if (title == null || title.isBlank()) {
-            throw new BadRequestException("Title cannot be empty");
+            throw new BadRequestException("Tile cannot be empty");
         }
 
         try {
             return wishlistRepository.findWishlistByTitle(title);
-        } catch (Exception e) {
-            throw new NotFoundException("Could not find wishlist with title: '" + title);
+        } catch (EmptyResultDataAccessException e) {
+            throw new NotFoundException("No wishlist found with title: "+title);
+        } catch (DataAccessException e){
+            throw new DatabaseOperationException("Database error while searching by title", e);
         }
-
     }
 
     public List<Wishlist> getByOwnerId(int ownerId) {
