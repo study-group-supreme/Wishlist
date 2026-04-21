@@ -5,9 +5,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.EmptyResultDataAccessException;
 import wishlist.exception.BadRequestException;
+import wishlist.exception.NotFoundException;
 import wishlist.repository.MemberRepository;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class MemberServiceTest {
@@ -21,5 +24,13 @@ public class MemberServiceTest {
     @Test
     void getById_throwsBadRequest_whenIdInvalid() {
         assertThrows(BadRequestException.class, () -> memberService.getById(0));
+    }
+
+    @Test
+    void getById_throwsNotFound_whenMemberMissing() {
+        when(memberRepository.findById(5))
+                .thenThrow(new EmptyResultDataAccessException(1));
+
+        assertThrows(NotFoundException.class, () -> memberService.getById(5));
     }
 }
