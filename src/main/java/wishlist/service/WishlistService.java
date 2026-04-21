@@ -242,17 +242,23 @@ public class WishlistService {
     public Item updateItemInWishlist(int wishlistId, Item item){
         getById(wishlistId);
 
-        itemRepository.updateItem(item);
+        if (item.getName() == null || item.getName().isBlank()) {
+            throw new BadRequestException("Item title cannot be empty");
+        }
 
-        wishlistRepository.updateWishlistItem(
-                wishlistId,
-                item.getId(),
-                item.getNote(),
-                item.getUrl(),
-                item.getPrice()
-        );
-
-        return itemRepository.findItemById(item.getId());
+        try {
+            itemRepository.updateItem(item);
+            wishlistRepository.updateWishlistItem(
+                    wishlistId,
+                    item.getId(),
+                    item.getNote(),
+                    item.getUrl(),
+                    item.getPrice()
+            );
+            return itemRepository.findItemById(item.getId());
+        } catch (DataAccessException e) {
+            throw new DatabaseOperationException("Database error while updating item", e);
+        }
     }
 
     //Andreas trying stuffs about searching
