@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Member</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
     <link rel="icon" th:href="@{/images/greenwish-favicon.png}">
 </head>
 <body>
-<div th:replace="fragments/header :: header">...</div>
+<div th:replace="fragments/header :: header"></div>
+<div class="content-box">
 <form th:action="@{/member/edit}" th:object="${member}" method="post">
     <input type="hidden" th:field="*{id}">
     <br>
@@ -33,5 +35,6 @@
     <button type="submit">Update information</button>
 </form>
     <button type="button" onclick="window.location.href='/wishlist'">Cancel</button>
+</div>
 </body>
 </html>

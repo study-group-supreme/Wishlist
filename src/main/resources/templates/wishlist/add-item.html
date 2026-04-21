@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Add Item</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 <body>
-<div th:replace="~{fragments/header :: header}"></div>
-
+<div th:replace="fragments/header :: header"></div>
+<div class="content-box">
 <h2>Add Item to Wishlist</h2>
 
 <form th:action="@{/wishlist/{wishlistId}/items(wishlistId=${wishlistId})}"
@@ -44,5 +45,6 @@
 <button th:onclick="'window.location.href=\'/wishlist/' + ${wishlistId} + '\''">
     Cancel
 </button>
+</div>
 </body>
 </html>
