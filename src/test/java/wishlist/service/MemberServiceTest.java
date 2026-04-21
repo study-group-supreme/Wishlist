@@ -54,4 +54,9 @@ public class MemberServiceTest {
 
         assertThrows(NotFoundException.class, () -> memberService.getByUsername("missing"));
     }
+
+    @Test
+    void getByEmail_throwsBadRequest_whenEmailInvalid() {
+        assertThrows(BadRequestException.class, () -> memberService.getByEmail("not-an-email"));
+    }
 }
