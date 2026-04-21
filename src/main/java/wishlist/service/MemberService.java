@@ -4,6 +4,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import wishlist.exception.BadRequestException;
 import wishlist.exception.DatabaseOperationException;
 import wishlist.exception.DuplicateMemberException;
@@ -77,6 +78,7 @@ public class MemberService {
      * TODO: Catch SQL exceptions (duplicate username/email)
      * - Convert to BadRequestException with a friendly message
      */
+    @Transactional
     public Member create(Member member) {
         getByEmail(member.getEmail());
         getById(member.getId());
@@ -106,6 +108,7 @@ public class MemberService {
     //
     // Reason: Members have sensitive fields (username, email, password).
     // We must prevent accidental or malicious overwrites.
+    @Transactional
     public Member update(Member member) {
         getByEmail(member.getEmail());
         getById(member.getId());
