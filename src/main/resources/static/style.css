@@ -157,3 +157,12 @@ button:hover,
         transform: translateY(0);
     }
 }
+.img-link img {
+    width: 40px;
+    height: auto;
+    cursor: pointer;
+}
+
+.img-link {
+    display: inline-block;
+}
