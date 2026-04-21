@@ -93,7 +93,7 @@ public class WishlistService {
         try {
             return wishlistRepository.fetchItemsByWishlistId(id);
         } catch (DataAccessException e) {
-            throw new DatabaseOperationException("Database error while loading items");
+            throw new DatabaseOperationException("Database error while loading items", e);
         }
 
 
