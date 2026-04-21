@@ -35,20 +35,20 @@ public class MemberService {
         }
     }
 
-    /**
-     * TODO: Add validation:
-     * - username cannot be null/blank
-     * - Catch repository exceptions and convert to NotFoundException
-     */
     public Member getByUsername(String username) {
-        try {
-            if (username != null) {
-                return memberRepository.findByUsername(username);
-            }
-        } catch (Exception e) {
-            throw new NotFoundException("No account with this username found: " + username);
+        if (username == null || username.isBlank()) {
+            throw new BadRequestException("Username cannot be empty");
         }
-        return null;
+
+        try {
+            Member member = memberRepository.findByUsername(username);
+            if (member == null) {
+                throw new NotFoundException("No account found with username: " + username);
+            }
+            return member;
+        } catch (DataAccessException e) {
+            throw new DatabaseOperationException("Database error while searching by username", e);
+        }
     }
 
     /**
