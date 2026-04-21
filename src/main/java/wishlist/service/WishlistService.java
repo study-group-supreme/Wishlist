@@ -198,5 +198,9 @@ public class WishlistService {
         }
     }
 
+    public List<Wishlist> getFollowedWishlists(Member member){
+        return wishlistRepository.fetchSavedWishlists(member);
+    }
+
 
 }
