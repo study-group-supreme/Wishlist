@@ -11,6 +11,7 @@ import wishlist.exception.DatabaseOperationException;
 import wishlist.exception.NotFoundException;
 import wishlist.model.Item;
 import wishlist.model.Wishlist;
+import wishlist.repository.ItemRepository;
 import wishlist.repository.WishlistRepository;
 
 import java.util.List;
@@ -24,6 +25,9 @@ public class WishlistServiceTest {
 
     @Mock
     private WishlistRepository wishlistRepository;
+
+    @Mock
+    private ItemRepository itemRepository;
 
     @InjectMocks
     private WishlistService wishlistService;
@@ -225,5 +229,15 @@ public class WishlistServiceTest {
 
         assertThrows(BadRequestException.class,
                 () -> wishlistService.addNewItemToWishlist(1, item));
+    }
+
+    @Test
+    void removeItemFromWishlist_throwsNoFound_whenItemMissing() {
+        when(wishlistRepository.findWishlistById(1)).thenReturn(new Wishlist());
+        when(itemRepository.findItemById(99))
+                .thenThrow(new EmptyResultDataAccessException(1));
+
+        assertThrows(NotFoundException.class,
+                () -> wishlistService.removeItemFromWishlist(1, 99));
     }
 }
