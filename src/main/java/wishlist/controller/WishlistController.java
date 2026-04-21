@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import wishlist.exception.NotFoundException;
 import wishlist.model.Item;
 import wishlist.model.Member;
 import wishlist.model.Wishlist;
@@ -198,13 +199,23 @@ public class WishlistController {
     }
 
     //Andreas trying stuffs with search function
-    @GetMapping("/search/{username}")
-    public String showWishlistsForUsername(Model model, @PathVariable String username, HttpSession session){
+    @GetMapping("/search")
+    public String showWishlistsForUsername(@RequestParam String username, Model model, HttpSession session){
+
         Member owner = memberService.getByUsername(username);
+
+        if(owner == null){
+            model.addAttribute("nothingToShow", true);
+            model.addAttribute("wishlists", List.of());
+            model.addAttribute("owner", null);
+            model.addAttribute("isOwner", false);
+            return "wishlist/list";
+        }
+
         int loggedInId = (Integer) session.getAttribute("memberId");
 
         List<Wishlist> publicListsForUsername = wishlistService.getWishlistByOwnerUsername(username);
-        model.addAttribute("owner", memberService.getByUsername(username));
+        model.addAttribute("owner", owner);
         model.addAttribute("wishlists", publicListsForUsername);
         model.addAttribute("isOwner", owner.getId() == loggedInId);
         return "wishlist/list";
