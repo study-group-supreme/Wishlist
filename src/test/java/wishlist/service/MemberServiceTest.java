@@ -59,4 +59,11 @@ public class MemberServiceTest {
     void getByEmail_throwsBadRequest_whenEmailInvalid() {
         assertThrows(BadRequestException.class, () -> memberService.getByEmail("not-an-email"));
     }
+
+    @Test
+    void login_returnsNull_whenUsernameMissing() {
+        when(memberRepository.findByUsername("ghost")).thenReturn(null);
+
+        assertNull(memberService.login("ghost", "pw"));
+    }
 }
