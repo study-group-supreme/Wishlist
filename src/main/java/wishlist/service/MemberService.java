@@ -74,9 +74,6 @@ public class MemberService {
      */
     @Transactional
     public Member create(Member member) {
-        getByEmail(member.getEmail());
-        getById(member.getId());
-        getByUsername(member.getUsername());
         try {
             memberRepository.insertMember(member);
             return memberRepository.findByUsername(member.getUsername());

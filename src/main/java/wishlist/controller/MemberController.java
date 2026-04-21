@@ -25,12 +25,11 @@ public class MemberController {
     }
 
     @PostMapping("/save")
-    public String registrationFormHandler(@ModelAttribute Member member, Model model, RedirectAttributes redirectAttributes, HttpSession session) {
+    public String registrationFormHandler(@ModelAttribute Member member, Model model, HttpSession session) {
         try {
             Member registeredMember = service.create(member);
             session.setAttribute("memberId", registeredMember.getId());
-            redirectAttributes.addFlashAttribute("member", registeredMember);
-            return "redirect:wishlist/list";
+            return "wishlist/list";
         } catch (DuplicateMemberException e) {
             model.addAttribute("member", member);
             model.addAttribute("errorMessage", e.getMessage());
