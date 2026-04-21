@@ -9,51 +9,55 @@
 
 <div th:replace="fragments/header :: header"></div>
 <div class="content-box">
-<h2 th:text="${wishlist.title}">Wishlist Title</h2>
-<p th:text="${wishlist.description}">Description</p>
+    <h2 th:text="${wishlist.title}">Wishlist Title</h2>
+    <p th:text="${wishlist.description}">Description</p>
 
-<h3>Items</h3>
+    <h3>Items</h3>
 
-<ul>
-    <li th:each="item : ${items}">
-        <strong th:text="${item.name}"></strong>
-        <span th:text="${item.description}"></span>
-        <span th:text="${item.price}"></span>
-        <a th:if="${!item.url.isEmpty()}" th:href="${item.url}" target="_blank">Link</a>
-        <p th:text="${item.note}"></p>
+    <ul>
+        <li th:each="item : ${items}">
+            <strong th:text="${item.name}"></strong>
+            <span th:text="${item.description}"></span>
+            <span th:text="${item.price}"></span>
+            <a th:if="${!item.url.isEmpty()}" th:href="${item.url}" target="_blank">Link</a>
+            <p th:text="${item.note}"></p>
 
-        <div class="item-actions">
-            <a class="btn btn-sm btn-outline"
-               th:if="${isOwner}"
-               th:href="@{/wishlist/{wishlistId}/items/{itemId}/edit(
+            <div class="item-actions">
+                <a class="btn btn-sm btn-outline"
+                   th:if="${isOwner}"
+                   th:href="@{/wishlist/{wishlistId}/items/{itemId}/edit(
                 wishlistId=${wishlist.id},
                 itemId=${item.id}
            )}">
-                Edit
-            </a>
+                    Edit
+                </a>
 
-            <form th:if="${isOwner}"
-                  th:action="@{/wishlist/{wishlistId}/items/{itemId}/delete(
+                <form th:if="${isOwner}"
+                      th:action="@{/wishlist/{wishlistId}/items/{itemId}/delete(
                     wishlistId=${wishlist.id},
                     itemId=${item.id}
               )}"
-                  method="post">
-                <button class="btn btn-sm btn-danger" type="submit">
-                    Remove
-                </button>
-            </form>
-        </div>
-    </li>
-</ul>
-<a class="btn btn-outline" th:if="${isOwner}" th:href="@{/wishlist/{id}/items/new(id=${wishlist.id})}">
-    Add Item
-</a>
-<form th:if="${isOwner}" th:action="@{/wishlist/{wishlistId}/edit(wishlistId=${wishlist.id})}" method="get">
-    <button type="submit">Edit Wishlist</button>
-</form>
-<form th:if="${isOwner}" th:action="@{/wishlist/{wishlistId}/delete(wishlistId=${wishlist.id})}" method="post">
-    <button class="btn btn-danger"  type="submit" >Delete Wishlist</button>
-</form>
+                      method="post">
+                    <button class="btn btn-sm btn-danger" type="submit">
+                        Remove
+                    </button>
+                </form>
+            </div>
+        </li>
+    </ul>
+    <a class="btn btn-outline" th:if="${isOwner}" th:href="@{/wishlist/{id}/items/new(id=${wishlist.id})}">
+        Add Item
+    </a>
+    <form th:if="${isOwner}" th:action="@{/wishlist/{wishlistId}/edit(wishlistId=${wishlist.id})}" method="get">
+        <button type="submit">Edit Wishlist</button>
+    </form>
+    <form th:if="${isOwner}" th:action="@{/wishlist/{wishlistId}/delete(wishlistId=${wishlist.id})}" method="post">
+        <button class="btn btn-danger" type="submit">Delete Wishlist</button>
+    </form>
+    <form th:if="${!isOwner}" th:action="@{/wishlist/follow}" th:object="${wishlist}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <button type="submit">Follow Wishlist</button>
+    </form>
 </div>
 </body>
 </html>
