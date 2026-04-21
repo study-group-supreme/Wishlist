@@ -22,11 +22,16 @@ public class MemberService {
 
 
     public Member getById(int id) {
+        if (id <= 0) {
+            throw new BadRequestException("Invalid member id");
+        }
+
         try {
             return memberRepository.findById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new NotFoundException("No members with ID under 0. Please try again");
-
+            throw new NotFoundException("Member not found with id: " + id);
+        } catch (DataAccessException e) {
+            throw new DatabaseOperationException("Database error while loading member", e);
         }
     }
 
