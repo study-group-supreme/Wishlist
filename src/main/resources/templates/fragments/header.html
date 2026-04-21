@@ -1,50 +1,52 @@
 <div th:fragment="header">
-    <nav>
-        <div class="container">
-            <a href="/" class="img-link">
-                <img src="/images/greenwish-favicon.png" alt="Home">
+    <nav class="navbar">
+
+        <!-- LEFT: Logo + Home -->
+        <div class="nav-left">
+            <a href="/" class="nav-left">
+                <img src="/images/greenwish-favicon.png" alt="Home" style="height:32px;">
             </a>
 
-            <button type="button" onclick="window.location.href='/wishlist'"
-                    th:if="${session.memberId} != null">
-                My Wishlists!
+            <button type="button"
+                    onclick="window.location.href='/wishlist'"
+                    th:if="${session.memberId != null}">
+                My Wishlists
             </button>
 
-            <button type="button" onclick="window.location.href='/member/edit'"
-                    th:if="${session.memberId} != null">
+            <button type="button"
+                    onclick="window.location.href='/member/edit'"
+                    th:if="${session.memberId != null}">
                 Edit Account
             </button>
         </div>
 
-        <!-- CENTER -->
+        <!-- CENTER: Search bar -->
         <div class="nav-center">
-            <form class="searchbar" th:action="@{/wishlist/search}" method="get">
+            <form class="searchbar" th:if="${session.memberId != null}" th:action="@{/wishlist/search}" method="get">
                 <input type="search" name="username" placeholder="Search users...">
                 <button type="submit">Go</button>
             </form>
         </div>
 
-            <button type="button" onclick="window.location.href='/member/register'"
-                    th:if="${session.memberId} == null">
+        <!-- RIGHT: Auth buttons -->
+        <div class="nav-right">
+            <button type="button"
+                    onclick="window.location.href='/member/register'"
+                    th:if="${session.memberId == null}">
                 Register
             </button>
 
-            <button type="button" onclick="window.location.href='/auth/login'"
-                    th:if="${session.memberId} == null">
+            <button type="button"
+                    onclick="window.location.href='/auth/login'"
+                    th:if="${session.memberId == null}">
                 Login
             </button>
 
-            <button type="button" onclick="window.location.href='/auth/logout'"
+            <button type="button"
+                    onclick="window.location.href='/auth/logout'"
                     th:if="${session.memberId != null}">
                 Logout
             </button>
-
-            <form th:if="${session.memberId != null}" th:action="@{/wishlist/search}" method="get">
-                <input type="search" name="username" placeholder="Search for another's lists!">
-                <button type="submit">Search</button>
-            </form>
-
-
         </div>
 
     </nav>
