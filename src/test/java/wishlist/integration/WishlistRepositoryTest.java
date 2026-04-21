@@ -141,4 +141,23 @@ public class WishlistRepositoryTest {
         assertThat(result.get("url")).isEqualTo(newUrl);
         assertThat(((Number) result.get("price")).longValue()).isEqualTo(newPrice);
     }
+
+    @Test
+    void removeItemFromWishlist_deletesRowCorrectly() {
+        int wishlistId = 1;
+        int itemId = 2;
+
+        int rows = wishlistRepository.removeItemFromWishlist(wishlistId, itemId);
+
+        assertThat(rows).isEqualTo(1);
+
+        String sql = """
+        SELECT COUNT(*) FROM wishlist_item
+        WHERE wishlist_id = ? AND item_id = ?
+        """;
+
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, wishlistId, itemId);
+
+        assertThat(count).isEqualTo(0);
+    }
 }
