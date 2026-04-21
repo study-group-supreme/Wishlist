@@ -51,19 +51,24 @@ public class MemberService {
         }
     }
 
-    /**
-     * TODO: Add validation:
-     * - email cannot be null/blank
-     * - email must contain '@'
-     * - Catch repository exceptions and convert to NotFoundException
-     */
     public Member getByEmail(String email) {
+        if (email == null || email.isBlank()) {
+            throw new BadRequestException("Email cannot be empty");
+        }
+
+        if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+            throw new BadRequestException("Invalid email format");
+        }
+
+
         try {
-            if (email != null && email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+            Member member = memberRepository.findByEmail(email);
+            if (member == null) {
+                throw new NotFoundException("No account found with email: " + email);
             }
-            return memberRepository.findByEmail(email);
-        } catch (Exception e) {
-            throw new NotFoundException("No accout with this email found " + email);
+            return member;
+        } catch (DataAccessException e) {
+            throw new DatabaseOperationException("Database error while searching by email", e);
         }
     }
 
