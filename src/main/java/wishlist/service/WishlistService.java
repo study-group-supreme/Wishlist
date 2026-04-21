@@ -197,20 +197,26 @@ public class WishlistService {
     }
 
     @Transactional
-    public Item addNewItemToWishlist(int wishlistId, Item item) {
-        Wishlist wishlist = getById(wishlistId);
+    public Item addNewItemToWishlist(int wishlistId, Item item){
+        getById(wishlistId);
 
-        itemRepository.insertItem(item);
+        if (item.getName() == null || item.getName().isBlank()) {
+            throw new BadRequestException("Item title cannot be empty");
+        }
 
-        wishlistRepository.addItemToWishlist(
-                wishlistId,
-                item.getId(),
-                item.getNote(),
-                item.getUrl(),
-                item.getPrice()
-        );
-
-        return itemRepository.findItemById(item.getId());
+        try {
+            itemRepository.insertItem(item);
+            wishlistRepository.addItemToWishlist(
+                    wishlistId,
+                    item.getId(),
+                    item.getNote(),
+                    item.getUrl(),
+                    item.getPrice()
+            );
+            return itemRepository.findItemById(item.getId());
+        } catch (DataAccessException e) {
+            throw new DatabaseOperationException("Database error while adding item to wishlist", e);
+        }
     }
 
     public Item removeItemFromWishlist(int wishlistId, int itemId){
