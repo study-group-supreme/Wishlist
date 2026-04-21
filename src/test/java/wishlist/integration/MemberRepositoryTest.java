@@ -73,6 +73,6 @@ public class MemberRepositoryTest {
         assertThat(rows).isEqualTo(1);
 
         assertThatThrownBy(() -> memberRepository.findById(1))
-                .isInstanceOf(Exception.class);
+                .isInstanceOf(org.springframework.dao.EmptyResultDataAccessException.class);
     }
 }
