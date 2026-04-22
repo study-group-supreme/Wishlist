@@ -202,5 +202,12 @@ public class WishlistService {
         return wishlistRepository.fetchSavedWishlists(member);
     }
 
+    @Transactional
+    public Wishlist unfollowWishlist(Wishlist wishlist, Member member){
+        Wishlist wishlistToRemove = wishlistRepository.findWishlistById(wishlist.getId());
+        wishlistRepository.removeSavedWishlist(wishlist, member);
+        return wishlistToRemove;
+    }
+
 
 }

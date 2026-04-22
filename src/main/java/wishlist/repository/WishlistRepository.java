@@ -160,6 +160,14 @@ public class WishlistRepository {
         return jdbc.query(sql, wishlistRowMapper, member.getId());
     }
 
+    public int removeSavedWishlist(Wishlist wishlist, Member member){
+        String sql = """
+                DELETE FROM saved_wishlist
+                WHERE wishlist_id = ? AND member_id = ?
+                """;
+        return jdbc.update(sql, wishlist.getId(), member.getId());
+    }
+
 }
 
 
