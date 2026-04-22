@@ -7,9 +7,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.EmptyResultDataAccessException;
 import wishlist.exception.BadRequestException;
+import wishlist.exception.DatabaseOperationException;
 import wishlist.exception.NotFoundException;
 import wishlist.model.Item;
 import wishlist.model.Wishlist;
+import wishlist.repository.ItemRepository;
 import wishlist.repository.WishlistRepository;
 
 import java.util.List;
@@ -23,6 +25,9 @@ public class WishlistServiceTest {
 
     @Mock
     private WishlistRepository wishlistRepository;
+
+    @Mock
+    private ItemRepository itemRepository;
 
     @InjectMocks
     private WishlistService wishlistService;
@@ -45,6 +50,15 @@ public class WishlistServiceTest {
 
         assertThrows(NotFoundException.class,
                 () -> wishlistService.getById(99));
+    }
+
+    @Test
+    void getById_throwsDatabaseOperationException_whenDbFails() {
+        when(wishlistRepository.findWishlistById(1))
+                .thenThrow(new org.springframework.dao.DataAccessResourceFailureException("DB down"));
+
+        assertThrows(DatabaseOperationException.class,
+                () -> wishlistService.getById(1));
     }
 
     @Test
@@ -76,6 +90,15 @@ public class WishlistServiceTest {
     }
 
     @Test
+    void getByTitle_throwsDatabaseOperationException_whenDbFails() {
+        when(wishlistRepository.findWishlistByTitle("Hello"))
+                .thenThrow(new org.springframework.dao.DataAccessResourceFailureException("DB down"));
+
+        assertThrows(DatabaseOperationException.class,
+                () -> wishlistService.getByTitle("Hello"));
+    }
+
+    @Test
     void getByOwnerId_throwsBadRequest_whenOwnerInvalid() {
         // Owner ID must be positive, 0 means broken session or bug
         assertThrows(BadRequestException.class, () -> wishlistService.getByOwnerId(0));
@@ -93,6 +116,15 @@ public class WishlistServiceTest {
 
         assertEquals(1, result.size());
         assertEquals(1, result.get(0).getId());
+    }
+
+    @Test
+    void getByOwnerId_throwsDatabaseOperationExcetion_whenDbFails() {
+        when(wishlistRepository.findWishlistByOwnerId(5))
+                .thenThrow(new org.springframework.dao.DataAccessResourceFailureException("DB down"));
+
+        assertThrows(DatabaseOperationException.class,
+                () -> wishlistService.getByOwnerId(5));
     }
 
     @Test
@@ -119,6 +151,19 @@ public class WishlistServiceTest {
         w.setOwner_id(1);
 
         assertThrows(BadRequestException.class, () -> wishlistService.createNewWishlist(w));
+    }
+
+    @Test
+    void createNewWishlist_throwsDatabaseOperationException_whenDbFails() {
+        Wishlist w = new Wishlist();
+        w.setTitle("Title");
+        w.setOwner_id(1);
+
+        doThrow(new org.springframework.dao.DataAccessResourceFailureException("DB down"))
+                .when(wishlistRepository).insertWishlist(w);
+
+        assertThrows(DatabaseOperationException.class,
+                () -> wishlistService.createNewWishlist(w));
     }
 
     @Test
@@ -214,4 +259,78 @@ public class WishlistServiceTest {
         assertEquals(existing, result);
 
     }
+
+    @Test
+    void addNewItemToWishlist_throwsBadRequest_whenItemNameEmpty() {
+        Item item = new Item();
+        item.setName("");
+
+        when(wishlistRepository.findWishlistById(1)).thenReturn(new Wishlist());
+
+        assertThrows(BadRequestException.class,
+                () -> wishlistService.addNewItemToWishlist(1, item));
+    }
+
+    @Test
+    void addNewItemToWishlist_throwsDatabaseOperationException_whenDbFails() {
+        Item item = new Item();
+        item.setName("Title");
+
+        when(wishlistRepository.findWishlistById(1)).thenReturn(new Wishlist());
+
+        doThrow(new org.springframework.dao.DataAccessResourceFailureException("DB down"))
+                .when(itemRepository).insertItem(item);
+
+        assertThrows(DatabaseOperationException.class,
+                () -> wishlistService.addNewItemToWishlist(1, item));
+    }
+
+    @Test
+    void removeItemFromWishlist_throwsNoFound_whenItemMissing() {
+        when(wishlistRepository.findWishlistById(1)).thenReturn(new Wishlist());
+        when(itemRepository.findItemById(99))
+                .thenThrow(new EmptyResultDataAccessException(1));
+
+        assertThrows(NotFoundException.class,
+                () -> wishlistService.removeItemFromWishlist(1, 99));
+    }
+
+    @Test
+    void removeItemFromWishlist_throwsDatabaseOperationException_whenDbFails() {
+        when(wishlistRepository.findWishlistById(1)).thenReturn(new Wishlist());
+        when(itemRepository.findItemById(1)).thenReturn(new Item());
+
+        doThrow(new org.springframework.dao.DataAccessResourceFailureException("DB down"))
+                .when(wishlistRepository).removeItemFromWishlist(1, 1);
+
+        assertThrows(DatabaseOperationException.class,
+                () -> wishlistService.removeItemFromWishlist(1, 1));
+    }
+
+    @Test
+    void updateItemInWishlist_throwsBadRequest_whenItemNameEmpty() {
+        Item item = new Item();
+        item.setName("");
+
+        when(wishlistRepository.findWishlistById(1)).thenReturn(new Wishlist());
+
+        assertThrows(BadRequestException.class,
+                () -> wishlistService.updateItemInWishlist(1, item));
+    }
+
+    @Test
+    void updateItemInWishlist_throwsDatabaseOperationException_whenDbFails() {
+        Item item = new Item();
+        item.setId(1);
+        item.setName("Valid");
+
+        when(wishlistRepository.findWishlistById(1)).thenReturn(new Wishlist());
+
+        doThrow(new org.springframework.dao.DataAccessResourceFailureException("DB down"))
+                .when(itemRepository).updateItem(item);
+
+        assertThrows(DatabaseOperationException.class,
+                () -> wishlistService.updateItemInWishlist(1, item));
+    }
+
 }

@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,6 +21,9 @@ public class WishlistRepositoryTest {
 
     @Autowired
     private WishlistRepository wishlistRepository;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Test
     void findById_returnsCorrectWishlist() {
@@ -108,8 +110,77 @@ public class WishlistRepositoryTest {
     }
     @Test
     void fetchItemsByWishlistTitle_returnsAllItemsFromDBWithMatchingKeywordAndId(){
-        List<Item> items = wishlistRepository.fetchItemsInWishlistByTitel(1, "size");
+        List<Item> items = wishlistRepository.fetchItemsInWishlistByTitle(1, "size");
         assertThat(items.get(0).getName()).isEqualTo("Life-size Darth Vader");
 
+    }
+
+    @Test
+    void updateWishlistItem_updatesExistingRow() {
+        int wishlistId = 1;
+        int itemId = 1;
+
+        String newNote = "Updated note";
+        String newUrl = "http://updated-url.com";
+        long newPrice = 12345;
+
+        int rows = wishlistRepository.updateWishlistItem(wishlistId, itemId, newNote, newUrl, newPrice);
+
+        assertThat(rows).isEqualTo(1);
+
+        String sql = """
+        SELECT note, url, price
+        FROM wishlist_item
+        WHERE wishlist_id = ? AND item_id = ?
+        """;
+
+        var result = jdbcTemplate.queryForMap(sql, wishlistId, itemId);
+
+        assertThat(result.get("note")).isEqualTo(newNote);
+        assertThat(result.get("url")).isEqualTo(newUrl);
+        assertThat(((Number) result.get("price")).longValue()).isEqualTo(newPrice);
+    }
+
+    @Test
+    void removeItemFromWishlist_deletesRowCorrectly() {
+        int wishlistId = 1;
+        int itemId = 2;
+
+        int rows = wishlistRepository.removeItemFromWishlist(wishlistId, itemId);
+
+        assertThat(rows).isEqualTo(1);
+
+        String sql = """
+        SELECT COUNT(*) FROM wishlist_item
+        WHERE wishlist_id = ? AND item_id = ?
+        """;
+
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, wishlistId, itemId);
+
+        assertThat(count).isEqualTo(0);
+    }
+
+    @Test
+    void addItemToWishlist_insertsRowCorrectly() {
+        jdbcTemplate.update("INSERT INTO item (title, description) VALUES ('JUnit Item', 'Test Desc')");
+        int newItemId = jdbcTemplate.queryForObject("SELECT MAX(id) FROM item", Integer.class);
+
+        int wishlistId = 1;
+
+        String note = "JUnit note";
+        String url = "http://example.com";
+        long price = 999;
+
+        int rows = wishlistRepository.addItemToWishlist(wishlistId, newItemId, note, url, price);
+
+        assertThat(rows).isEqualTo(1);
+
+        Integer count = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM wishlist_item WHERE wishlist_id = ? AND item_id = ?",
+                Integer.class,
+                wishlistId, newItemId
+        );
+
+        assertThat(count).isEqualTo(1);
     }
 }

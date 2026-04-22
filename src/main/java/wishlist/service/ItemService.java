@@ -1,10 +1,13 @@
 package wishlist.service;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wishlist.exception.BadRequestException;
 import wishlist.exception.DatabaseOperationException;
+import wishlist.exception.NotFoundException;
 import wishlist.model.Item;
 import wishlist.repository.ItemRepository;
 
@@ -19,40 +22,25 @@ public class ItemService {
         this.itemRepository = itemRepository;
     }
 
-    /**
-     * TODO: Add meaningful error handling
-     * - Validate that id > 0
-     * - Catch repository exceptions and convert to NotFoundException
-     * - Reasoning: "queryForObject throws EmptyResultDataAccessException when no item exists"
-     */
     public Item getItemById(int id) {
+        if (id <= 0) {
+            throw new BadRequestException("Invalid item id");
+        }
+
+
         try {
             return itemRepository.findItemById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new DatabaseOperationException("Nothing to show", e);
+            throw new NotFoundException("Nothing to show for item with id: " + id);
+        } catch (DataAccessException e) {
+            throw new DatabaseOperationException("Database error while loading item", e);
         }
     }
 
-    /**
-     * TODO: Consider whether empty lists should be allowed or if filtering is needed.
-     * - Probably no validation needed here.
-     */
     public List<Item> getAllItems() {
         return itemRepository.getAllItems();
     }
 
-    /**
-     * TODO: Add validation before inserting:
-     * - name cannot be null/blank
-     * - description length <= 255
-     * - price >= 0 (if price is used)
-     * - url length <= 500 (if url is used)
-     *
-     * TODO: Wrap repository.insertItem in try/catch
-     * - Convert SQL exceptions into BadRequestException
-     *
-     * TODO: After insert, fetch the item again using getItemById
-     */
     @Transactional
     public Item createItem(Item item) {
         try {

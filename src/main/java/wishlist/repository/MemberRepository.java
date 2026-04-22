@@ -56,7 +56,9 @@ public class MemberRepository {
 
 
     public int insertMember(Member member) {
-
+        // TODO: should the duplicate-name ckeck be here or in service
+        // TODO: make test insertMember_throwsDuplicateMemberException_whenUsernameExists()
+        // TODO: make test insertMember_throwsDuplicateMemberException_whenEmailExists()
         if (findByUsername(member.getUsername()) != null) {
             throw new DuplicateMemberException("Username exists");
         }

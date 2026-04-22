@@ -22,58 +22,75 @@ public class MemberService {
 
 
     public Member getById(int id) {
+        if (id <= 0) {
+            throw new BadRequestException("Invalid member id");
+        }
+
         try {
             return memberRepository.findById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new NotFoundException("No members with ID under 0. Please try again");
-
+            throw new NotFoundException("Member not found with id: " + id);
+        } catch (DataAccessException e) {
+            throw new DatabaseOperationException("Database error while loading member", e);
         }
     }
 
-    /**
-     * TODO: Add validation:
-     * - username cannot be null/blank
-     * - Catch repository exceptions and convert to NotFoundException
-     */
     public Member getByUsername(String username) {
-        try {
-            if (username != null) {
-                return memberRepository.findByUsername(username);
-            }
-        } catch (Exception e) {
-            throw new NotFoundException("No account with this username found: " + username);
+        if (username == null || username.isBlank()) {
+            throw new BadRequestException("Username cannot be empty");
         }
-        return null;
+
+        try {
+            Member member = memberRepository.findByUsername(username);
+            if (member == null) {
+                throw new NotFoundException("No account found with username: " + username);
+            }
+            return member;
+        } catch (DataAccessException e) {
+            throw new DatabaseOperationException("Database error while searching by username", e);
+        }
     }
 
-    /**
-     * TODO: Add validation:
-     * - email cannot be null/blank
-     * - email must contain '@'
-     * - Catch repository exceptions and convert to NotFoundException
-     */
     public Member getByEmail(String email) {
+        if (email == null || email.isBlank()) {
+            throw new BadRequestException("Email cannot be empty");
+        }
+
+        if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+            throw new BadRequestException("Invalid email format");
+        }
+
+
         try {
-            if (email != null && email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+            Member member = memberRepository.findByEmail(email);
+            if (member == null) {
+                throw new NotFoundException("No account found with email: " + email);
             }
-            return memberRepository.findByEmail(email);
-        } catch (Exception e) {
-            throw new NotFoundException("No accout with this email found " + email);
+            return member;
+        } catch (DataAccessException e) {
+            throw new DatabaseOperationException("Database error while searching by email", e);
         }
     }
 
-    /**
-     * TODO: Add validation before inserting:
-     * - username not blank
-     * - password not blank
-     * - email valid format
-     * - name not blank
-     * <p>
-     * TODO: Catch SQL exceptions (duplicate username/email)
-     * - Convert to BadRequestException with a friendly message
-     */
     @Transactional
     public Member create(Member member) {
+        // TODO: are these checked for at template-level actually???
+//        if (member.getUsername() == null || member.getUsername().isBlank()) {
+//            throw new BadRequestException("Username cannot be empty");
+//        }
+//        if (member.getPassword() == null || member.getPassword().isBlank()) {
+//            throw new BadRequestException("Password cannot be empty");
+//        }
+//        if (member.getName() == null || member.getName().isBlank()) {
+//            throw new BadRequestException("Name cannot be empty");
+//        }
+//        if (member.getEmail() == null || member.getEmail().isBlank()) {
+//            throw new BadRequestException("Email cannot be empty");
+//        }
+//        if (!member.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+//            throw new BadRequestException("Invalid email format");
+//        }
+
         try {
             memberRepository.insertMember(member);
             return memberRepository.findByUsername(member.getUsername());
@@ -84,67 +101,69 @@ public class MemberService {
         }
     }
 
-    /**
-     * TODO: Add validation:
-     * - Same rules as create()
-     * - Ensure member exists before updating
-     * - Catch SQL exceptions and convert to BadRequestException
-     */
-    // TODO: For updateMember:
-    // 1. Load existing member using getById()
-    // 2. Validate username, email, password, name
-    // 3. Apply only allowed fields (e.g., do NOT overwrite id)
-    // 4. Save using memberRepository.updateMember(existing)
-    // 5. Return the updated member
-    //
-    // Reason: Members have sensitive fields (username, email, password).
-    // We must prevent accidental or malicious overwrites.
     @Transactional
     public Member update(Member member) {
-        getByEmail(member.getEmail());
-        getById(member.getId());
-        getByUsername(member.getUsername());
+        Member existing = getById(member.getId());
+
+            // TODO: is this needed? is it checked for on template-level?
+//        if (member.getUsername() == null || member.getUsername().isBlank()) {
+//            throw new BadRequestException("Username cannot be empty");
+//        }
+//        if (member.getPassword() == null || member.getPassword().isBlank()) {
+//            throw new BadRequestException("Password cannot be empty");
+//        }
+//        if (member.getName() == null || member.getName().isBlank()) {
+//            throw new BadRequestException("Name cannot be empty");
+//        }
+//        if (member.getEmail() == null || member.getEmail().isBlank()) {
+//            throw new BadRequestException("Email cannot be empty");
+//        }
+//        if (!member.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+//            throw new BadRequestException("Invalid email format");
+//        }
+
+        // Prevent duplicate username/email
+        Member byUsername = memberRepository.findByUsername(member.getUsername());
+        if (byUsername != null && byUsername.getId() != member.getId()) {
+            throw new DuplicateMemberException("Username already taken");
+        }
+
+        Member byEmail = memberRepository.findByEmail(member.getEmail());
+        if (byEmail != null && byEmail.getId() != member.getId()) {
+            throw new DuplicateMemberException("Email already registered");
+        }
 
         try {
-
             memberRepository.updateMember(member);
             return memberRepository.findById(member.getId());
         } catch (EmptyResultDataAccessException e) {
-            throw new NotFoundException("The account you are trying to update, does not exit. Please Tru again");
+            throw new NotFoundException("The account you are trying to update, does not exit. Please Try again");
+        } catch (DataAccessException e) {
+            throw new DatabaseOperationException("Database error while updating member", e);
         }
+
     }
 
-    /**
-     * TODO: Add error handling:
-     * - Ensure member exists before deleting
-     * - Convert repository exceptions into NotFoundException
-     */
     public Member delete(int id) {
-        getById(id);
+        Member existing = getById(id);
 
         try {
-            Member deletedMember = memberRepository.findById(id);
             memberRepository.deleteById(id);
-            return deletedMember;
-        } catch (Exception e) {
-            throw new NotFoundException("Delete failed: Could not find user: " + id);
+            return existing;
+        } catch (DataAccessException e) {
+            throw new DatabaseOperationException("Database error while deleting member", e);
         }
     }
 
-    /**
-     * TODO: Add validation:
-     * - username not blank
-     * - password not blank
-     * <p>
-     * TODO: Add error handling:
-     * - If findByUsername throws, convert to NotFoundException
-     * - If password mismatch, return null or throw BadRequestException
-     * <p>
-     * TODO: Consider hashing passwords (future improvement)
-     */
     public Member login(String username, String password) {
+        // TODO: is this checked for on template-level??
+//        if (username == null || username.isBlank()) {
+//            throw new BadRequestException("Username cannot be empty");
+//        }
+//        if (password == null || password.isBlank()) {
+//            throw new BadRequestException("Password cannot be empty");
+//        }
 
-        // Find user by username
         Member member = memberRepository.findByUsername(username);
 
         // Username not found
