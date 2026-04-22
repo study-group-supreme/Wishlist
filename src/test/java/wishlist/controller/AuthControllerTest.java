@@ -8,6 +8,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import wishlist.model.Member;
 import wishlist.service.MemberService;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -51,12 +52,13 @@ class AuthControllerTest {
     }
 
     @Test
-        //("logout)"
     void logout_ShouldEndUserSession() throws Exception {
-        mockMvc.perform(get("/auth/logout"))
+        mockMvc.perform(get("/auth/logout")
+                        .sessionAttr("memberId", 1))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"))
-                .andExpect(request().sessionAttributeDoesNotExist("memberId"));
-
+                .andExpect(result ->
+                        assertNull(result.getRequest().getSession(false))
+                );
     }
 }

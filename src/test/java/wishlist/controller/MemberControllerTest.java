@@ -35,21 +35,22 @@ class MemberControllerTest {
 
     //"(/save)"
     @Test
-    void registrationFormHandler_shouldRegisterMemberAndRedirectToLogin() throws Exception {
+    void registrationFormHandler_shouldRegisterMember() throws Exception {
 
         Member savedMember = new Member();
         savedMember.setUsername("mads");
         savedMember.setEmail("mads@test.dk");
+        savedMember.setId(5);
 
         when(service.create(any(Member.class))).thenReturn(savedMember);
 
         mockMvc.perform(post("/member/save")
+                        .sessionAttr("memberId", 5)
                         .param("username", "mads")
                         .param("email", "mads@test.dk")
                         .param("password", "secret"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/auth/login"))
-                .andExpect(flash().attributeExists("member"));
+                .andExpect(status().isOk())
+                .andExpect(view().name("wishlist/list"));
 
         verify(service).create(any(Member.class));
     }
@@ -73,6 +74,7 @@ class MemberControllerTest {
         //("/edit)
     void editFormHandler_shouldEditMemberAndRedirectToWishlist() throws Exception {
         mockMvc.perform(post("/member/edit")
+                        .sessionAttr("memberId", 1)
                         .param("id", "1")
                         .param("username", "shaz")
                         .param("email", "shaz@test.dk"))
