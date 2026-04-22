@@ -1,7 +1,5 @@
 package wishlist.repository;
 
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -56,9 +54,6 @@ public class MemberRepository {
 
 
     public int insertMember(Member member) {
-        // TODO: should the duplicate-name ckeck be here or in service
-        // TODO: make test insertMember_throwsDuplicateMemberException_whenUsernameExists()
-        // TODO: make test insertMember_throwsDuplicateMemberException_whenEmailExists()
         if (findByUsername(member.getUsername()) != null) {
             throw new DuplicateMemberException("Username exists");
         }
