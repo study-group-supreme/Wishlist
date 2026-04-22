@@ -66,9 +66,6 @@ public class ItemRepositoryTest {
     void deleteItemById_deletesAnItem(){
         int rowsAffected = itemRepository.deleteItemById(1);
         assertThat(rowsAffected).isEqualTo(1);
-
-        // TODO: write some assertion to check if findItemById throws some database error
-        //assertThat(itemRepository.findItemById(1)).isNull();
     }
 
 
