@@ -17,11 +17,10 @@
     <ul>
         <li th:each="item : ${items}">
             <strong th:text="${item.name}"></strong>
-            <span th:text="${item.description}"></span>
+            <span th:text="'Description: ' + ${item.description}"></span>
             <span th:text="${item.price} + ' Kr'"></span>
             <a th:if="${!item.url.isEmpty()}" th:href="${item.url}" target="_blank">Link to item</a>
-            <p th:text="${item.note}"></p>
-
+            <p th:text="'Personalized note: ' + ${item.note}"></p>
             <div class="item-actions">
                 <a class="btn btn-sm btn-outline"
                    th:if="${isOwner}"
