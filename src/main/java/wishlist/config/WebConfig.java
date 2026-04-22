@@ -29,8 +29,9 @@ public class WebConfig implements WebMvcConfigurer {
                         "/aboutus",
                         "/public/",
 
-                        // Auth
+                        // Auth (GET + POST)
                         "/auth/login",
+                        "/auth/login/",
                         "/auth/logout",
 
                         // Registration
@@ -38,7 +39,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "/member/save",
 
                         // Error pages
-                        "/error/"
+                        "/error/**"
                 );
     }
 // registry.addInterceptor(new LoginInterceptor())
