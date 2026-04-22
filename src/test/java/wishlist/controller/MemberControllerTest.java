@@ -73,6 +73,7 @@ class MemberControllerTest {
         //("/edit)
     void editFormHandler_shouldEditMemberAndRedirectToWishlist() throws Exception {
         mockMvc.perform(post("/member/edit")
+                        .sessionAttr("memberId", 1)
                         .param("id", "1")
                         .param("username", "shaz")
                         .param("email", "shaz@test.dk"))
