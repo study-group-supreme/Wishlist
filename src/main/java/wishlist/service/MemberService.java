@@ -74,22 +74,21 @@ public class MemberService {
 
     @Transactional
     public Member create(Member member) {
-        // TODO: are these checked for at template-level actually???
-//        if (member.getUsername() == null || member.getUsername().isBlank()) {
-//            throw new BadRequestException("Username cannot be empty");
-//        }
-//        if (member.getPassword() == null || member.getPassword().isBlank()) {
-//            throw new BadRequestException("Password cannot be empty");
-//        }
-//        if (member.getName() == null || member.getName().isBlank()) {
-//            throw new BadRequestException("Name cannot be empty");
-//        }
-//        if (member.getEmail() == null || member.getEmail().isBlank()) {
-//            throw new BadRequestException("Email cannot be empty");
-//        }
-//        if (!member.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-//            throw new BadRequestException("Invalid email format");
-//        }
+        if (member.getUsername() == null || member.getUsername().isBlank()) {
+            throw new BadRequestException("Username cannot be empty");
+        }
+        if (member.getPassword() == null || member.getPassword().isBlank()) {
+            throw new BadRequestException("Password cannot be empty");
+        }
+        if (member.getName() == null || member.getName().isBlank()) {
+            throw new BadRequestException("Name cannot be empty");
+        }
+        if (member.getEmail() == null || member.getEmail().isBlank()) {
+            throw new BadRequestException("Email cannot be empty");
+        }
+        if (!member.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+            throw new BadRequestException("Invalid email format");
+        }
 
         try {
             memberRepository.insertMember(member);
@@ -105,22 +104,21 @@ public class MemberService {
     public Member update(Member member) {
         Member existing = getById(member.getId());
 
-            // TODO: is this needed? is it checked for on template-level?
-//        if (member.getUsername() == null || member.getUsername().isBlank()) {
-//            throw new BadRequestException("Username cannot be empty");
-//        }
-//        if (member.getPassword() == null || member.getPassword().isBlank()) {
-//            throw new BadRequestException("Password cannot be empty");
-//        }
-//        if (member.getName() == null || member.getName().isBlank()) {
-//            throw new BadRequestException("Name cannot be empty");
-//        }
-//        if (member.getEmail() == null || member.getEmail().isBlank()) {
-//            throw new BadRequestException("Email cannot be empty");
-//        }
-//        if (!member.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-//            throw new BadRequestException("Invalid email format");
-//        }
+        if (member.getUsername() == null || member.getUsername().isBlank()) {
+            throw new BadRequestException("Username cannot be empty");
+        }
+        if (member.getPassword() == null || member.getPassword().isBlank()) {
+            throw new BadRequestException("Password cannot be empty");
+        }
+        if (member.getName() == null || member.getName().isBlank()) {
+            throw new BadRequestException("Name cannot be empty");
+        }
+        if (member.getEmail() == null || member.getEmail().isBlank()) {
+            throw new BadRequestException("Email cannot be empty");
+        }
+        if (!member.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+            throw new BadRequestException("Invalid email format");
+        }
 
         // Prevent duplicate username/email
         Member byUsername = memberRepository.findByUsername(member.getUsername());
