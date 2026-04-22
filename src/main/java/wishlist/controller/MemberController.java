@@ -46,9 +46,15 @@ public class MemberController {
     }
 
     @PostMapping("/edit")
-    public String editFormHandler(@ModelAttribute Member member) {
-        service.update(member);
-        return "redirect:/wishlist";
+    public String editFormHandler(@ModelAttribute Member member, Model model) {
+        try {
+            service.update(member);
+            return "redirect:/wishlist";
+        } catch (DuplicateMemberException | BadRequestException e) {
+            model.addAttribute("member", member);
+            model.addAttribute("errorMessage", e.getMessage());
+            return "/member/member-edit";
+        }
     }
 
 }

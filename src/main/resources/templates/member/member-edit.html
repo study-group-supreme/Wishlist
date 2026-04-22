@@ -10,6 +10,9 @@
 <div th:replace="fragments/header :: header"></div>
 <div class="content-box">
 <form th:action="@{/member/edit}" th:object="${member}" method="post">
+    <div class="error-box" th:if="${errorMessage}">
+        <p th:text="${errorMessage}"></p>
+    </div>
     <input type="hidden" th:field="*{id}">
     <br>
     <label>
