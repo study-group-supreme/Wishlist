@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import wishlist.exception.BadRequestException;
 import wishlist.exception.NotFoundException;
 import wishlist.model.Item;
 import wishlist.model.Member;
@@ -201,24 +202,37 @@ public class WishlistController {
     //Andreas trying stuffs with search function
     @GetMapping("/search")
     public String showWishlistsForUsername(@RequestParam String username, Model model, HttpSession session){
+        try {
+            Member owner = memberService.getByUsername(username);
 
-        Member owner = memberService.getByUsername(username);
+//            if (owner == null) {
+//                model.addAttribute("nothingToShow", true);
+//                model.addAttribute("wishlists", List.of());
+//                model.addAttribute("owner", null);
+//                model.addAttribute("isOwner", false);
+//                return "wishlist/list";
+//            }
 
-        if(owner == null){
+            int loggedInId = (Integer) session.getAttribute("memberId");
+
+            List<Wishlist> publicListsForUsername = wishlistService.getWishlistByOwnerUsername(username);
+            model.addAttribute("owner", owner);
+            model.addAttribute("wishlists", publicListsForUsername);
+            model.addAttribute("isOwner", owner.getId() == loggedInId);
+            return "wishlist/list";
+        } catch (NotFoundException e){
             model.addAttribute("nothingToShow", true);
             model.addAttribute("wishlists", List.of());
             model.addAttribute("owner", null);
             model.addAttribute("isOwner", false);
             return "wishlist/list";
+        } catch(BadRequestException e){
+            model.addAttribute("emptySearch", true);
+            model.addAttribute("wishlists", List.of());
+            model.addAttribute("owner", null);
+            model.addAttribute("isOwner", false);
+            return "wishlist/list";
         }
-
-        int loggedInId = (Integer) session.getAttribute("memberId");
-
-        List<Wishlist> publicListsForUsername = wishlistService.getWishlistByOwnerUsername(username);
-        model.addAttribute("owner", owner);
-        model.addAttribute("wishlists", publicListsForUsername);
-        model.addAttribute("isOwner", owner.getId() == loggedInId);
-        return "wishlist/list";
     }
 
     @PostMapping ("/follow")

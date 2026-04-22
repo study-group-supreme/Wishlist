@@ -10,6 +10,7 @@
 <div th:replace="fragments/header :: header"></div>
 <div class="content-box">
 <p th:if="${nothingToShow}" class="error">There are no wishlists owned by this username</p>
+<p th:if="${emptySearch}" class="error">Search field cannot be empty</p>
 <ul>
     <li class="wishlist-row" th:each="wishlist : ${wishlists}">
         <div class="wishlist-header">
