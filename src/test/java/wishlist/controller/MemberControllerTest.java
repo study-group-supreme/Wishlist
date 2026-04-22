@@ -31,7 +31,7 @@ class MemberControllerTest {
     void showMemberRegistrationForm_shouldDisplayMemberRegistrationForm() throws Exception {
         mockMvc.perform(get("/member/register"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/member/member-registration"))
+                .andExpect(view().name("member/member-registration"))
                 .andExpect(model().attributeExists("member"));
     }
 
@@ -68,7 +68,7 @@ class MemberControllerTest {
 
         mockMvc.perform(get("/member/edit").sessionAttr("memberId", 1))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/member/member-edit"));
+                .andExpect(view().name("member/member-edit"));
         verify(service).getById(1);
     }
 

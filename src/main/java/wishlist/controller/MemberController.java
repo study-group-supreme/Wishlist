@@ -22,7 +22,7 @@ public class MemberController {
     @GetMapping("/register")
     public String showMemberRegistrationForm(Model model) {
         model.addAttribute("member", new Member());
-        return "/member/member-registration";
+        return "member/member-registration";
     }
 
     @PostMapping("/save")
@@ -34,7 +34,7 @@ public class MemberController {
         } catch (DuplicateMemberException | BadRequestException e) {
             model.addAttribute("member", member);
             model.addAttribute("errorMessage", e.getMessage());
-            return "/member/member-registration";
+            return "member/member-registration";
         }
     }
 
@@ -42,7 +42,7 @@ public class MemberController {
     public String showEditForm(Model model, HttpSession session) {
         Member member = service.getById((Integer) session.getAttribute("memberId"));
         model.addAttribute("member", member);
-        return "/member/member-edit";
+        return "member/member-edit";
     }
 
     @PostMapping("/edit")
@@ -53,7 +53,7 @@ public class MemberController {
         } catch (DuplicateMemberException | BadRequestException e) {
             model.addAttribute("member", member);
             model.addAttribute("errorMessage", e.getMessage());
-            return "/member/member-edit";
+            return "member/member-edit";
         }
     }
 
