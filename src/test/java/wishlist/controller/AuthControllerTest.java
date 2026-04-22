@@ -61,3 +61,4 @@ class AuthControllerTest {
                         assertNull(result.getRequest().getSession(false))
                 );
     }
+}
