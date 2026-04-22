@@ -102,7 +102,6 @@ public class MemberService {
 
     @Transactional
     public Member update(Member member) {
-        Member existing = getById(member.getId());
 
         if (member.getUsername() == null || member.getUsername().isBlank()) {
             throw new BadRequestException("Username cannot be empty");
@@ -120,7 +119,6 @@ public class MemberService {
             throw new BadRequestException("Invalid email format");
         }
 
-        // Prevent duplicate username/email
         Member byUsername = memberRepository.findByUsername(member.getUsername());
         if (byUsername != null && byUsername.getId() != member.getId()) {
             throw new DuplicateMemberException("Username already taken");
@@ -154,27 +152,19 @@ public class MemberService {
     }
 
     public Member login(String username, String password) {
-        // TODO: is this checked for on template-level??
-//        if (username == null || username.isBlank()) {
-//            throw new BadRequestException("Username cannot be empty");
-//        }
-//        if (password == null || password.isBlank()) {
-//            throw new BadRequestException("Password cannot be empty");
-//        }
 
         Member member = memberRepository.findByUsername(username);
 
-        // Username not found
+
         if (member == null) {
             return null;
         }
 
-        // Password mismatch
         if (!member.getPassword().equals(password)) {
             return null;
         }
 
-        // Success
+
         return member;
     }
 }
