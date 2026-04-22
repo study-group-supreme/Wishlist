@@ -1,6 +1,7 @@
 package wishlist.integration;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import wishlist.model.Member;
 import wishlist.model.Wishlist;
 import wishlist.model.Item;
 import wishlist.repository.WishlistRepository;
@@ -40,7 +41,7 @@ public class WishlistRepositoryTest {
 
     @Test
     void findByOwnerId_returnsCorrectWishlist() {
-       List<Wishlist> wishlists = wishlistRepository.findWishlistByOwnerId(2);
+        List<Wishlist> wishlists = wishlistRepository.findWishlistByOwnerId(2);
         assertThat(wishlists.get(0).getTitle()).isEqualTo("Andreas Filthy Dirty Wishes");
     }
 
@@ -52,13 +53,12 @@ public class WishlistRepositoryTest {
         assertThat(items.get(1).getName()).isEqualTo("Spider-Man figure");
     }
 
-  @Test
-  void deleteWishlist_shouldDeleteWishlistById() {
-      int rows = wishlistRepository.deleteWishlist(1);
+    @Test
+    void deleteWishlist_shouldDeleteWishlistById() {
+        int rows = wishlistRepository.deleteWishlist(1);
 
-      assertThat(rows).isEqualTo(1);
-  }
-
+        assertThat(rows).isEqualTo(1);
+    }
 
 
     @Test
@@ -109,8 +109,9 @@ public class WishlistRepositoryTest {
         assertThat(updated.isPublic()).isEqualTo(true);
 
     }
+
     @Test
-    void fetchItemsByWishlistTitle_returnsAllItemsFromDBWithMatchingKeywordAndId(){
+    void fetchItemsByWishlistTitle_returnsAllItemsFromDBWithMatchingKeywordAndId() {
         List<Item> items = wishlistRepository.fetchItemsInWishlistByTitle(1, "size");
         assertThat(items.get(0).getName()).isEqualTo("Life-size Darth Vader");
 
@@ -130,10 +131,10 @@ public class WishlistRepositoryTest {
         assertThat(rows).isEqualTo(1);
 
         String sql = """
-        SELECT note, url, price
-        FROM wishlist_item
-        WHERE wishlist_id = ? AND item_id = ?
-        """;
+                SELECT note, url, price
+                FROM wishlist_item
+                WHERE wishlist_id = ? AND item_id = ?
+                """;
 
         var result = jdbcTemplate.queryForMap(sql, wishlistId, itemId);
 
@@ -152,9 +153,9 @@ public class WishlistRepositoryTest {
         assertThat(rows).isEqualTo(1);
 
         String sql = """
-        SELECT COUNT(*) FROM wishlist_item
-        WHERE wishlist_id = ? AND item_id = ?
-        """;
+                SELECT COUNT(*) FROM wishlist_item
+                WHERE wishlist_id = ? AND item_id = ?
+                """;
 
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class, wishlistId, itemId);
 
@@ -162,26 +163,71 @@ public class WishlistRepositoryTest {
     }
 
     @Test
-    void addItemToWishlist_insertsRowCorrectly() {
-        jdbcTemplate.update("INSERT INTO item (title, description) VALUES ('JUnit Item', 'Test Desc')");
-        int newItemId = jdbcTemplate.queryForObject("SELECT MAX(id) FROM item", Integer.class);
+    void insertSavedWishlist_savesWishlistForMember() {
+        Member member = new Member();
+        member.setId(1);
 
-        int wishlistId = 1;
+        Wishlist wishlist = new Wishlist();
+        wishlist.setId(2);
+        wishlist.setOwner_id(2);
 
-        String note = "JUnit note";
-        String url = "http://example.com";
-        BigDecimal price = new BigDecimal(999);
-
-        int rows = wishlistRepository.addItemToWishlist(wishlistId, newItemId, note, url, price);
+        int rows =
+                wishlistRepository.insertSavedWishlist(wishlist, member);
 
         assertThat(rows).isEqualTo(1);
 
         Integer count = jdbcTemplate.queryForObject(
-                "SELECT COUNT(*) FROM wishlist_item WHERE wishlist_id = ? AND item_id = ?",
+                """
+                        SELECT COUNT(*)
+                        FROM saved_wishlist
+                        WHERE wishlist_id = ?
+                          AND member_id   = ?
+                         AND owner_id = ?
+                        """,
                 Integer.class,
-                wishlistId, newItemId
+                wishlist.getId(),
+                member.getId(),
+                wishlist.getOwner_id()
+
+
         );
 
         assertThat(count).isEqualTo(1);
     }
+
+    @Test
+    void fetchSavedWishlist_displaysSavedWishlist() {
+        Member member = new Member();
+        member.setId(4);
+
+        List<Wishlist> rows = wishlistRepository.fetchSavedWishlists(member);
+
+        assertThat(rows).hasSize(1);
+        assertThat(rows.get(0).getId()).isEqualTo(1);
+    }
+
+    @Test
+    void removeSavedWishlist_removesWishlistForGivenMember() {
+        Wishlist savedWishlist = new Wishlist();
+        savedWishlist.setId(1);
+
+        Member member = new Member();
+        member.setId(4);
+
+        int rows = wishlistRepository.removeSavedWishlist(savedWishlist, member);
+
+        assertThat(rows).isEqualTo(1);
+
+        Integer count = jdbcTemplate.queryForObject("""
+                        SELECT COUNT(*)
+                        FROM saved_wishlist
+                        WHERE wishlist_id = ? AND member_id = ?
+                        """,
+                Integer.class,
+                savedWishlist.getId(),
+                member.getId());
+
+        assertThat(count).isEqualTo(0);
+    }
 }
+
