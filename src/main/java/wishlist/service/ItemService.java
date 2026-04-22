@@ -43,11 +43,6 @@ public class ItemService {
 
     @Transactional
     public Item createItem(Item item) {
-        // TODO: is this not checked for errors in WishlistService ... this method is not even used!?
-//        if (item.getName() == null || item.getName().isBlank()) {
-//            throw new BadRequestException("Item name cannot be empty");
-//        }
-
         try {
             itemRepository.insertItem(item);
             return itemRepository.findItemById(item.getId());
