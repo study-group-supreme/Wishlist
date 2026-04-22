@@ -29,25 +29,21 @@ public class WishlistController {
         this.memberService = memberService;
     }
 
-    // show all wishlists for logged in member GET
     @GetMapping()
     public String showAllWishlists(Model model, HttpSession session) {
         int memberId = (Integer) session.getAttribute("memberId");
 
         model.addAttribute("wishlists",  wishlistService.getByOwnerId(memberId));
-        //added line below in feature/seeing-others-public-list by Andreas
         model.addAttribute("isOwner", true);
         return "wishlist/list";
     }
 
-    // show wishlist by wishlist-id
     @GetMapping("/{wishlistId}")
     public String showOneWishlist(@PathVariable int wishlistId, Model model, HttpSession session) {
 
         Wishlist wishlist = wishlistService.getById(wishlistId);
         List<Item> items = wishlistService.getItemsFromWishlistByWishlistId(wishlistId);
 
-        //Stuff below added in feature/seeing-others-public-list by Andreas messing about
         int ownerId = wishlist.getOwner_id();
         int loggedInId = (Integer) session.getAttribute("memberId");
         model.addAttribute("isOwner", ownerId == loggedInId);
@@ -199,7 +195,6 @@ public class WishlistController {
         return "redirect:/wishlist/"+ wishlistId;
     }
 
-    //Andreas trying stuffs with search function
     @GetMapping("/search")
     public String showWishlistsForUsername(@RequestParam String username, Model model, HttpSession session){
         try {
