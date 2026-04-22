@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import wishlist.exception.BadRequestException;
 import wishlist.exception.DuplicateMemberException;
 import wishlist.model.Member;
 import wishlist.service.MemberService;
@@ -30,7 +31,7 @@ public class MemberController {
             Member registeredMember = service.create(member);
             session.setAttribute("memberId", registeredMember.getId());
             return "wishlist/list";
-        } catch (DuplicateMemberException e) {
+        } catch (DuplicateMemberException | BadRequestException e) {
             model.addAttribute("member", member);
             model.addAttribute("errorMessage", e.getMessage());
             return "/member/member-registration";
