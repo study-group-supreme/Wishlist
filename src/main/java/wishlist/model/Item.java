@@ -1,18 +1,20 @@
 package wishlist.model;
 
+import java.math.BigDecimal;
+
 public class Item {
     private int id;
     private String name;
     private String description;
 
     private String url;
-    private long price;
+    private BigDecimal price;
     private String note;
 
     public Item() {
     }
 
-    public Item(String name, String description, String url, long price) {
+    public Item(String name, String description, String url, BigDecimal price) {
         this.name = name;
         this.description = description;
         this.url = url;
@@ -51,11 +53,11 @@ public class Item {
         this.url = url;
     }
 
-    public long getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(long price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
