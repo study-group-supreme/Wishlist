@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -111,7 +110,7 @@ public class WishlistRepositoryTest {
     }
     @Test
     void fetchItemsByWishlistTitle_returnsAllItemsFromDBWithMatchingKeywordAndId(){
-        List<Item> items = wishlistRepository.fetchItemsInWishlistByTitel(1, "size");
+        List<Item> items = wishlistRepository.fetchItemsInWishlistByTitle(1, "size");
         assertThat(items.get(0).getName()).isEqualTo("Life-size Darth Vader");
 
     }
