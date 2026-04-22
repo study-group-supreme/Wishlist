@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -122,7 +123,7 @@ public class WishlistRepositoryTest {
 
         String newNote = "Updated note";
         String newUrl = "http://updated-url.com";
-        long newPrice = 12345;
+        BigDecimal newPrice = new BigDecimal("12345.00");
 
         int rows = wishlistRepository.updateWishlistItem(wishlistId, itemId, newNote, newUrl, newPrice);
 
@@ -138,7 +139,7 @@ public class WishlistRepositoryTest {
 
         assertThat(result.get("note")).isEqualTo(newNote);
         assertThat(result.get("url")).isEqualTo(newUrl);
-        assertThat(((Number) result.get("price")).longValue()).isEqualTo(newPrice);
+        assertThat(((BigDecimal) result.get("price")).compareTo(newPrice)).isEqualTo(0);
     }
 
     @Test
@@ -169,7 +170,7 @@ public class WishlistRepositoryTest {
 
         String note = "JUnit note";
         String url = "http://example.com";
-        long price = 999;
+        BigDecimal price = new BigDecimal(999);
 
         int rows = wishlistRepository.addItemToWishlist(wishlistId, newItemId, note, url, price);
 

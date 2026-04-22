@@ -17,7 +17,7 @@ public class ItemRepository {
         item.setId(rs.getInt("id"));
         item.setName(rs.getString("title"));
         item.setDescription(rs.getString("description"));
-        item.setPrice(rs.getLong("price"));
+        item.setPrice(rs.getBigDecimal("price"));
         item.setUrl(rs.getString("url"));
         item.setNote(rs.getString("note"));
         return item;

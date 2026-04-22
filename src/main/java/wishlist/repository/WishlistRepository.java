@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.util.List;
 
@@ -120,7 +121,7 @@ public class WishlistRepository {
         return jdbc.query(sql, itemRepository.getItemRowMapper(), "%"+keyword+"%", id);
     }
 
-    public int addItemToWishlist(int wishlistId, int itemId, String note, String url, long price){
+    public int addItemToWishlist(int wishlistId, int itemId, String note, String url, BigDecimal price){
         String sql = """
                 INSERT INTO wishlist_item (wishlist_id, item_id, note, url, price)
                 VALUES (?, ?, ?, ?, ?)
@@ -136,7 +137,7 @@ public class WishlistRepository {
         return jdbc.update(sql, wishlistId, itemId);
     }
 
-    public int updateWishlistItem(int wishlistId, int itemId, String note, String url, long price){
+    public int updateWishlistItem(int wishlistId, int itemId, String note, String url, BigDecimal price){
         String sql = """
                 UPDATE wishlist_item
                 SET note = ?,url = ?, price = ?
