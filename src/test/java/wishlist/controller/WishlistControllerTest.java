@@ -62,7 +62,8 @@ class WishlistControllerTest {
     @Test
         //("/new")
     void showCreateWishlistForm_shouldShowCreateWishlistForm() throws Exception {
-        mockMvc.perform(get("/wishlist/new"))
+        mockMvc.perform(get("/wishlist/new")
+                        .sessionAttr("memberId", 1))
                 .andExpect(status().isOk())
                 .andExpect(view().name("wishlist/create-wishlist"))
                 .andExpect(model().attributeExists("wishlist"));
