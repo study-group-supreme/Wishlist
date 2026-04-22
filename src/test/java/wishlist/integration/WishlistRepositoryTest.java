@@ -164,11 +164,11 @@ public class WishlistRepositoryTest {
     @Test
     void insertSavedWishlist_savesWishlistForMember() {
         Member member = new Member();
-        member.setId(4);
+        member.setId(1);
 
         Wishlist wishlist = new Wishlist();
-        wishlist.setId(1);
-        wishlist.setOwner_id(1);
+        wishlist.setId(2);
+        wishlist.setOwner_id(2);
 
         int rows =
                 wishlistRepository.insertSavedWishlist(wishlist, member);
@@ -181,12 +181,14 @@ public class WishlistRepositoryTest {
                         FROM saved_wishlist
                         WHERE wishlist_id = ?
                           AND member_id   = ?
-                          AND owner_id    = ?
+                         AND owner_id = ?
                         """,
                 Integer.class,
                 wishlist.getId(),
                 member.getId(),
                 wishlist.getOwner_id()
+
+
         );
 
         assertThat(count).isEqualTo(1);
