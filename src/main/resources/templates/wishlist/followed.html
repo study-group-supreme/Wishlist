@@ -17,6 +17,10 @@
         <a th:href="@{/wishlist/{id}(id=${wishlist.id})}">
           <strong th:text="${wishlist.title}"></strong>
         </a>
+        <form th:action="@{/wishlist/unfollow}" method="post">
+          <input type="hidden" th:field="${wishlist.id}">
+          <button class="btn btn-sm btn-danger">Unfollow</button>
+        </form>
       </div>
 
     </li>
