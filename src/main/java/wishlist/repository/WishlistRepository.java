@@ -3,6 +3,7 @@ package wishlist.repository;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import wishlist.model.Item;
+import wishlist.model.Member;
 import wishlist.model.Wishlist;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -142,6 +143,34 @@ public class WishlistRepository {
                 WHERE wishlist_id = ? AND item_id = ?
                 """;
         return jdbc.update(sql, note, url, price, wishlistId, itemId);
+    }
+
+    public int insertSavedWishlist(Wishlist wishlist, Member member){
+        String sql = """
+                INSERT INTO saved_wishlist (wishlist_id, member_id, owner_id)
+                VALUES (?, ?, ?)
+                """;
+        return jdbc.update(sql, wishlist.getId(), member.getId(), wishlist.getOwner_id());
+    }
+
+    public List<Wishlist> fetchSavedWishlists(Member member){
+        String sql = """
+                SELECT wishlist.id, wishlist.member_id, wishlist.title, wishlist.description, wishlist.is_public
+                FROM saved_wishlist
+                JOIN wishlist
+                ON wishlist.id = saved_wishlist.wishlist_id
+                WHERE saved_wishlist.member_id = ?
+                """;
+
+        return jdbc.query(sql, wishlistRowMapper, member.getId());
+    }
+
+    public int removeSavedWishlist(Wishlist wishlist, Member member){
+        String sql = """
+                DELETE FROM saved_wishlist
+                WHERE wishlist_id = ? AND member_id = ?
+                """;
+        return jdbc.update(sql, wishlist.getId(), member.getId());
     }
 
 }

@@ -166,7 +166,7 @@ public class WishlistService {
         }
     }
 
-    public Item removeItemFromWishlist(int wishlistId, int itemId){
+    public Item removeItemFromWishlist(int wishlistId, int itemId) {
         getById(wishlistId);
 
         Item removed;
@@ -186,7 +186,7 @@ public class WishlistService {
     }
 
     @Transactional
-    public Item updateItemInWishlist(int wishlistId, Item item){
+    public Item updateItemInWishlist(int wishlistId, Item item) {
         getById(wishlistId);
 
         if (item.getName() == null || item.getName().isBlank()) {
@@ -209,19 +209,42 @@ public class WishlistService {
     }
 
     //Andreas trying stuffs about searching
-    public List<Wishlist> getWishlistByOwnerUsername(String username){
+    public List<Wishlist> getWishlistByOwnerUsername(String username) {
         try {
             Member owner = memberRepository.findByUsername(username);
-            List<Wishlist> ownerList= getByOwnerId(owner.getId());
+            List<Wishlist> ownerList = getByOwnerId(owner.getId());
             List<Wishlist> publicList = new ArrayList<>();
-            for(Wishlist wishlist : ownerList){
-                if(wishlist.isPublic())
+            for (Wishlist wishlist : ownerList) {
+                if (wishlist.isPublic())
                     publicList.add(wishlist);
             }
             return publicList;
 
-        } catch (EmptyResultDataAccessException e){
+        } catch (EmptyResultDataAccessException e) {
             throw new NotFoundException("No wishlists where found for this username");
         }
     }
+
+    public Wishlist followWishlist(Wishlist wishlist, Member member) {
+        try {
+            Wishlist wishlistToSave = wishlistRepository.findWishlistById(wishlist.getId());
+            wishlistRepository.insertSavedWishlist(wishlistToSave, member);
+            return wishlistToSave;
+        } catch (EmptyResultDataAccessException e) {
+            throw new DatabaseOperationException(e.getMessage(), e.getCause());
+        }
+    }
+
+    public List<Wishlist> getFollowedWishlists(Member member){
+        return wishlistRepository.fetchSavedWishlists(member);
+    }
+
+    @Transactional
+    public Wishlist unfollowWishlist(Wishlist wishlist, Member member){
+        Wishlist wishlistToRemove = wishlistRepository.findWishlistById(wishlist.getId());
+        wishlistRepository.removeSavedWishlist(wishlist, member);
+        return wishlistToRemove;
+    }
+
+
 }

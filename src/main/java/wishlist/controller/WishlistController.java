@@ -220,4 +220,27 @@ public class WishlistController {
         model.addAttribute("isOwner", owner.getId() == loggedInId);
         return "wishlist/list";
     }
+
+    @PostMapping ("/follow")
+    public String followWishlist(@ModelAttribute Wishlist wishlist, HttpSession session){
+        Member member = memberService.getById((Integer) session.getAttribute("memberId"));
+        wishlistService.followWishlist(wishlist, member);
+        return "redirect:/wishlist/followed";
+    }
+
+    @GetMapping("/followed")
+    public String showFollowedWishlists(Model model, HttpSession session){
+        Member member = memberService.getById((Integer) session.getAttribute("memberId"));
+        List<Wishlist> followedLists = wishlistService.getFollowedWishlists(member);
+        model.addAttribute("followedLists", followedLists);
+        return "wishlist/followed";
+    }
+
+    @PostMapping("/{wishlistId}/unfollow")
+    public String unfollowWishlist(@PathVariable int wishlistId, HttpSession session){
+        Member member = memberService.getById((Integer) session.getAttribute("memberId"));
+        Wishlist wishlist = wishlistService.getById(wishlistId);
+        wishlistService.unfollowWishlist(wishlist, member);
+        return "redirect:/wishlist/followed";
+    }
 }

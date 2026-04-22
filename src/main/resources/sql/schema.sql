@@ -42,7 +42,9 @@ create table wishlist_item (
 create table saved_wishlist (
                                 wishlist_id int not null,
                                 member_id int not null,
-                                primary key (wishlist_id, member_id),
+                                owner_id int not null,
+                                primary key (wishlist_id, owner_id, member_id),
+                                foreign key (owner_id) references member (id) ON DELETE CASCADE,
                                 foreign key (wishlist_id) references wishlist (id) ON DELETE CASCADE,
                                 foreign key (member_id) references member (id) ON DELETE CASCADE
 );
