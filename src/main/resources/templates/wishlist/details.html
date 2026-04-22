@@ -18,7 +18,7 @@
         <li th:each="item : ${items}">
             <strong th:text="${item.name}"></strong>
             <span th:text="${item.description}"></span>
-            <span th:text="${item.price}"></span>
+            <span th:text="${item.price} + ' Kr'"></span>
             <a th:if="${!item.url.isEmpty()}" th:href="${item.url}" target="_blank">Link</a>
             <p th:text="${item.note}"></p>
 
