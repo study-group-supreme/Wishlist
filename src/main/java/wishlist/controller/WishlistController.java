@@ -205,14 +205,6 @@ public class WishlistController {
         try {
             Member owner = memberService.getByUsername(username);
 
-//            if (owner == null) {
-//                model.addAttribute("nothingToShow", true);
-//                model.addAttribute("wishlists", List.of());
-//                model.addAttribute("owner", null);
-//                model.addAttribute("isOwner", false);
-//                return "wishlist/list";
-//            }
-
             int loggedInId = (Integer) session.getAttribute("memberId");
 
             List<Wishlist> publicListsForUsername = wishlistService.getWishlistByOwnerUsername(username);
