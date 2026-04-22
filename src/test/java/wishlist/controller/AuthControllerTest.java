@@ -29,7 +29,7 @@ class AuthControllerTest {
     void showLoginForm_shouldDisplayLoginForm() throws Exception {
         mockMvc.perform(get("/auth/login"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/member/member-login"));
+                .andExpect(view().name("member/member-login"));
     }
 
     @Test
