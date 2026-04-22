@@ -33,9 +33,12 @@
                 <button type="submit">Go</button>
             </form>
         </div>
-
         <!-- RIGHT: Auth buttons -->
         <div class="nav-right">
+            <button type="button"
+                    th:onclick="|window.location.href='@{/aboutus}'|">
+                About Us
+            </button>
             <button type="button"
                     onclick="window.location.href='/member/register'"
                     th:if="${session.memberId == null}">
