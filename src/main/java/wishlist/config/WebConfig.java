@@ -10,7 +10,27 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginInterceptor()).addPathPatterns()
-                .excludePathPatterns("/**/*.css", "/**/*.png", "/public/**", "/auth/login", "/member/register", "/member/save");
+                .excludePathPatterns("/**/*.css", "/**/*.png", "/public/**", "/auth/login", "/member/register", "/member/save",
+                        // Static resources
+                        "/css/**",
+                        "/js/**",
+                        "/images/**",
+                        "/favicon.ico",
+
+                        // Public pages
+                        "/",
+                        "/aboutus",
+                        "/public/**",
+
+                        // Auth (GET + POST)
+                        "/auth/**",
+
+                        // Registration
+                        "/member/register",
+                        "/member/save",
+
+                        // Error pages
+                        "/error/**");
     }
 }
 //                // Static resources (Azure-safe)
