@@ -37,6 +37,10 @@
         <!-- RIGHT: Auth buttons -->
         <div class="nav-right">
             <button type="button"
+                    onclick="window.location.href='/public/public-aboutUs'">
+                About Us
+            </button>
+            <button type="button"
                     onclick="window.location.href='/member/register'"
                     th:if="${session.memberId == null}">
                 Register
