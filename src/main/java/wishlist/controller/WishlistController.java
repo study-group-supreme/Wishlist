@@ -236,9 +236,10 @@ public class WishlistController {
         return "wishlist/followed";
     }
 
-    @PostMapping("/unfollow")
-    public String unfollowWishlist(@ModelAttribute Wishlist wishlist, HttpSession session){
+    @PostMapping("/{wishlistId}/unfollow")
+    public String unfollowWishlist(@PathVariable int wishlistId, HttpSession session){
         Member member = memberService.getById((Integer) session.getAttribute("memberId"));
+        Wishlist wishlist = wishlistService.getById(wishlistId);
         wishlistService.unfollowWishlist(wishlist, member);
         return "redirect:/wishlist/followed";
     }
