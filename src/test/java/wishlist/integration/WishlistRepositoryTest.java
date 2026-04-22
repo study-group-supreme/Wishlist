@@ -202,5 +202,29 @@ public class WishlistRepositoryTest {
         assertThat(rows).hasSize(1);
         assertThat(rows.get(0).getId()).isEqualTo(1);
     }
+
+    @Test
+    void removeSavedWishlist_removesWishlistForGivenMember() {
+        Wishlist savedWishlist = new Wishlist();
+        savedWishlist.setId(1);
+
+        Member member = new Member();
+        member.setId(4);
+
+        int rows = wishlistRepository.removeSavedWishlist(savedWishlist, member);
+
+        assertThat(rows).isEqualTo(1);
+
+        Integer count = jdbcTemplate.queryForObject("""
+                        SELECT COUNT(*)
+                        FROM saved_wishlist
+                        WHERE wishlist_id = ? AND member_id = ?
+                        """,
+                Integer.class,
+                savedWishlist.getId(),
+                member.getId());
+
+        assertThat(count).isEqualTo(0);
+    }
 }
 
