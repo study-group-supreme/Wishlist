@@ -54,7 +54,6 @@ public class WishlistService {
     }
 
     public List<Wishlist> getByOwnerId(int ownerId) {
-        // negative or zero id must be a broken session or bug (this method is used with sessionattribute memberId in showAllWishlists)
         if (ownerId <= 0) {
             throw new BadRequestException("Invalid owner id");
         }
@@ -66,7 +65,7 @@ public class WishlistService {
     }
 
     public List<Item> getItemsFromWishlistByWishlistId(int id) {
-        getById(id); //Ensure wishlist exists
+        getById(id);
 
         try {
             return wishlistRepository.fetchItemsByWishlistId(id);
@@ -129,7 +128,6 @@ public class WishlistService {
             throw new BadRequestException("Description cannot exceed 255 characters");
         }
 
-        // Apply updates
         existing.setTitle(wishlist.getTitle());
         existing.setDescription(wishlist.getDescription());
         existing.setPublic(wishlist.isPublic());
@@ -208,7 +206,6 @@ public class WishlistService {
         }
     }
 
-    //Andreas trying stuffs about searching
     public List<Wishlist> getWishlistByOwnerUsername(String username) {
         try {
             Member owner = memberRepository.findByUsername(username);
