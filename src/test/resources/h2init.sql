@@ -64,3 +64,6 @@ values  (1, 'August List of Hopes and Dreams', 'My deepest, darkest desires', tr
 insert into wishlist_item (wishlist_id, item_id, note, url, price)
 values (1,1, 'To get chicks, of course','https://www.superheltenlegetoej.dk/da/star-wars-life-size-statue-darth-vader-233-cm', 105329.95 ),
 (1, 2, 'Test','https://www.bog-ide.dk/produkt/5978790/spider-man-titanpEALw_wcB', 129 );
+
+insert into saved_wishlist(wishlist_id, member_id)
+VALUES (1, 4);

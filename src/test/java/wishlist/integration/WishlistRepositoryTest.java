@@ -191,5 +191,16 @@ public class WishlistRepositoryTest {
 
         assertThat(count).isEqualTo(1);
     }
+
+    @Test
+    void fetchSavedWishlist_displaysSavedWishlist() {
+        Member member = new Member();
+        member.setId(4);
+
+        List<Wishlist> rows = wishlistRepository.fetchSavedWishlists(member);
+
+        assertThat(rows).hasSize(1);
+        assertThat(rows.get(0).getId()).isEqualTo(1);
+    }
 }
 
