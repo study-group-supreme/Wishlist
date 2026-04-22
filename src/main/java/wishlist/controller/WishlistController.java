@@ -235,4 +235,11 @@ public class WishlistController {
         model.addAttribute("followedLists", followedLists);
         return "wishlist/followed";
     }
+
+    @PostMapping("/unfollow")
+    public String unfollowWishlist(@ModelAttribute Wishlist wishlist, HttpSession session){
+        Member member = memberService.getById((Integer) session.getAttribute("memberId"));
+        wishlistService.unfollowWishlist(wishlist, member);
+        return "redirect:/wishlist/followed";
+    }
 }
