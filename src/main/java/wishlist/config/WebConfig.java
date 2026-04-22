@@ -10,32 +10,34 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginInterceptor())
-                .addPathPatterns("/**")
-                .excludePathPatterns(
-                        // Static resources
-                        "/css/**",
-                        "/js/**",
-                        "/images/**",
-                        "/favicon.ico",
+                .excludePathPatterns("/**/*.css", "/**/*.png", "/public/**", "/member/register", "/member/save", "/auth/login", "/", "/aboutus"
+                        ,"/member/member-login", "/member/member-registration");
 
-                        // Public pages
-                        "/",
-                        "/aboutus",
-                        "/public/**",
 
-                        // Auth (GET + POST)
-                        "/auth/**",
-
-                        // Registration
-                        "/member/register",
-                        "/member/save",
-
-                        // Error pages
-                        "/error/**"
-                );
-    }
-// registry.addInterceptor(new LoginInterceptor())
-//            .excludePathPatterns("/**/*.css", "/**/*.png", "/public/**", "/member/register", "/member/save", "/auth/login", "/", "/aboutus"
-//                                         ,"/member/member-login", "/member/member-registration");
+        //        registry.addInterceptor(new LoginInterceptor())
+//                .addPathPatterns("/**")
+//                .excludePathPatterns(
+//                        // Static resources
+//                        "/css/**",
+//                        "/js/**",
+//                        "/images/**",
+//                        "/favicon.ico",
+//
+//                        // Public pages
+//                        "/",
+//                        "/aboutus",
+//                        "/public/**",
+//
+//                        // Auth (GET + POST)
+//                        "/auth/**",
+//
+//                        // Registration
+//                        "/member/register",
+//                        "/member/save",
+//
+//                        // Error pages
+//                        "/error/**"
+//                );
+}
 
 }
