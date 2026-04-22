@@ -9,7 +9,7 @@ import wishlist.interceptor.LoginInterceptor;
 public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**")
+        registry.addInterceptor(new LoginInterceptor())
                 .excludePathPatterns("/**/*.css", "/**/*.png", "/public/**", "/member/register", "/member/save", "/auth/login", "/", "/aboutus"
                 ,"/member/member-login", "/member/member-registration");
 
