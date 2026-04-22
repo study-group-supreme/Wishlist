@@ -37,7 +37,7 @@ public class WishlistController {
         model.addAttribute("wishlists",  wishlistService.getByOwnerId(memberId));
         //added line below in feature/seeing-others-public-list by Andreas
         model.addAttribute("isOwner", true);
-        return "/wishlist/list";
+        return "wishlist/list";
     }
 
     // show wishlist by wishlist-id

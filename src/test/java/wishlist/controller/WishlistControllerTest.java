@@ -38,7 +38,7 @@ class WishlistControllerTest {
         mockMvc.perform(get("/wishlist")
                         .sessionAttr("memberId", 1))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/wishlist/list"));
+                .andExpect(view().name("wishlist/list"));
 
     }
 
