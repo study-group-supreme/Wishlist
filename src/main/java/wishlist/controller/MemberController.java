@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import wishlist.exception.BadRequestException;
 import wishlist.exception.DuplicateMemberException;
 import wishlist.model.Member;
