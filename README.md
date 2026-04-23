@@ -45,10 +45,10 @@ git clone https://github.com/study-group-supreme/Wishlist.git
 cd Wishlist
 
 # Installer dependencies
-npm install
+./mvnw install
 
 # Start udviklingsserver
-npm run dev
+./mvnw spring-boot:run
 ```
 
 ---
