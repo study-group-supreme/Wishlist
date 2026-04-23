@@ -27,10 +27,10 @@ Målet er at fremme mere miljøvenlige valg i hverdagen ved at inspirere til øn
 
 ---
 
-## 🛠️ Teknologi (forslag)
+## 🛠️ Teknologi
 
 * Frontend: Localhost:8080
-* Backend:Java
+* Backend:Java/SpringBoot
 * Database: MySQL
 
 ---
@@ -250,8 +250,6 @@ Pull requests er meget velkomne! Hvis du vil bidrage, så:
 4. Lav en pull request
 
 ---
-
-## 📄 Licens
 
 Dette projekt er open source under MIT-licensen.
 
